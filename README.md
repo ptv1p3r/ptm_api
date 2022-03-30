@@ -1,2 +1,2 @@
 # ptm_api
-Price Tag Management API
+Project Tree Management API
