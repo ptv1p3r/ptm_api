@@ -1,7 +1,7 @@
 const app = require('./config/express')();
 const port = app.get('port');
 
-// RODANDO NOSSA APLICAÇÃO NA PORTA SETADA
+// REST SERVER START
 app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`)
+    console.log(`Project Tree Management REST API on Port ${port}`)
 });
