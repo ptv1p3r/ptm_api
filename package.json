@@ -1,7 +1,7 @@
 {
-  "name": "price-tag-management-api",
+  "name": "project-tree-management-api",
   "version": "1.0.0",
-  "description": "Price Tag Management API",
+  "description": "Project Tree Management API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server",
