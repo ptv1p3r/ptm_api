@@ -4,6 +4,7 @@ const config     = require('config');
 const consign    = require('consign');
 const mariadb    = require('mariadb');
 const cors       = require("cors");
+const jwt        = require('jsonwebtoken');
 
 const corsOptions = {
     origin: "*",
