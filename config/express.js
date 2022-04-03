@@ -6,7 +6,8 @@ const mariadb    = require('mariadb');
 const cors       = require("cors");
 
 const corsOptions = {
-    origin: "*"
+    origin: "*",
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 };
 
 module.exports = () => {
