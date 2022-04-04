@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  hm-postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: "hm_data"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "hmadmin"
+    ports:
+      - "5432:5432"
+    volumes:
+      - PGDATA:/var/lib/postgresql/data
+      # copy the sql script to db init
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - hm-network
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pedro.roldan@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "hmadmin"
+    ports:
+      - "8080:80"
+    depends_on:
+      - hm-postgres
+    networks:
+      - hm-network
+    restart: always
+
+  hm-server:
+    #    image:  ghcr.io/ptv1p3r/hm_backend:latest
+    image: cityguide/hm_backend:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      - hm-postgres
+    networks:
+      - hm-network
+    restart: always
+
+volumes:
+  PGDATA:
+#    driver: local
+
+networks:
+  hm-network:
+    driver: bridge
