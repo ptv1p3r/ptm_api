@@ -1,50 +1,46 @@
 version: '3.8'
 
 services:
-  hm-postgres:
-    image: postgres
+  ptm-database:
+    image: mariadb:latest
+    container_name: ptm-mariadb
     environment:
-      POSTGRES_DB: "hm_data"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "hmadmin"
+      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQLDB_DATABASE
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - PGDATA:/var/lib/postgresql/data
+      - DB:/var/lib/mysql
       # copy the sql script to db init
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - hm-network
+      - ptm-network
     restart: always
+    env_file: ./.env
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "pedro.roldan@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "hmadmin"
-    ports:
-      - "8080:80"
-    depends_on:
-      - hm-postgres
-    networks:
-      - hm-network
-    restart: always
-
-  hm-server:
-    #    image:  ghcr.io/ptv1p3r/hm_backend:latest
-    image: cityguide/hm_backend:latest
+  ptm-server:
+#    image:  ghcr.io/ptv1p3r/ptm_api:latest
+#    image: cityguide/hm_backend:latest
+    build: ./ptm-api
+    env_file: ./.env
     ports:
       - "5000:5000"
     depends_on:
-      - hm-postgres
+      - ptm-database
+    environment:
+      - DB_HOST=mysqldb
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - DB_NAME=$MYSQLDB_DATABASE
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
     networks:
-      - hm-network
+      - ptm-network
     restart: always
 
 volumes:
-  PGDATA:
+  DB:
 #    driver: local
 
 networks:
-  hm-network:
+  ptm-network:
     driver: bridge
