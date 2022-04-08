@@ -5,34 +5,34 @@ services:
     image: mariadb:latest
     container_name: ptm-mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
-      MYSQL_DATABASE: $MYSQLDB_DATABASE
+      MYSQL_ROOT_PASSWORD: "ptm_admin"
+      MYSQL_DATABASE: "ptm"
     ports:
       - "3306:3306"
     volumes:
       - DB:/var/lib/mysql
       # copy the sql script to db init
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ptm-network
     restart: always
-    env_file: ./.env
+#    env_file: ./.env
 
   ptm-server:
 #    image:  ghcr.io/ptv1p3r/ptm_api:latest
 #    image: cityguide/hm_backend:latest
-    build: ./ptm-api
-    env_file: ./.env
+    build: ./
+#    env_file: ./.env
     ports:
       - "5000:5000"
     depends_on:
       - ptm-database
-    environment:
-      - DB_HOST=mysqldb
-      - DB_USER=$MYSQLDB_USER
-      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - DB_NAME=$MYSQLDB_DATABASE
-      - DB_PORT=$MYSQLDB_DOCKER_PORT
+#    environment:
+#      - DB_HOST=mysqldb
+#      - DB_USER=$MYSQLDB_USER
+#      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+#      - DB_NAME=$MYSQLDB_DATABASE
+#      - DB_PORT=$MYSQLDB_DOCKER_PORT
     networks:
       - ptm-network
     restart: always
