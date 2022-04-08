@@ -7,11 +7,14 @@ WORKDIR /.
 # Get the package.json first to install dependencies
 COPY package.json /.
 
-# This will install dependencies
+# Install dependencies
 RUN npm install
 
+# Copy files
 COPY . .
 
+# Expose port
 EXPOSE 5000
 
+# Init command
 CMD [ "npm", "start"]
