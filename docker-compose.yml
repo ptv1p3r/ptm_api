@@ -5,6 +5,8 @@ services:
     image: mariadb:latest
     container_name: ptm-mariadb
     environment:
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "ptmadmin"
       MYSQL_ROOT_PASSWORD: "ptm_admin"
       MYSQL_DATABASE: "ptm"
     ports:
@@ -12,7 +14,7 @@ services:
     volumes:
       - DB:/var/lib/mysql
       # copy the sql script to db init
-      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ptm-network
     restart: always
