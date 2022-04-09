@@ -3,5 +3,6 @@ module.exports = app => {
 
     app.route('/api/v1/login').get(controller.login);
     app.route('/api/v1/logout').get(controller.logout);
+    app.route('/api/v1/register').get(controller.logout);
 
 }
