@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const config     = require('config');
 const consign    = require('consign');
 const cors       = require("cors");
-const jwt        = require('jsonwebtoken');
 
 const corsOptions = {
     origin: "*",
@@ -15,6 +14,7 @@ module.exports = () => {
 
     // VARIÁVEIS DA APLICAÇÃO
     app.set('port', process.env.PORT || config.get('server.port'));
+    app.set('token_secret', config.get('token.secret'));
 
     // MIDDLEWARES
     // parse requests of content-type - application/json

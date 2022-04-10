@@ -14,7 +14,7 @@ const SUCCESS_CODE = {
  * @type {{UNAUTHORIZED: number, BAD_REQUEST: number, NOT_FOUND: number, PAYMENT_REQUIRED: number, FORBIDDEN: number}}
  */
 const ERROR_CODE = {
-    BAD_REQUEST: 404,
+    BAD_REQUEST: 400,
     UNAUTHORIZED: 401,
     PAYMENT_REQUIRED: 402,
     FORBIDDEN: 403,

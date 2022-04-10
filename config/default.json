@@ -8,5 +8,8 @@
     "user": "root",
     "password": "123456789abc",
     "database": "ptm"
+  },
+  "token": {
+    "secret": "123456789PtmProjectApi"
   }
 }
