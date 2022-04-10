@@ -5,9 +5,27 @@ const responseCode = require('../helpers/httpCodesDefinitions')
 module.exports = app => {
     const controller = {};
 
+    /**
+     * User controller list all users
+     * @param req
+     * @param res
+     * @returns {*}
+     */
     controller.listAll = (req, res) => res.status(200).json("List all Users");
+
+    /**
+     * User controller view user details
+     * @param req
+     * @param res
+     * @returns {*}
+     */
     controller.viewUser = (req, res) => res.status(200).json("View User");
 
+    /**
+     * User controller create user
+     * @param req
+     * @param res
+     */
     controller.createUser = (req, res) => {
         const userData = {
             id: crypto.randomUUID(),
@@ -31,8 +49,19 @@ module.exports = app => {
         res.status(responseCode.SUCCESS_CODE.CREATED).json("Create User" + JSON.stringify(userData));
     }
 
+    /**
+     * User controller edit user
+     * @param req
+     * @param res
+     * @returns {*}
+     */
     controller.editUser = (req, res) => res.status(200).json("Edit User");
 
+    /**
+     * User controller delete user
+     * @param req
+     * @param res
+     */
     controller.deleteUser = (req, res) => {
         const userId = req.params.userId;
 
