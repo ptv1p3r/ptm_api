@@ -1,3 +1,5 @@
+'use strict';
+
 const mariadb    = require('mariadb');
 const crypto = require('crypto');
 const responseCode = require('../helpers/httpCodesDefinitions')
@@ -30,12 +32,14 @@ module.exports = app => {
         const userData = {
             id: crypto.randomUUID(),
             name: req.body.name.trim(),
+            entity: req.body.entity.trim(),
             email: req.body.email.trim().toLowerCase(),
             password: req.body.password.trim(),
             groupId: req.body.groupId,
-            activationToken: "",
+            activationToken: crypto.createHash('md5').update(req.body.email.trim().toLowerCase()).digest('hex'),
             address: req.body.address.trim(),
             codPost: req.body.codPost.trim(),
+            locality: req.body.locality.trim(),
             mobile: req.body.mobile.trim(),
             nif: req.body.nif.trim(),
             country: req.body.country.trim(),
