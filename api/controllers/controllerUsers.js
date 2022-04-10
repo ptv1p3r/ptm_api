@@ -1,5 +1,6 @@
 const mariadb    = require('mariadb');
 const crypto = require('crypto');
+const responseCode = require('../helpers/httpCodesDefinitions')
 
 module.exports = app => {
     const controller = {};
@@ -25,10 +26,11 @@ module.exports = app => {
             lastLogin:""
         }
 
-        res.status(200).json("Create User" + JSON.stringify(userData));
+        res.status(responseCode.SUCCESS_CODE.CREATED).json("Create User" + JSON.stringify(userData));
     }
 
     controller.editUser = (req, res) => res.status(200).json("Edit User");
+
     controller.deleteUser = (req, res) => {
         const userId = req.params.userId;
 
