@@ -1,3 +1,7 @@
+/**
+ * HTTP SUCCESS CODES
+ * @type {{CREATED: number, ACCEPTED: number, NO_CONTENT: number, OK: number}}
+ */
 const SUCCESS_CODE = {
     OK: 200,
     CREATED: 201,
@@ -5,6 +9,10 @@ const SUCCESS_CODE = {
     NO_CONTENT: 204,
 }
 
+/**
+ * HTTP ERROR CODES
+ * @type {{UNAUTHORIZED: number, BAD_REQUEST: number, NOT_FOUND: number, PAYMENT_REQUIRED: number, FORBIDDEN: number}}
+ */
 const ERROR_CODE = {
     BAD_REQUEST: 404,
     UNAUTHORIZED: 401,
@@ -13,6 +21,10 @@ const ERROR_CODE = {
     NOT_FOUND: 404,
 }
 
+/**
+ * HTTP SERVER ERROR CODES
+ * @type {{INTERNAL_SERVER_ERROR: number, BAD_GATEWAY: number, SERVICE_UNAVAILABLE: number, NETWORK_AUTHENTICATION_REQUIRED: number}}
+ */
 const SERVER_CODE = {
     INTERNAL_SERVER_ERROR: 501,
     BAD_GATEWAY: 502,
