@@ -2,7 +2,6 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 const config     = require('config');
 const consign    = require('consign');
-const mariadb    = require('mariadb');
 const cors       = require("cors");
 const jwt        = require('jsonwebtoken');
 
