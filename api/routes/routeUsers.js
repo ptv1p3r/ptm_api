@@ -7,6 +7,6 @@ module.exports = app => {
     app.route('/api/v1/users/create').post(controller.createUser);
 
     app.route('/api/v1/users/edit').get(controller.editUser);
-    app.route('/api/v1/users/delete').get(controller.deleteUser);
+    app.route('/api/v1/users/delete/:userId').delete(controller.deleteUser);
 
 }

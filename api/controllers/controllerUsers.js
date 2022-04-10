@@ -1,5 +1,5 @@
 const mariadb    = require('mariadb');
-const {stringify} = require("nodemon/lib/utils");
+const crypto = require('crypto');
 
 module.exports = app => {
     const controller = {};
@@ -9,6 +9,7 @@ module.exports = app => {
 
     controller.createUser = (req, res) => {
         const userData = {
+            id: crypto.randomUUID(),
             name: req.body.name.trim(),
             email: req.body.email.trim().toLowerCase(),
             password: req.body.password.trim(),
@@ -28,7 +29,11 @@ module.exports = app => {
     }
 
     controller.editUser = (req, res) => res.status(200).json("Edit User");
-    controller.deleteUser = (req, res) => res.status(200).json("Delete User");
+    controller.deleteUser = (req, res) => {
+        const userId = req.params.userId;
+
+        res.status(200).json("Delete User " + userId);
+    }
 
     return controller;
 }
