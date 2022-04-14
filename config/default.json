@@ -1,6 +1,7 @@
 {
   "server": {
-    "port" : 5000
+    "name": "Project Tree Management REST API",
+    "version": "1.0"
   },
   "token": {
     "secret": "123456789PtmProjectApi"

@@ -21,7 +21,7 @@ services:
     restart: always
 
   ptm-server:
-#    image:  ghcr.io/ptv1p3r/ptm_api:latest
+    image:  ghcr.io/ptv1p3r/ptm_api:latest
 #    image: cityguide/hm_backend:latest
     build: ./
     env_file: ./.env

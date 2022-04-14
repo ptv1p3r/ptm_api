@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM node:14
 
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
 # The working directory inside container
 WORKDIR /.
 

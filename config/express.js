@@ -3,6 +3,9 @@ dotenv.config();
 
 // NODE_CONFIG must be defined prior to require('config') so that it can override and create new data on default.json from .env file
 process.env.NODE_CONFIG = `{
+        "server": {
+            "port":${process.env.NODE_PORT}
+        },
         "database": {
             "host":"${process.env.DB_HOST}", 
             "port":${process.env.DB_PORT}, 
@@ -27,7 +30,9 @@ module.exports = () => {
     const app = express();
 
     // APP VARIABLES
-    app.set('port', process.env.PORT || config.get('server.port'));
+    app.set('port', process.env.NODE_PORT || config.get('server.port'));
+    app.set('server.name', config.get('server.name'));
+    app.set('server.version', config.get('server.version'));
     app.set('database.host', config.get('database.host'));
     app.set('database.port', config.get('database.port'));
     app.set('database.user', config.get('database.user'));
