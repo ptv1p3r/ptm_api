@@ -13,6 +13,7 @@ function AuthenticateJWT(req, res, next) {
 
         const decoded = jwt.verify(authHeader, tokenSecret);
         req.email = decoded.email;
+
         next();
 
     } catch (error) {

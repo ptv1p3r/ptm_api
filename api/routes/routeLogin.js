@@ -1,3 +1,5 @@
+const { AuthenticateJWT } = require("../helpers/security")
+
 module.exports = app => {
     const controller = app.controllers.controllerLogin;
 
@@ -9,7 +11,7 @@ module.exports = app => {
     /**
      * User logout endpoint
      */
-    app.route('/api/v1/logout').get(controller.logout);
+    app.route('/api/v1/logout').get(AuthenticateJWT, controller.logout);
 
     /**
      * User account activation
