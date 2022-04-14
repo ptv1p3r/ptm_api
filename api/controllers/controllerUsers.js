@@ -1,11 +1,18 @@
 'use strict';
 
-const mariadb    = require('mariadb');
+const mariadb = require('mariadb');
 const crypto = require('crypto');
 const responseCode = require('../helpers/httpCodesDefinitions')
+const pool = mariadb.createPool({
+    host: 'ptm-database',
+    user:'admin',
+    password: 'ptmadmin',
+    database: "ptm"
+});
 
 module.exports = app => {
     const controller = {};
+
 
     /**
      * User controller list all users
@@ -28,7 +35,7 @@ module.exports = app => {
      * @param req
      * @param res
      */
-    controller.createUser = (req, res) => {
+    controller.createUser = async (req, res) => {
         const userData = {
             id: crypto.randomUUID(),
             name: req.body.name.trim(),
@@ -37,8 +44,10 @@ module.exports = app => {
             password: req.body.password.trim(),
             groupId: req.body.groupId,
             activationToken: crypto.createHash('md5').update(req.body.email.trim().toLowerCase()).digest('hex'),
+            dateBirth: req.body.dateBirth,
             address: req.body.address.trim(),
             codPost: req.body.codPost.trim(),
+            gender: req.body.gender.trim(),
             locality: req.body.locality.trim(),
             mobile: req.body.mobile.trim(),
             nif: req.body.nif.trim(),
@@ -47,8 +56,10 @@ module.exports = app => {
             dateActivation: new Date(),
             dateCreated: new Date(),
             dateModified: new Date(),
-            lastLogin:""
+            lastLogin: null
         }
+
+        await asyncFunction(userData);
 
         res.status(responseCode.SUCCESS_CODE.CREATED).json("Create User" + JSON.stringify(userData));
     }
@@ -73,4 +84,25 @@ module.exports = app => {
     }
 
     return controller;
+}
+
+async function asyncFunction(userData) {
+    let conn;
+
+    try {
+        conn = await pool.getConnection();
+        // const rows = await conn.query("SELECT 1 as val");
+        // console.log(rows); //[ {val: 1}, meta: ... ]
+        const res = await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
+                userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
+                userData.dateModified, userData.lastLogin]);
+        console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+
+    } catch (err) {
+        console.log("error: " + err);
+        throw err;
+    } finally {
+        if (conn) return conn.end();
+    }
 }
