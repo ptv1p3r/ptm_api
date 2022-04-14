@@ -3,10 +3,10 @@
     "port" : 5000
   },
   "database": {
-    "host" : "localhost",
+    "host" : "ptm-database",
     "port": 3306,
-    "user": "root",
-    "password": "123456789abc",
+    "user": "admin",
+    "password": "ptmadmin",
     "database": "ptm"
   },
   "token": {

@@ -1,8 +1,8 @@
 module.exports = app => {
-    const pricetagDevicesDB = app.data.pricetagDevices;
+    // const pricetagDevicesDB = app.data.pricetagDevices;
     const controller = {};
 
-    controller.listPricetagDevicesDB = (req, res) => res.status(200).json(pricetagDevicesDB);
+    // controller.listPricetagDevicesDB = (req, res) => res.status(200).json(pricetagDevicesDB);
 
     return controller;
 }

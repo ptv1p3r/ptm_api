@@ -145,3 +145,10 @@ ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk0` FOREIGN KEY (`trans
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk1` FOREIGN KEY (`transactionMethodId`) REFERENCES `transactionMethod`(`id`);
 
 ALTER TABLE `treeImages` ADD CONSTRAINT `treeImages_fk0` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
+
+INSERT INTO `security` (homeLogin, admLogin, usersCreate, usersRead, usersUpdate, usersDelete,
+                        userGroupsCreate, userGroupsRead, userGroupsUpdate, userGroupsDelete,
+                        treesCreate, treesRead, treesUpdate, treesDelete,
+                        treeTypeCreate, treeTypeRead, treeTypeUpdate, treeTypeDelete,
+                        treeImagesCreate, treeImagesRead, treeImagesUpdate, treeImagesDelete)
+VALUES (true, false, false, true, true, false, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false);
