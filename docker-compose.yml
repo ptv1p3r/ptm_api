@@ -4,13 +4,14 @@ services:
   ptm-database:
     image: mariadb:latest
     container_name: ptm-mariadb
+    env_file: ./.env
     environment:
-      MYSQL_USER: "admin"
-      MYSQL_PASSWORD: "ptmadmin"
-      MYSQL_ROOT_PASSWORD: "ptm_admin"
-      MYSQL_DATABASE: "ptm"
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASS
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASS
+      MYSQL_DATABASE: $DB_DATABASE
     ports:
-      - "3306:3306"
+      - $DB_PORT:$DB_DOCKER_PORT
     volumes:
       - DB:/var/lib/mysql
       # copy the sql script to db init
@@ -18,23 +19,22 @@ services:
     networks:
       - ptm-network
     restart: always
-#    env_file: ./.env
 
   ptm-server:
 #    image:  ghcr.io/ptv1p3r/ptm_api:latest
 #    image: cityguide/hm_backend:latest
     build: ./
-#    env_file: ./.env
+    env_file: ./.env
     ports:
-      - "5000:5000"
+      - $NODE_PORT:$NODE_DOCKER_PORT
     depends_on:
       - ptm-database
-#    environment:
-#      - DB_HOST=mysqldb
-#      - DB_USER=$MYSQLDB_USER
-#      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-#      - DB_NAME=$MYSQLDB_DATABASE
-#      - DB_PORT=$MYSQLDB_DOCKER_PORT
+    environment:
+      - DB_HOST=ptm-database
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_ROOT_PASS
+      - DB_NAME=$DB_DATABASE
+      - DB_PORT=$DB_DOCKER_PORT
     networks:
       - ptm-network
     restart: always

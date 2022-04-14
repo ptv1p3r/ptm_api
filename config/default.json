@@ -2,13 +2,6 @@
   "server": {
     "port" : 5000
   },
-  "database": {
-    "host" : "ptm-database",
-    "port": 3306,
-    "user": "admin",
-    "password": "ptmadmin",
-    "database": "ptm"
-  },
   "token": {
     "secret": "123456789PtmProjectApi"
   }

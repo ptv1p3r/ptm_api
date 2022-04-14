@@ -1,18 +1,16 @@
 'use strict';
-
 const mariadb = require('mariadb');
 const crypto = require('crypto');
 const responseCode = require('../helpers/httpCodesDefinitions')
-const pool = mariadb.createPool({
-    host: 'ptm-database',
-    user:'admin',
-    password: 'ptmadmin',
-    database: "ptm"
-});
 
 module.exports = app => {
     const controller = {};
-
+    const pool = mariadb.createPool({
+        host: app.get('database.host'),
+        user: app.get('database.user'),
+        password: app.get('database.password'),
+        database: app.get('database.name')
+    });
 
     /**
      * User controller list all users
@@ -83,26 +81,28 @@ module.exports = app => {
         res.status(200).json("Delete User " + userId);
     }
 
+    async function asyncFunction(userData) {
+        let conn;
+
+        try {
+            conn = await pool.getConnection();
+            // const rows = await conn.query("SELECT 1 as val");
+            // console.log(rows); //[ {val: 1}, meta: ... ]
+            const res = await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
+                    userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
+                    userData.dateModified, userData.lastLogin]);
+            console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) return conn.end();
+        }
+    }
+
     return controller;
 }
 
-async function asyncFunction(userData) {
-    let conn;
 
-    try {
-        conn = await pool.getConnection();
-        // const rows = await conn.query("SELECT 1 as val");
-        // console.log(rows); //[ {val: 1}, meta: ... ]
-        const res = await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
-                userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
-                userData.dateModified, userData.lastLogin]);
-        console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-
-    } catch (err) {
-        console.log("error: " + err);
-        throw err;
-    } finally {
-        if (conn) return conn.end();
-    }
-}

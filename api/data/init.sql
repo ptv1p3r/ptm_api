@@ -152,3 +152,6 @@ INSERT INTO `security` (homeLogin, admLogin, usersCreate, usersRead, usersUpdate
                         treeTypeCreate, treeTypeRead, treeTypeUpdate, treeTypeDelete,
                         treeImagesCreate, treeImagesRead, treeImagesUpdate, treeImagesDelete)
 VALUES (true, false, false, true, true, false, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false);
+
+INSERT INTO `userGroups` (name, description, securityId, active, dateCreated, dateModified)
+VALUES ('Public Frontend','Generic Frontend Access', 1, true, NOW(), NOW());
