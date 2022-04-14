@@ -92,7 +92,7 @@ module.exports = app => {
                 [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
                     userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
                     userData.dateModified, userData.lastLogin]);
-            console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+            console.log(res);
 
         } catch (err) {
             console.log("error: " + err);
