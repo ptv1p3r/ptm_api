@@ -20,4 +20,9 @@ module.exports = app => {
      */
     app.route('/api/v1/register/:activationToken').get(controller.register);
 
+    /**
+     * User verify token using JWT Refresh Token
+     */
+    app.route('/api/v1/refresh').post(controller.refresh);
+
 }

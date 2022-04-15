@@ -2,12 +2,13 @@
 
 const jwt = require('jsonwebtoken');
 const responseCode = require('../helpers/httpCodesDefinitions')
+const { verifyRefreshJWT } = require("../helpers/security")
 
 module.exports = app => {
     const controller = {};
 
     /**
-     * User controller login
+     * User controller login returning access and refresh token
      * @param req
      * @param res
      * @returns {*}
@@ -16,7 +17,10 @@ module.exports = app => {
         const { email } = req.body;
 
         if (!email) {
-            return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({ auth: false, error: "enter valid credentials" });
+            return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                auth: false,
+                error: "Enter valid authorization credentials!"
+            });
         }
 
         const accessToken = jwt.sign({ email: email }, app.get('token.accessSecret'), {
@@ -24,10 +28,14 @@ module.exports = app => {
         });
 
         const refreshToken = jwt.sign({ email: email }, app.get('token.refreshSecret'), {
-            expiresIn: "10m",
+            expiresIn: "10080m", // 7 days
         });
 
-        res.status(responseCode.SUCCESS_CODE.OK).json({ auth: true, accessToken: accessToken, refreshToken: refreshToken });
+        res.status(responseCode.SUCCESS_CODE.OK).json({
+            auth: true,
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        });
     }
 
     /**
@@ -36,7 +44,12 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.logout = (req, res) => res.status(200).json("Logout");
+    controller.logout = (req, res) => res.status(responseCode.SUCCESS_CODE.OK).json({
+        auth: false,
+        accessToken: null,
+        refreshToken: null,
+        message: "User logged out!"
+    });
 
     /**
      * User controller account activation
@@ -45,6 +58,34 @@ module.exports = app => {
      * @returns {*}
      */
     controller.register = (req, res) => res.status(200).json("Register");
+
+    /**
+     * User getting new access token using refresh token
+     * @param req
+     * @param res
+     * @returns {*}
+     */
+    controller.refresh = (req, res) => {
+        const { email, refreshToken } = req.body;
+
+        const isValid = verifyRefreshJWT(email, refreshToken);
+
+        if (!isValid) {
+            return res.status(responseCode.ERROR_CODE.UNAUTHORIZED).json({
+                auth: false,
+                message: "Invalid token,login again!"
+            });
+        }
+
+        const accessToken = jwt.sign({ email: email }, app.get('token.accessSecret'), {
+            expiresIn: "2m",
+        });
+
+        res.status(responseCode.SUCCESS_CODE.OK).json({
+            auth: true,
+            accessToken: accessToken
+        });
+    }
 
     return controller;
 }

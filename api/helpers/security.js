@@ -1,6 +1,14 @@
 const jwt           = require('jsonwebtoken');
 const responseCode  = require('../helpers/httpCodesDefinitions')
 
+/**
+ * Authentication of JWT Access Token
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ * @constructor
+ */
 function AuthenticateJWT(req, res, next) {
     const app = require('./../../config/express')();
     const tokenAccessSecret = app.get('token.accessSecret');
@@ -26,16 +34,24 @@ function AuthenticateJWT(req, res, next) {
     }
 }
 
-function verifyRefresh(email, refreshToken) {
+/**
+ * Verification of JWT Refresh Token
+ * @param {String} email
+ * @param {String} refreshToken
+ * @returns {boolean}
+ */
+function verifyRefreshJWT(email, refreshToken) {
     const app = require('./../../config/express')();
     const tokenRefreshSecret = app.get('token.refreshSecret');
 
     try {
         const decoded = jwt.verify(refreshToken, tokenRefreshSecret);
+
         return decoded.email === email;
+
     } catch (error) {
         return false;
     }
 }
 
-module.exports = { AuthenticateJWT, verifyRefresh }
+module.exports = { AuthenticateJWT, verifyRefreshJWT }
