@@ -1,6 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
+const responseCode = require('../helpers/httpCodesDefinitions')
 
 module.exports = app => {
     const controller = {};
@@ -15,18 +16,18 @@ module.exports = app => {
         const { email } = req.body;
 
         if (!email) {
-            return res.status(400).json({ auth: false, error: "enter valid credentials" });
+            return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({ auth: false, error: "enter valid credentials" });
         }
 
-        const accessToken = jwt.sign({ email: email }, "accessSecret", {
+        const accessToken = jwt.sign({ email: email }, app.get('token.accessSecret'), {
             expiresIn: "2m",
         });
 
-        const refreshToken = jwt.sign({ email: email }, "refreshSecret", {
+        const refreshToken = jwt.sign({ email: email }, app.get('token.refreshSecret'), {
             expiresIn: "10m",
         });
 
-        res.status(200).json({ accessToken, refreshToken });
+        res.status(responseCode.SUCCESS_CODE.OK).json({ auth: true, accessToken: accessToken, refreshToken: refreshToken });
     }
 
     /**

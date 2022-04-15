@@ -12,6 +12,10 @@ process.env.NODE_CONFIG = `{
             "user":"${process.env.DB_USER}", 
             "password":"${process.env.DB_PASS}", 
             "name":"${process.env.DB_DATABASE}"
+        },
+        "token": {
+            "accessSecret":"${process.env.ACCESS_TOKEN_SECRET}",
+            "refreshSecret":"${process.env.REFRESH_TOKEN_SECRET}"
         }
 }`;
 const config     = require('config');
@@ -38,7 +42,8 @@ module.exports = () => {
     app.set('database.user', config.get('database.user'));
     app.set('database.password', config.get('database.password'));
     app.set('database.name', config.get('database.name'));
-    app.set('token_secret', config.get('token.secret'));
+    app.set('token.accessSecret', config.get('token.accessSecret'));
+    app.set('token.refreshSecret', config.get('token.refreshSecret'));
 
     // MIDDLEWARES
     // parse requests of content-type - application/json

@@ -1,3 +1,5 @@
+'use strict';
+
 const { AuthenticateJWT } = require("../helpers/security")
 
 module.exports = app => {

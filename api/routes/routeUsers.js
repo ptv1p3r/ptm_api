@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = app => {
     const controller = app.controllers.controllerUsers;
 
