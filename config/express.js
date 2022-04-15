@@ -43,7 +43,9 @@ module.exports = () => {
     app.set('database.password', config.get('database.password'));
     app.set('database.name', config.get('database.name'));
     app.set('token.accessSecret', config.get('token.accessSecret'));
+    app.set('token.accessValidity', config.get('token.accessValidity'));
     app.set('token.refreshSecret', config.get('token.refreshSecret'));
+    app.set('token.refreshValidity', config.get('token.refreshValidity'));
 
     // MIDDLEWARES
     // parse requests of content-type - application/json

@@ -4,5 +4,7 @@
     "version": "1.0"
   },
   "token": {
+    "accessValidity": "15m",
+    "refreshValidity": "7d"
   }
 }

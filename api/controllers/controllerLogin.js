@@ -24,11 +24,11 @@ module.exports = app => {
         }
 
         const accessToken = jwt.sign({ email: email }, app.get('token.accessSecret'), {
-            expiresIn: "2m",
+            expiresIn: app.get('token.accessValidity'),
         });
 
         const refreshToken = jwt.sign({ email: email }, app.get('token.refreshSecret'), {
-            expiresIn: "10080m", // 7 days
+            expiresIn: app.get('token.refreshValidity'),
         });
 
         res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -78,7 +78,7 @@ module.exports = app => {
         }
 
         const accessToken = jwt.sign({ email: email }, app.get('token.accessSecret'), {
-            expiresIn: "2m",
+            expiresIn: app.get('token.accessValidity'),
         });
 
         res.status(responseCode.SUCCESS_CODE.OK).json({
