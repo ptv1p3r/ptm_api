@@ -6,18 +6,18 @@ CREATE TABLE `users` (
                          `password` TEXT NOT NULL,
                          `groupId` INT NOT NULL,
                          `activationToken` TEXT,
-                         `dateBirth` varchar(50) NOT NULL,
+                         `dateBirth` DATE NOT NULL,
                          `address` TEXT NOT NULL,
                          `codPost` varchar(10) NOT NULL,
                          `gender` varchar(50) NOT NULL,
                          `locality` varchar(255) NOT NULL,
                          `mobile` varchar(255) NOT NULL,
                          `nif` int(10) NOT NULL,
-                         `country` varchar(255) NOT NULL,
+                         `countryId` INT NOT NULL,
                          `active` BOOLEAN NOT NULL,
                          `activationDate` DATETIME NOT NULL,
                          `dateCreated` DATETIME NOT NULL,
-                         `dateModified` DATETIME NOT NULL,
+                         `dateModified` DATETIME NULL,
                          `lastLogin` DATETIME NULL,
                          PRIMARY KEY (`id`)
 );
@@ -130,7 +130,19 @@ CREATE TABLE `treeImages` (
                         PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `countries` (
+                              `id` INT NOT NULL AUTO_INCREMENT,
+                              `name` varchar(255) NOT NULL,
+                              `code` varchar(5) NOT NULL,
+                              `active` BOOL NOT NULL,
+                              `dateCreated` DATETIME NOT NULL,
+                              `dateModified` DATETIME NULL,
+                              PRIMARY KEY (`id`)
+);
+
 ALTER TABLE `users` ADD CONSTRAINT `users_fk0` FOREIGN KEY (`groupId`) REFERENCES `userGroups`(`id`);
+
+ALTER TABLE `users` ADD CONSTRAINT `users_fk1` FOREIGN KEY (`countryId`) REFERENCES `countries`(`id`);
 
 ALTER TABLE `userGroups` ADD CONSTRAINT `userGroups_fk0` FOREIGN KEY (`securityId`) REFERENCES `security`(`id`);
 
@@ -155,3 +167,13 @@ VALUES (true, false, false, true, true, false, false, true, false, false, false,
 
 INSERT INTO `userGroups` (name, description, securityId, active, dateCreated, dateModified)
 VALUES ('Public Frontend','Generic Frontend Access', 1, true, NOW(), NOW());
+
+INSERT INTO `countries` (name, code, active, dateCreated, dateModified)
+VALUES ('Portugal', 'PT', true, NOW(), NOW()),
+       ('Andorra', 'AD', true, NOW(), NOW()),
+       ('United Arab Emirates', 'AE', true, NOW(), NOW()),
+       ('Afghanistan', 'AF', true, NOW(), NOW()),
+       ('Antigua and Barbuda', 'AG', true, NOW(), NOW()),
+       ('Anguilla', 'AI', true, NOW(), NOW()),
+       ('Albania', 'AL', true, NOW(), NOW()),
+       ('Armenia', 'AM', true, NOW(), NOW());
