@@ -58,6 +58,7 @@ module.exports = () => {
     // APP Load files
     consign({cwd: 'api'})
         .then('controllers')
+        .then('models')
         .then('routes')
         .into(app);
 

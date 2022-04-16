@@ -3,6 +3,7 @@
 const jwt = require('jsonwebtoken');
 const responseCode = require('../helpers/httpCodesDefinitions')
 const { verifyRefreshJWT } = require("../helpers/security")
+const modelUser = require('./../models/modelUsers')();
 
 module.exports = app => {
     const controller = {};
@@ -13,21 +14,37 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.login = (req, res) => {
-        const { email } = req.body;
+    controller.login = async (req, res) => {
+        const userData = {
+            email: req.body.email.trim().toLowerCase(),
+            password: req.body.password.trim()
+        }
+        //const { email, password } = req.body;
 
-        if (!email) {
+        if (!userData.email || !userData.password) {
             return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                 auth: false,
                 error: "Enter valid authorization credentials!"
             });
         }
 
-        const accessToken = jwt.sign({ email: email }, app.get('token.accessSecret'), {
+        const user = await modelUser.getUser(userData);
+
+        if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+            auth: false,
+            error: "Enter valid authorization credentials!"
+        });
+
+        if(user[0].password !== userData.password) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+            auth: false,
+            error: "Enter valid authorization credentials!"
+        });
+
+        const accessToken = jwt.sign({email: userData.email}, app.get('token.accessSecret'), {
             expiresIn: app.get('token.accessValidity'),
         });
 
-        const refreshToken = jwt.sign({ email: email }, app.get('token.refreshSecret'), {
+        const refreshToken = jwt.sign({email: userData.email}, app.get('token.refreshSecret'), {
             expiresIn: app.get('token.refreshValidity'),
         });
 
