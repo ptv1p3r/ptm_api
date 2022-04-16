@@ -28,7 +28,7 @@ module.exports = app => {
             });
         }
 
-        const user = await modelUser.getUser(userData);
+        const user = await modelUser.getUserByEmail(userData.email);
 
         if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
             auth: false,

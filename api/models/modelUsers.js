@@ -19,16 +19,16 @@ module.exports = app => {
 
     /**
      * Get user by email
-     * @param userData
+     * @param {String} userEmail - User email
      * @returns {Promise<*>}
      */
-    model.getUser = async (userData) => {
+    model.getUserByEmail = async (userEmail) => {
         let conn;
         let userDetails;
 
         try {
             conn = await pool.getConnection();
-            userDetails = await conn.query(`SELECT * FROM users WHERE email='${userData.email}'`);
+            userDetails = await conn.query(`SELECT * FROM users WHERE email='${userEmail}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -40,7 +40,7 @@ module.exports = app => {
 
     /**
      * Create a new user
-     * @param userData
+     * @param {Object} userData - User details
      * @returns {Promise<void>}
      */
     model.createUser = async (userData) => {
