@@ -56,7 +56,7 @@ module.exports = app => {
 
             return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken,
-                    userData.dateBirth, userData.address, userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif,
+                    userData.dateBirth, userData.address, userData.codPost, userData.genderId, userData.locality, userData.mobile, userData.nif,
                     userData.countryId, userData.active, userData.dateActivation, userData.dateCreated, userData.dateModified, userData.lastLogin]);
         } catch (err) {
             console.log("error: " + err);

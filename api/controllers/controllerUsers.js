@@ -40,7 +40,7 @@ module.exports = app => {
             dateBirth: new Date(req.body.dateBirth.trim()),
             address: req.body.address.trim(),
             codPost: req.body.codPost.trim(),
-            gender: req.body.gender.trim(),
+            genderId: req.body.genderId,
             locality: req.body.locality.trim(),
             mobile: req.body.mobile.trim(),
             nif: req.body.nif.trim(),
