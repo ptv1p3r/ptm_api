@@ -37,11 +37,11 @@ module.exports = () => {
     app.set('port', process.env.NODE_PORT || config.get('server.port'));
     app.set('server.name', config.get('server.name'));
     app.set('server.version', config.get('server.version'));
-    app.set('database.host', config.get('database.host'));
-    app.set('database.port', config.get('database.port'));
-    app.set('database.user', config.get('database.user'));
-    app.set('database.password', config.get('database.password'));
-    app.set('database.name', config.get('database.name'));
+    global.databaseHost = config.get('database.host');
+    global.databasePort = config.get('database.port');
+    global.databaseUser = config.get('database.user');
+    global.databasePass = config.get('database.password');
+    global.databaseName = config.get('database.name');
     app.set('token.accessSecret', config.get('token.accessSecret'));
     app.set('token.accessValidity', config.get('token.accessValidity'));
     app.set('token.refreshSecret', config.get('token.refreshSecret'));
@@ -57,8 +57,8 @@ module.exports = () => {
 
     // APP Load files
     consign({cwd: 'api'})
-        .then('controllers')
         .then('models')
+        .then('controllers')
         .then('routes')
         .into(app);
 

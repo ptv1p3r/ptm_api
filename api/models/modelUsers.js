@@ -4,18 +4,18 @@ const mariadb = require('mariadb');
 
 module.exports = app => {
     const model = {};
-    const pool = mariadb.createPool({
+/*    const pool = mariadb.createPool({
         host: "localhost",
         user: "admin",
         password: "ptmadmin",
         database: "ptm"
-    });
-/*    const pool = mariadb.createPool({
-        host: app.get('database.host'),
-        user: app.get('database.user'),
-        password: app.get('database.password'),
-        database: app.get('database.name')
     });*/
+    const pool = mariadb.createPool({
+        host: global.databaseHost,
+        user: global.databaseUser,
+        password: global.databasePass,
+        database: global.databaseName
+    });
 
     /**
      * Get user by email
@@ -24,18 +24,16 @@ module.exports = app => {
      */
     model.getUserByEmail = async (userEmail) => {
         let conn;
-        let userDetails;
 
         try {
             conn = await pool.getConnection();
-            userDetails = await conn.query(`SELECT * FROM users WHERE email='${userEmail}'`);
+            return await conn.query(`SELECT * FROM users WHERE email='${userEmail}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
         } finally {
             if (conn) await conn.end();
         }
-        return userDetails;
     }
 
     /**

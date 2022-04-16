@@ -4,18 +4,24 @@ const mariadb = require('mariadb');
 
 module.exports = app => {
     const model = {};
-    const pool = mariadb.createPool({
+/*    const pool = mariadb.createPool({
         host: "localhost",
         user: "admin",
         password: "ptmadmin",
         database: "ptm"
     });
-/*    const pool = mariadb.createPool({
+    const pool = mariadb.createPool({
         host: app.get('database.host'),
         user: app.get('database.user'),
         password: app.get('database.password'),
         database: app.get('database.name')
     });*/
+    const pool = mariadb.createPool({
+        host: global.databaseHost,
+        user: global.databaseUser,
+        password: global.databasePass,
+        database: global.databaseName
+    });
 
     /**
      * Get user by email
