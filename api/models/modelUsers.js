@@ -1,21 +1,9 @@
 'use strict';
 
-const mariadb = require('mariadb');
+const dbPool = require('./../helpers/db');
 
 module.exports = app => {
     const model = {};
-/*    const pool = mariadb.createPool({
-        host: "localhost",
-        user: "admin",
-        password: "ptmadmin",
-        database: "ptm"
-    });*/
-    const pool = mariadb.createPool({
-        host: global.databaseHost,
-        user: global.databaseUser,
-        password: global.databasePass,
-        database: global.databaseName
-    });
 
     /**
      * Get user by email
@@ -26,7 +14,7 @@ module.exports = app => {
         let conn;
 
         try {
-            conn = await pool.getConnection();
+            conn = await dbPool.getConnection();
             return await conn.query(`SELECT * FROM users WHERE email='${userEmail}'`);
         } catch (err) {
             console.log("error: " + err);
@@ -45,7 +33,7 @@ module.exports = app => {
         let conn;
 
         try {
-            conn = await pool.getConnection();
+            conn = await dbPool.getConnection();
             return await conn.query(`UPDATE users SET lastLogin=NOW() WHERE id='${userId}'`);
         } catch (err) {
             console.log("error: " + err);
@@ -64,7 +52,7 @@ module.exports = app => {
         let conn;
 
         try {
-            conn = await pool.getConnection();
+            conn = await dbPool.getConnection();
 
             return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken,
