@@ -52,7 +52,8 @@ module.exports = app => {
             lastLogin: null
         }
 
-        await modelUser.createUser(userData);
+        const result = await modelUser.createUser(userData);
+        console.log(result);
 
         res.status(responseCode.SUCCESS_CODE.CREATED).json("Create User" + JSON.stringify(userData));
     }

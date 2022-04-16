@@ -48,16 +48,15 @@ module.exports = app => {
 
         try {
             conn = await pool.getConnection();
-            const res = await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
                     userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
                     userData.dateModified, userData.lastLogin]);
-            //console.log(res);
         } catch (err) {
             console.log("error: " + err);
             throw err;
         } finally {
-            if (conn) return conn.end();
+            if (conn) await conn.end();
         }
     }
 

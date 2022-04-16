@@ -43,7 +43,6 @@ module.exports = app => {
         const accessToken = jwt.sign({email: userData.email}, app.get('token.accessSecret'), {
             expiresIn: app.get('token.accessValidity'),
         });
-
         const refreshToken = jwt.sign({email: userData.email}, app.get('token.refreshSecret'), {
             expiresIn: app.get('token.refreshValidity'),
         });
