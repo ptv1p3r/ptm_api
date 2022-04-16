@@ -37,6 +37,25 @@ module.exports = app => {
     }
 
     /**
+     * Set user last login timestamp
+     * @param {String} userId - User identifier
+     * @returns {Promise<*>}
+     */
+    model.setUserLoginTime = async (userId) => {
+        let conn;
+
+        try {
+            conn = await pool.getConnection();
+            return await conn.query(`UPDATE users SET lastLogin=NOW() WHERE id='${userId}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Create a new user
      * @param {Object} userData - User details
      * @returns {Promise<void>}
@@ -46,10 +65,11 @@ module.exports = app => {
 
         try {
             conn = await pool.getConnection();
+
             return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
-                    userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
-                    userData.dateModified, userData.lastLogin]);
+                [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken,
+                    userData.dateBirth, userData.address, userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif,
+                    userData.countryId, userData.active, userData.dateActivation, userData.dateCreated, userData.dateModified, userData.lastLogin]);
         } catch (err) {
             console.log("error: " + err);
             throw err;

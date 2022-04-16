@@ -40,12 +40,19 @@ module.exports = app => {
             error: "Enter valid authorization credentials!"
         });
 
+        if(user[0].active !== true) return res.status(responseCode.ERROR_CODE.FORBIDDEN).json({
+            auth: false,
+            error: "User not active!"
+        });
+
         const accessToken = jwt.sign({email: userData.email}, app.get('token.accessSecret'), {
             expiresIn: app.get('token.accessValidity'),
         });
         const refreshToken = jwt.sign({email: userData.email}, app.get('token.refreshSecret'), {
             expiresIn: app.get('token.refreshValidity'),
         });
+
+        await modelUser.setUserLoginTime(user[0].id);
 
         res.status(responseCode.SUCCESS_CODE.OK).json({
             auth: true,
