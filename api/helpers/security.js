@@ -7,7 +7,6 @@ const responseCode  = require('../helpers/httpCodesDefinitions')
  * @param res
  * @param next
  * @returns {*}
- * @constructor
  */
 function AuthenticateJWT(req, res, next) {
     const app = require('./../../config/express')();
