@@ -1,12 +1,5 @@
 const mariadb = require('mariadb');
 
-/*    const pool = mariadb.createPool({
-        host: "localhost",
-        user: "admin",
-        password: "ptmadmin",
-        database: "ptm"
-    });*/
-
 /**
  * Database pool
  * @type {Pool}
@@ -17,6 +10,12 @@ const dbPool = mariadb.createPool({
     user: global.databaseUser,
     password: global.databasePass,
     database: global.databaseName
+    /*
+        host: "localhost",
+        user: "admin",
+        password: "ptmadmin",
+        database: "ptm"
+    */
 });
 
 module.exports = dbPool;

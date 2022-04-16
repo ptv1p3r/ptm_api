@@ -176,4 +176,7 @@ VALUES ('Portugal', 'PT', true, NOW(), NOW()),
        ('Antigua and Barbuda', 'AG', true, NOW(), NOW()),
        ('Anguilla', 'AI', true, NOW(), NOW()),
        ('Albania', 'AL', true, NOW(), NOW()),
-       ('Armenia', 'AM', true, NOW(), NOW());
+       ('Armenia', 'AM', true, NOW(), NOW()),
+       ('Netherlands Antilles', 'AN', true, NOW(), NOW()),
+       ('Angola', 'AO', true, NOW(), NOW()),
+       ('Antarctica', 'AQ', true, NOW(), NOW());
