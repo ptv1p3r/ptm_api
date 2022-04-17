@@ -5,8 +5,8 @@ module.exports = app => {
 
     app.route('/api/v1/groups/list').get(controller.listAll);
     app.route('/api/v1/groups/view').get(controller.viewUserGroup);
-    app.route('/api/v1/groups/create').get(controller.createUserGroup);
-    app.route('/api/v1/groups/edit').get(controller.editUserGroup);
-    app.route('/api/v1/groups/delete').get(controller.deleteUserGroup);
+    app.route('/api/v1/groups/create').post(controller.createUserGroup);
+    app.route('/api/v1/groups/edit').post(controller.editUserGroup);
+    app.route('/api/v1/groups/delete').delete(controller.deleteUserGroup);
 
 }

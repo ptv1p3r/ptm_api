@@ -32,7 +32,7 @@ module.exports = app => {
         try {
             const userGroupData = {
                 name: req.body.name.trim(),
-                descrition: req.body.descrition.trim(),
+                description: req.body.description.trim(),
                 securityId: req.body.securityId,
                 active: req.body.active.trim(),
                 dateCreated: new Date(),
