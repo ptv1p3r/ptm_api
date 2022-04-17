@@ -6,6 +6,12 @@ const modelUserGroups = require('./../models/modelUserGroups')();
 module.exports = app => {
     const controller = {};
 
+    /**
+     * Lists all user groups
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
     controller.listAll = async (req, res) => {
         try {
 
@@ -34,16 +40,13 @@ module.exports = app => {
                 name: req.body.name.trim(),
                 description: req.body.description.trim(),
                 securityId: req.body.securityId,
-                active: req.body.active.trim(),
-                dateCreated: new Date(),
-                dateModified: new Date()
+                active: req.body.active
             }
 
-            const result = await modelUserGroups.createUserGroup(userGroupData);
+            await modelUserGroups.createUserGroup(userGroupData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
-                created: true,
-                message: JSON.stringify(result)
+                created: true
             });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({

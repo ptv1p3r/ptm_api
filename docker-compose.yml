@@ -6,6 +6,7 @@ services:
     container_name: ptm-mariadb
     env_file: ./.env
     environment:
+      TZ: Europe/Lisbon
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASS
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASS
@@ -16,9 +17,12 @@ services:
       - DB:/var/lib/mysql
       # copy the sql script to db init
       - ./api/data/init.sql:/docker-entrypoint-initdb.d/init.sql
+      #- /etc/localtime:/etc/localtime:ro
+      #- /etc/timezone:/etc/timezone:ro
     networks:
       - ptm-network
     restart: always
+    #command: ['mysqld','--default-time-zone=Europe/Lisbon']
 
   ptm-server:
 #    image:  ghcr.io/ptv1p3r/ptm_api:latest
@@ -34,6 +38,7 @@ services:
       - DB_PASSWORD=$DB_ROOT_PASS
       - DB_NAME=$DB_DATABASE
       - DB_PORT=$DB_DOCKER_PORT
+      - TZ=Europe/Lisbon
     networks:
       - ptm-network
     restart: always

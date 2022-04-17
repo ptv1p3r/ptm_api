@@ -33,7 +33,9 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("SELECT * FROM userGroups");
+            return await conn.query("SELECT id, name, description, active, securityId, " +
+                "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
+                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified FROM userGroups");
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -52,9 +54,9 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO userGroups VALUE (?, ?, ?, ?, ?, ?)",
-                [userGroupData.name, userGroupData.description, userGroupData.securityId,
-                    userGroupData.active, userGroupData.dateCreated, userGroupData.dateModified]);
+            return await conn.query("INSERT INTO userGroups (name, description, securityId, active) " +
+                "VALUES (?, ?, ?, ?)",
+                [userGroupData.name, userGroupData.description, userGroupData.securityId, userGroupData.active]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
