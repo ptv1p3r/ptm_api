@@ -187,8 +187,7 @@ VALUES ('Masculino', true, NOW(), NOW()),
        ('Indefinido', true, NOW(), NOW());
 
 INSERT INTO `countries` (name, code, active, dateCreated, dateModified)
-VALUES ('Portugal', 'PT', true, NOW(), NOW()),
-       ('Andorra', 'AD', true, NOW(), NOW()),
+VALUES ('Andorra', 'AD', true, NOW(), NOW()),
        ('United Arab Emirates', 'AE', true, NOW(), NOW()),
        ('Afghanistan', 'AF', true, NOW(), NOW()),
        ('Antigua and Barbuda', 'AG', true, NOW(), NOW()),
