@@ -25,7 +25,25 @@ module.exports = app => {
     }
 
     /**
-     * Create a new user
+     * Lists user group
+     * @returns {Promise<void>}
+     */
+    model.getUserGroupList = async () => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query("SELECT * FROM userGroups");
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
+     * Create a new user group
      * @param {Object} userGroupData - User group details
      * @returns {Promise<void>}
      */
@@ -34,7 +52,7 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO userGroups value (?, ?, ?, ?, ?, ?)",
+            return await conn.query("INSERT INTO userGroups VALUE (?, ?, ?, ?, ?, ?)",
                 [userGroupData.name, userGroupData.description, userGroupData.securityId,
                     userGroupData.active, userGroupData.dateCreated, userGroupData.dateModified]);
         } catch (err) {
@@ -44,6 +62,14 @@ module.exports = app => {
             if (conn) await conn.end();
         }
     }
+
+    /**
+     * User controller edit user
+     * @param req
+     * @param res
+     * @returns {*}
+     */
+    model.editUser = (req, res) => res.status(200).json("Edit User");
 
     return model;
 }
