@@ -2,7 +2,7 @@ CREATE TABLE `users` (
                          `id` char(36) NOT NULL,
                          `name` varchar(255) NOT NULL,
                          `entity` varchar(255) NOT NULL,
-                         `email` varchar(255) NOT NULL,
+                         `email` varchar(255) NOT NULL UNIQUE,
                          `password` TEXT NOT NULL,
                          `groupId` INT NOT NULL,
                          `activationToken` TEXT,

@@ -15,50 +15,60 @@ module.exports = app => {
      * @returns {*}
      */
     controller.login = async (req, res) => {
-        const userData = {
-            email: req.body.email.trim().toLowerCase(),
-            password: req.body.password.trim()
-        }
-        //const { email, password } = req.body;
 
-        if (!userData.email || !userData.password) {
-            return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+        try{
+            const userData = {
+                email: req.body.email.trim().toLowerCase(),
+                password: req.body.password.trim()
+            }
+            //const { email, password } = req.body;
+
+            if (!userData.email || !userData.password) {
+                return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                    auth: false,
+                    error: "Enter valid authorization credentials!"
+                });
+            }
+
+            const user = await modelUser.getUserByEmail(userData.email);
+
+            if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                 auth: false,
                 error: "Enter valid authorization credentials!"
             });
+
+            if(user[0].password !== userData.password) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                auth: false,
+                error: "Enter valid authorization credentials!"
+            });
+
+            if(user[0].active !== true) return res.status(responseCode.ERROR_CODE.FORBIDDEN).json({
+                auth: false,
+                error: "User not active!"
+            });
+
+            const accessToken = jwt.sign({email: userData.email}, app.get('token.accessSecret'), {
+                expiresIn: app.get('token.accessValidity'),
+            });
+            const refreshToken = jwt.sign({email: userData.email}, app.get('token.refreshSecret'), {
+                expiresIn: app.get('token.refreshValidity'),
+            });
+
+            await modelUser.setUserLoginTime(user[0].id);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                auth: true,
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            });
+
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                login: false,
+                code: error.code,
+                message: error.text
+            });
         }
-
-        const user = await modelUser.getUserByEmail(userData.email);
-
-        if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-            auth: false,
-            error: "Enter valid authorization credentials!"
-        });
-
-        if(user[0].password !== userData.password) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-            auth: false,
-            error: "Enter valid authorization credentials!"
-        });
-
-        if(user[0].active !== true) return res.status(responseCode.ERROR_CODE.FORBIDDEN).json({
-            auth: false,
-            error: "User not active!"
-        });
-
-        const accessToken = jwt.sign({email: userData.email}, app.get('token.accessSecret'), {
-            expiresIn: app.get('token.accessValidity'),
-        });
-        const refreshToken = jwt.sign({email: userData.email}, app.get('token.refreshSecret'), {
-            expiresIn: app.get('token.refreshValidity'),
-        });
-
-        await modelUser.setUserLoginTime(user[0].id);
-
-        res.status(responseCode.SUCCESS_CODE.OK).json({
-            auth: true,
-            accessToken: accessToken,
-            refreshToken: refreshToken
-        });
     }
 
     /**
