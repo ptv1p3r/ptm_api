@@ -70,12 +70,31 @@ module.exports = app => {
     }
 
     /**
-     * User controller edit user
+     * Edit user group
      * @param req
      * @param res
      * @returns {*}
      */
-    model.editUser = (req, res) => res.status(200).json("Edit User");
+    model.editUserGroup = (req, res) => res.status(200).json("Edit User Group");
+
+    /**
+     * Delete user group
+     * @returns {*}
+     * @param userGroupData
+     */
+    model.deleteUserGroup = async (userGroupData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`DELETE FROM userGroups WHERE id=${userGroupData.id}`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
 
     return model;
 }

@@ -26,6 +26,12 @@ module.exports = app => {
         }
     }
 
+    /**
+     * View a user group by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
     controller.viewUserGroup = async (req, res) => {
         try {
             const userGroupData = {
@@ -73,7 +79,32 @@ module.exports = app => {
     }
 
     controller.editUserGroup = (req, res) => res.status(200).json("Edit Group");
-    controller.deleteUserGroup = (req, res) => res.status(200).json("Delete Group");
+
+    /**
+     * Delete user group by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.deleteUserGroup = async (req, res) => {
+        try {
+            const userGroupData = {
+                id: req.params.groupId,
+            }
+
+            await modelUserGroups.deleteUserGroup(userGroupData);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                deleted: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                deleted: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     return controller;
 }
