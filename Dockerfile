@@ -11,6 +11,8 @@ COPY package.json /.
 
 # Install dependencies
 RUN npm install
+# building code for production
+# RUN npm ci --only=production
 
 # Copy files
 COPY . .
@@ -19,4 +21,5 @@ COPY . .
 EXPOSE 5000
 
 # Init command
-CMD [ "npm", "start"]
+#CMD [ "npm", "start"]
+CMD [ "node", "server.js"]

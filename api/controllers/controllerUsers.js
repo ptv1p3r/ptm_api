@@ -1,16 +1,11 @@
 'use strict';
-const mariadb = require('mariadb');
+
 const crypto = require('crypto');
 const responseCode = require('../helpers/httpCodesDefinitions')
+const modelUser = require('./../models/modelUsers')();
 
 module.exports = app => {
     const controller = {};
-    const pool = mariadb.createPool({
-        host: app.get('database.host'),
-        user: app.get('database.user'),
-        password: app.get('database.password'),
-        database: app.get('database.name')
-    });
 
     /**
      * User controller list all users
@@ -34,32 +29,53 @@ module.exports = app => {
      * @param res
      */
     controller.createUser = async (req, res) => {
-        const userData = {
-            id: crypto.randomUUID(),
-            name: req.body.name.trim(),
-            entity: req.body.entity.trim(),
-            email: req.body.email.trim().toLowerCase(),
-            password: req.body.password.trim(),
-            groupId: req.body.groupId,
-            activationToken: crypto.createHash('md5').update(req.body.email.trim().toLowerCase()).digest('hex'),
-            dateBirth: req.body.dateBirth,
-            address: req.body.address.trim(),
-            codPost: req.body.codPost.trim(),
-            gender: req.body.gender.trim(),
-            locality: req.body.locality.trim(),
-            mobile: req.body.mobile.trim(),
-            nif: req.body.nif.trim(),
-            country: req.body.country.trim(),
-            active: false,
-            dateActivation: new Date(),
-            dateCreated: new Date(),
-            dateModified: new Date(),
-            lastLogin: null
+
+        try {
+            const userData = {
+                id: crypto.randomUUID(),
+                name: req.body.name.trim(),
+                entity: req.body.entity.trim(),
+                email: req.body.email.trim().toLowerCase(),
+                password: req.body.password.trim(),
+                groupId: req.body.groupId,
+                activationToken: crypto.createHash('md5').update(req.body.email.trim().toLowerCase()).digest('hex'),
+                dateBirth: new Date(req.body.dateBirth.trim()),
+                address: req.body.address.trim(),
+                codPost: req.body.codPost.trim(),
+                genderId: req.body.genderId,
+                locality: req.body.locality.trim(),
+                mobile: req.body.mobile.trim(),
+                nif: req.body.nif.trim(),
+                countryId: req.body.countryId,
+                active: false,
+                dateActivation: new Date(),
+                dateCreated: new Date(),
+                dateModified: new Date(),
+                lastLogin: null
+            }
+
+            const result = await modelUser.createUser(userData);
+
+            res.status(responseCode.SUCCESS_CODE.CREATED).json({
+                created: true,
+                message: JSON.stringify(result)
+            });
+
+        } catch (error) {
+            /*"message": {
+                "text": "Duplicate entry 'pedro.roldan@gmail.com' for key 'email'",
+                    "sql": "INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['7bfe78b1-52a1-4e3e-969c-993c762c9760','Pedro Tiago de Jesus Estevanez Roldan','Camara Municipal de Monchique','pedro.roldan@gmail.com','xzckjzcxjvlcxzkvjcxl...]",
+                    "fatal": false,
+                    "errno": 1062,
+                    "sqlState": "23000",
+                    "code": "ER_DUP_ENTRY"
+            }*/
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
         }
-
-        await asyncFunction(userData);
-
-        res.status(responseCode.SUCCESS_CODE.CREATED).json("Create User" + JSON.stringify(userData));
     }
 
     /**
@@ -79,27 +95,6 @@ module.exports = app => {
         const userId = req.params.userId;
 
         res.status(200).json("Delete User " + userId);
-    }
-
-    async function asyncFunction(userData) {
-        let conn;
-
-        try {
-            conn = await pool.getConnection();
-            // const rows = await conn.query("SELECT 1 as val");
-            // console.log(rows); //[ {val: 1}, meta: ... ]
-            const res = await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken, userData.dateBirth, userData.address,
-                    userData.codPost, userData.gender, userData.locality, userData.mobile, userData.nif, userData.country, userData.active, userData.dateActivation, userData.dateCreated,
-                    userData.dateModified, userData.lastLogin]);
-            console.log(res);
-
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) return conn.end();
-        }
     }
 
     return controller;
