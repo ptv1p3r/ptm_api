@@ -26,7 +26,22 @@ module.exports = app => {
         }
     }
 
-    controller.viewUserGroup = (req, res) => res.status(200).json("View Group");
+    controller.viewUserGroup = async (req, res) => {
+        try {
+            const userGroupData = {
+                id: req.params.groupId,
+            }
+
+            const result = await modelUserGroups.getUserGroupById(userGroupData.id);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * Creates new user group
