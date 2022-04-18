@@ -78,7 +78,34 @@ module.exports = app => {
         }
     }
 
-    controller.editUserGroup = (req, res) => res.status(200).json("Edit Group");
+    /**
+     * Edit user group
+     * @param req
+     * @param res
+     */
+    controller.editUserGroup = async (req, res) => {
+        try {
+            const userGroupData = {
+                id: req.params.groupId,
+                name: req.body.name.trim(),
+                description: req.body.description.trim(),
+                securityId: req.body.securityId,
+                active: req.body.active
+            }
+
+            await modelUserGroups.editUserGroup(userGroupData);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                updated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * Delete user group by id

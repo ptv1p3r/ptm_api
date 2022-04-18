@@ -71,16 +71,29 @@ module.exports = app => {
 
     /**
      * Edit user group
-     * @param req
-     * @param res
+     * @param {Object} userGroupData - User group details
      * @returns {*}
      */
-    model.editUserGroup = (req, res) => res.status(200).json("Edit User Group");
+    model.editUserGroup = async (userGroupData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`UPDATE userGroups SET name='${userGroupData.name}', description='${userGroupData.description}', 
+                securityId=${userGroupData.securityId}, active=${userGroupData.active}, dateModified=NOW() 
+                WHERE id=${userGroupData.id}`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
 
     /**
      * Delete user group
+     * @param {Object} userGroupData - User group details
      * @returns {*}
-     * @param userGroupData
      */
     model.deleteUserGroup = async (userGroupData) => {
         let conn;
