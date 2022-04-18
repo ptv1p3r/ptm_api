@@ -42,7 +42,7 @@ module.exports = app => {
                 error: "Enter valid authorization credentials!"
             });
 
-            if(user[0].active !== true) return res.status(responseCode.ERROR_CODE.FORBIDDEN).json({
+            if(user[0].active !== 1) return res.status(responseCode.ERROR_CODE.FORBIDDEN).json({
                 auth: false,
                 error: "User not active!"
             });
