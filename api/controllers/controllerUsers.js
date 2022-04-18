@@ -29,7 +29,6 @@ module.exports = app => {
      * @param res
      */
     controller.createUser = async (req, res) => {
-
         try {
             const userData = {
                 id: crypto.randomUUID(),

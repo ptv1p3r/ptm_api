@@ -15,10 +15,10 @@ CREATE TABLE `users` (
                          `nif` int(10) NOT NULL,
                          `countryId` INT NOT NULL,
                          `active` BOOLEAN NOT NULL,
-                         `activationDate` DATETIME NOT NULL,
-                         `dateCreated` DATETIME NOT NULL,
-                         `dateModified` DATETIME NULL,
-                         `lastLogin` DATETIME NULL,
+                         `activationDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+                         `lastLogin` TIMESTAMP NULL,
                          PRIMARY KEY (`id`)
 );
 
@@ -28,8 +28,8 @@ CREATE TABLE `userGroups` (
                          `description` TEXT NOT NULL,
                          `securityId` int NOT NULL,
                          `active` BOOLEAN NOT NULL,
-                         `dateCreated` DATETIME NOT NULL,
-                         `dateModified` DATETIME NOT NULL,
+                         `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          PRIMARY KEY (`id`)
 );
 
@@ -38,8 +38,8 @@ CREATE TABLE `treeType` (
                         `name` varchar(255) NOT NULL,
                         `description` TEXT NOT NULL,
                         `active` BOOLEAN NOT NULL,
-                        `dateCreated` DATETIME NOT NULL,
-                        `dateModified` DATETIME NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
@@ -49,8 +49,8 @@ CREATE TABLE `trees` (
                         `lat` double(9,6) NOT NULL,
                         `lng` double(9,6) NOT NULL,
                         `active` BOOLEAN NOT NULL,
-                        `dateCreated` DATETIME NOT NULL,
-                        `dateModified` DATETIME NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
@@ -92,9 +92,9 @@ CREATE TABLE `transactions` (
                         `transactionMethodId` int NOT NULL,
                         `value` DECIMAL NOT NULL,
                         `valid` BOOLEAN NOT NULL,
-                        `dateCreated` DATETIME NOT NULL,
-                        `dateModified` DATETIME NOT NULL,
-                        `dateValidated` DATETIME NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateValidated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
@@ -103,8 +103,8 @@ CREATE TABLE `transactionType` (
                         `name` varchar(255) NOT NULL,
                         `description` TEXT NOT NULL,
                         `active` BOOLEAN NOT NULL,
-                        `dateCreated` DATETIME NOT NULL,
-                        `dateModified` DATETIME NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
@@ -113,8 +113,8 @@ CREATE TABLE `transactionMethod` (
                         `name` varchar(255) NOT NULL,
                         `description` TEXT NOT NULL,
                         `active` BOOLEAN NOT NULL,
-                        `dateCreated` DATETIME NOT NULL,
-                        `dateModified` DATETIME NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
@@ -125,8 +125,8 @@ CREATE TABLE `treeImages` (
                         `size` int NOT NULL,
                         `position` int NOT NULL,
                         `active` BOOLEAN NOT NULL,
-                        `dateCreated` DATETIME NOT NULL,
-                        `dateModified` DATETIME NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
@@ -135,8 +135,8 @@ CREATE TABLE `countries` (
                               `name` varchar(255) NOT NULL,
                               `code` varchar(5) NOT NULL,
                               `active` BOOL NOT NULL,
-                              `dateCreated` DATETIME NOT NULL,
-                              `dateModified` DATETIME NULL,
+                              `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                              `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
                               PRIMARY KEY (`id`)
 );
 
@@ -144,8 +144,8 @@ CREATE TABLE `gender` (
                              `id` INT NOT NULL AUTO_INCREMENT,
                              `name` varchar(255) NOT NULL,
                              `active` BOOL NOT NULL,
-                             `dateCreated` DATETIME NOT NULL,
-                             `dateModified` DATETIME NULL,
+                             `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                             `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
                              PRIMARY KEY (`id`)
 );
 
