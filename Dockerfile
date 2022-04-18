@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:14
+FROM node:14.17.2
 
 #ENV NODE_OPTIONS=--max-old-space-size=8096
 # The working directory inside container
