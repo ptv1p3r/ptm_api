@@ -76,11 +76,10 @@ module.exports = app => {
                 lastLogin: null
             }
 
-            const result = await modelUser.createUser(userData);
+            await modelUser.createUser(userData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
-                created: true,
-                message: JSON.stringify(result)
+                created: true
             });
 
         } catch (error) {
