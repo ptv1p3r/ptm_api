@@ -5,14 +5,14 @@ const mariadb = require('mariadb');
  * @type {Pool}
  */
 const dbPool = mariadb.createPool({
-    connectionLimit: 10,
-    /*
+    connectionLimit: 20,
+
     host: global.databaseHost,
     user: global.databaseUser,
     password: global.databasePass,
     database: global.databaseName,
-    */
 
+    /*
     host: "localhost",
     user: "admin",
     password: "ptmadmin",
@@ -20,7 +20,7 @@ const dbPool = mariadb.createPool({
 
     timezone: "UTC",
     dateStrings: true
-
+    */
 });
 
 module.exports = dbPool;
