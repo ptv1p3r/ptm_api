@@ -13,7 +13,19 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.listAll = (req, res) => res.status(200).json("List all Users");
+    controller.listAll = async (req, res) => {
+        try {
+            const result = await modelUser.usersListAll();
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * User controller view user details
@@ -21,7 +33,18 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.viewUser = (req, res) => res.status(200).json("View User");
+    controller.viewUser = (req, res) => {
+        try {
+
+            res.status(responseCode.SUCCESS_CODE.OK).json("View User");
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * User controller create user
@@ -53,11 +76,10 @@ module.exports = app => {
                 lastLogin: null
             }
 
-            const result = await modelUser.createUser(userData);
+            await modelUser.createUser(userData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
-                created: true,
-                message: JSON.stringify(result)
+                created: true
             });
 
         } catch (error) {
@@ -83,7 +105,18 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.editUser = (req, res) => res.status(200).json("Edit User");
+    controller.editUser = (req, res) => {
+        try {
+
+            res.status(responseCode.SUCCESS_CODE.OK).json("Edit User");
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * User controller delete user
@@ -91,9 +124,17 @@ module.exports = app => {
      * @param res
      */
     controller.deleteUser = (req, res) => {
-        const userId = req.params.userId;
+        try {
+            const userId = req.params.userId;
 
-        res.status(200).json("Delete User " + userId);
+            res.status(responseCode.SUCCESS_CODE.OK).json("Delete User " + userId);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
     }
 
     return controller;
