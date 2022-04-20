@@ -126,8 +126,8 @@ module.exports = app => {
      */
     controller.deleteUser = (req, res) => {
         try {
-
             const userId = req.params.userId;
+
             res.status(responseCode.SUCCESS_CODE.OK).json("Delete User " + userId);
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
