@@ -1,7 +1,7 @@
 CREATE TABLE `users` (
                          `id` char(36) NOT NULL,
                          `name` varchar(255) NOT NULL,
-                         `entity` varchar(255) NOT NULL,
+                         `entity` varchar(255) NULL,
                          `email` varchar(255) NOT NULL UNIQUE,
                          `password` TEXT NOT NULL,
                          `groupId` INT NOT NULL,
@@ -83,6 +83,8 @@ CREATE TABLE `security` (
                         `treeImagesRead` BOOLEAN NOT NULL,
                         `treeImagesUpdate` BOOLEAN NOT NULL,
                         `treeImagesDelete` BOOLEAN NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (`id`)
 );
 
