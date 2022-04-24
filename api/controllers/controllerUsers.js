@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const responseCode = require('../helpers/httpCodesDefinitions')
 const modelUser = require('./../models/modelUsers')();
+const emailController = require('./../helpers/email');
 
 module.exports = app => {
     const controller = {};
@@ -56,7 +57,7 @@ module.exports = app => {
             const userData = {
                 id: crypto.randomUUID(),
                 name: req.body.name.trim(),
-                entity: req.body.entity.trim(),
+                entity: req.body.entity.trim(), //TODO Validar o valor a null ou com dados
                 email: req.body.email.trim().toLowerCase(),
                 password: req.body.password.trim(),
                 groupId: req.body.groupId,
@@ -76,7 +77,22 @@ module.exports = app => {
                 lastLogin: null
             }
 
-            await modelUser.createUser(userData);
+            await modelUser.createUser(userData)
+                .then( async () => {
+                    let info = await emailController.sendMail({
+                        from: '"www.adoteumaarvore.pt 👻" <' + global.smtpUser + '>', // sender address
+                        to: userData.email, // list of receivers
+                        subject: "Hello ✔", // Subject line
+                        template: 'email', // template to use
+                        context:{
+                            name: userData.name, // {{name}} with userData.name
+                            company: "www.adoteumaarvore.pt" // {{company}}
+                        },
+                        //text: "Hello world?", // plain text body
+                        //html: "<b>Hello world?</b>", // html body
+                    });
+                    console.log("mail: " + info.messageId);
+                });
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 created: true

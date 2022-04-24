@@ -13,6 +13,12 @@ process.env.NODE_CONFIG = `{
             "password":"${process.env.DB_PASS}", 
             "name":"${process.env.DB_DATABASE}"
         },
+        "email": {
+            "default": {
+                "smtpUser":"${process.env.SMTP_USER}",
+                "smtpPass":"${process.env.SMTP_PASS}"
+            }
+        },
         "token": {
             "accessSecret":"${process.env.ACCESS_TOKEN_SECRET}",
             "refreshSecret":"${process.env.REFRESH_TOKEN_SECRET}"
@@ -42,6 +48,11 @@ module.exports = () => {
     global.databaseUser = config.get('database.user');
     global.databasePass = config.get('database.password');
     global.databaseName = config.get('database.name');
+    global.smtpHost = config.get('email.default.smtpHost');
+    global.smtpPort = config.get('email.default.smtpPort');
+    global.smtpUser = config.get('email.default.smtpUser');
+    global.smtpPass = config.get('email.default.smtpPass');
+    global.smtpSecure = config.get('email.default.smtpSecure');
     app.set('token.accessSecret', config.get('token.accessSecret'));
     app.set('token.accessValidity', config.get('token.accessValidity'));
     app.set('token.refreshSecret', config.get('token.refreshSecret'));
