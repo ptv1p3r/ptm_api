@@ -1,5 +1,8 @@
 "use strict";
+
+const hbs = require('nodemailer-express-handlebars');
 const nodemailer = require("nodemailer");
+const path = require('path');
 
 /**
  * Email transporter object
@@ -14,5 +17,15 @@ const emailController = nodemailer.createTransport({
         pass: global.smtpPass,
     },
 });
+
+const handlebarOptions = {
+    viewEngine: {
+        partialsDir: path.resolve('./api/views/'),
+        defaultLayout: false,
+    },
+    viewPath: path.resolve('./api/views/'),
+};
+
+emailController.use('compile', hbs(handlebarOptions));
 
 module.exports = emailController;
