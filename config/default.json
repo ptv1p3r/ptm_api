@@ -3,6 +3,13 @@
     "name": "Project Tree Management REST API",
     "version": "1.0"
   },
+  "email": {
+    "default": {
+      "smtpHost": "mail.adoteumaarvore.pt",
+      "smtpPort": 465,
+      "smtpSecure": true
+    }
+  },
   "token": {
     "accessValidity": "15m",
     "refreshValidity": "7d"
