@@ -57,7 +57,7 @@ module.exports = app => {
             const userData = {
                 id: crypto.randomUUID(),
                 name: req.body.name.trim(),
-                entity: req.body.entity.trim(),
+                entity: req.body.entity.trim(), //TODO Validar o valor a null ou com dados
                 email: req.body.email.trim().toLowerCase(),
                 password: req.body.password.trim(),
                 groupId: req.body.groupId,
