@@ -18,6 +18,10 @@ const emailController = nodemailer.createTransport({
     },
 });
 
+/**
+ * Express Handlebars options
+ * @type {{viewEngine: {partialsDir: string, defaultLayout: boolean}, viewPath: string}}
+ */
 const handlebarOptions = {
     viewEngine: {
         partialsDir: path.resolve('./api/views/'),
@@ -26,6 +30,7 @@ const handlebarOptions = {
     viewPath: path.resolve('./api/views/'),
 };
 
+// Apply handlebars options to email transporter
 emailController.use('compile', hbs(handlebarOptions));
 
 module.exports = emailController;
