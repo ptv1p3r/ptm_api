@@ -85,8 +85,8 @@ module.exports = app => {
                         subject: "Hello ✔", // Subject line
                         template: 'email', // template to use
                         context:{
-                            name: "Adebola", // replace {{name}} with Adebola
-                            company: 'My Company' // replace {{company}} with My Company
+                            name: userData.name, // {{name}} with userData.name
+                            company: "www.adoteumaarvore.pt" // {{company}}
                         },
                         //text: "Hello world?", // plain text body
                         //html: "<b>Hello world?</b>", // html body
