@@ -19,7 +19,7 @@ module.exports = app => {
      * User creation endpoint
      */
     app.route('/api/v1/users/create').post(AuthenticateJWT, controller.createUser);
-    // TODO Add a public create user for frontend
+    app.route('/api/v1/users/register').post(controller.createUser);
 
     /**
      * User update endpoint
