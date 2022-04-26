@@ -90,5 +90,48 @@ module.exports = app => {
         }
     }
 
+    /**
+     * Edit a user
+     * @param {Object} userData - User details
+     * @returns {Promise<void>}
+     */
+    model.editUser = async (userData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query(`UPDATE users SET name='${userData.name}', entity='${userData.entity}', password='${userData.password}', groupId=${userData.groupId},
+                dateBirth='${userData.dateBirth}', address='${userData.address}', codPost='${userData.codPost}', genderId=${userData.genderId}, locality='${userData.locality}', 
+                mobile='${userData.mobile}', nif=${userData.nif}, countryId=${userData.countryId}, dateModified=NOW() 
+                WHERE id=${userData.id}`);
+
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
+     * Delete user
+     * @param {String} userId - User group details
+     * @returns {*}
+     */
+    model.deleteUser = async (userId) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`DELETE FROM users WHERE id=${userId}`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
     return model;
 }

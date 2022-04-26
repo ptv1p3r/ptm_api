@@ -57,7 +57,7 @@ module.exports = app => {
             const userData = {
                 id: crypto.randomUUID(),
                 name: req.body.name.trim(),
-                entity: req.body.entity.trim(), //TODO Validar o valor a null ou com dados
+                entity: req.body.entity === null ? null: req.body.entity.trim(),
                 email: req.body.email.trim().toLowerCase(),
                 password: req.body.password.trim(),
                 groupId: req.body.groupId,
@@ -82,11 +82,11 @@ module.exports = app => {
                     let info = await emailController.sendMail({
                         from: '"www.adoteumaarvore.pt 👻" <' + global.smtpUser + '>', // sender address
                         to: userData.email, // list of receivers
-                        subject: "Hello ✔", // Subject line
-                        template: 'email', // template to use
+                        subject: "New User ✔", // Subject line
+                        template: 'newUser', // template to use
                         context:{
                             name: userData.name, // {{name}} with userData.name
-                            company: "www.adoteumaarvore.pt" // {{company}}
+                            domain: "www.adoteumaarvore.pt" // {{domain}}
                         },
                         //text: "Hello world?", // plain text body
                         //html: "<b>Hello world?</b>", // html body
@@ -121,13 +121,32 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.editUser = (req, res) => {
+    controller.editUser = async (req, res) => {
         try {
+            const userData = {
+                id: req.params.userId.trim(),
+                name: req.body.name.trim(),
+                entity: req.body.entity === null ? null : req.body.entity.trim(),
+                password: req.body.password.trim(),
+                groupId: req.body.groupId,
+                dateBirth: new Date(req.body.dateBirth.trim()),
+                address: req.body.address.trim(),
+                codPost: req.body.codPost.trim(),
+                genderId: req.body.genderId,
+                locality: req.body.locality.trim(),
+                mobile: req.body.mobile.trim(),
+                nif: req.body.nif.trim(),
+                countryId: req.body.countryId,
+            }
 
-            res.status(responseCode.SUCCESS_CODE.OK).json("Edit User");
+            await modelUser.editUser(userData)
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
-                created: false,
+                updated: false,
                 code: error.code,
                 message: error.text
             });
@@ -139,14 +158,18 @@ module.exports = app => {
      * @param req
      * @param res
      */
-    controller.deleteUser = (req, res) => {
+    controller.deleteUser = async (req, res) => {
         try {
             const userId = req.params.userId;
 
-            res.status(responseCode.SUCCESS_CODE.OK).json("Delete User " + userId);
+            await modelUser.deleteUser(userId)
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                deleted: true
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
-                created: false,
+                deleted: false,
                 code: error.code,
                 message: error.text
             });
