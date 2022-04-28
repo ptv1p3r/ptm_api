@@ -1,5 +1,6 @@
 'use strict';
 
+const emailController = require('./../helpers/email');
 const jwt = require('jsonwebtoken');
 const responseCode = require('../helpers/httpCodesDefinitions')
 const { verifyRefreshJWT } = require("../helpers/security")
@@ -90,7 +91,39 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.register = (req, res) => res.status(200).json("Register");
+    controller.register = async (req, res) => {
+
+        try {
+            const userData = {
+                activationToken: req.params.activationToken.trim()
+            }
+
+            const userEmail = await modelUser.getUserEmailByActivationToken(userData.activationToken);
+
+            await modelUser.activateUser(userData.activationToken)
+                .then( async () => {
+                    await emailController.sendMail({
+                        from: '"www.adoteumaarvore.pt 👻" <' + global.smtpUser + '>', // sender address
+                        to: userEmail[0].email, // list of receivers
+                        subject: "User Activation ✔", // Subject line
+                        template: 'userActivated', // template to use
+                        context:{
+                            domain: "www.adoteumaarvore.pt", // {{domain}}
+                            helpEmail: "info@adoteumaarvore.pt", // {{helpEmail}}
+                        },
+                    });
+            });
+
+            res.status(responseCode.SUCCESS_CODE.OK).end('User account activated.');
+
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                activated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * User getting new access token using refresh token

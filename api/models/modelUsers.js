@@ -49,6 +49,25 @@ module.exports = app => {
     }
 
     /**
+     * Get user by activation token
+     * @param {String} activationToken - Activation Token
+     * @returns {Promise<*>}
+     */
+    model.getUserEmailByActivationToken = async (activationToken) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`SELECT email FROM users WHERE activationToken='${activationToken}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Set user last login timestamp
      * @param {String} userId - User identifier
      * @returns {Promise<*>}
@@ -59,6 +78,25 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
             return await conn.query(`UPDATE users SET lastLogin=NOW() WHERE id='${userId}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
+     * Activate user with token
+     * @param {String} activationToken - User activation token
+     * @returns {Promise<*>}
+     */
+    model.activateUser = async (activationToken) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`UPDATE users SET activationDate=NOW(), dateModified=NOW(), active=1, activationToken=null WHERE activationToken='${activationToken}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

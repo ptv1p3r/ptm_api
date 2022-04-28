@@ -86,7 +86,8 @@ module.exports = app => {
                         template: 'newUser', // template to use
                         context:{
                             name: userData.name, // {{name}} with userData.name
-                            domain: "www.adoteumaarvore.pt" // {{domain}}
+                            domain: "www.adoteumaarvore.pt", // {{domain}}
+                            activationLink: "http://127.0.0.1:5000/api/v1/register/" + userData.activationToken, // {{activationLink}}
                         },
                         //text: "Hello world?", // plain text body
                         //html: "<b>Hello world?</b>", // html body

@@ -5,7 +5,7 @@ CREATE TABLE `users` (
                          `email` varchar(255) NOT NULL UNIQUE,
                          `password` TEXT NOT NULL,
                          `groupId` INT NOT NULL,
-                         `activationToken` TEXT,
+                         `activationToken` TEXT NULL,
                          `dateBirth` DATE NOT NULL,
                          `address` TEXT NOT NULL,
                          `codPost` varchar(10) NOT NULL,
