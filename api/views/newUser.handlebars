@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        function fn(){
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "{{activationLink}}", true);
+            xhttp.send();
+        }
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Welcome Email</title>
@@ -8,5 +15,8 @@
 <body>
 <h2>Hello {{name}}! </h2>
     <p>We're glad to have you on board at {{domain}}. </p>
+    <p>Your user has been created, but it's still needs to be activated for you to be able to login!</p>
+    <p></p>
+    <p>Please click on the following activation link: <a href="{{activationLink}}" target="_blank">Activation Link</a></p>
 </body>
 </html>
