@@ -105,14 +105,6 @@ module.exports = app => {
             });
 
         } catch (error) {
-            /*"message": {
-                "text": "Duplicate entry 'pedro.roldan@gmail.com' for key 'email'",
-                    "sql": "INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) - parameters:['7bfe78b1-52a1-4e3e-969c-993c762c9760','Pedro Tiago de Jesus Estevanez Roldan','Camara Municipal de Monchique','pedro.roldan@gmail.com','xzckjzcxjvlcxzkvjcxl...]",
-                    "fatal": false,
-                    "errno": 1062,
-                    "sqlState": "23000",
-                    "code": "ER_DUP_ENTRY"
-            }*/
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 created: false,
                 code: error.code,
