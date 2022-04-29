@@ -34,10 +34,15 @@ module.exports = app => {
      * @param res
      * @returns {*}
      */
-    controller.viewUser = (req, res) => {
+    controller.viewUser = async (req, res) => {
         try {
+            const userData = {
+                email: req.params.userEmail.toLowerCase().trim()
+            }
 
-            res.status(responseCode.SUCCESS_CODE.OK).json("View User");
+            const user = await modelUser.getUserByEmail(userData.email);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(user);
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 created: false,
