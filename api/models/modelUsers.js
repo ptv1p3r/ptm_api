@@ -31,18 +31,19 @@ module.exports = app => {
 
     /**
      * Get user by id
+     * @param {String} userId - User id
      * @returns {Promise<void>}
      */
-    model.getUserById = async () => {
+    model.getUserById = async (userId) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT id, name, entity, email, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, 
+            return await conn.query(`SELECT id, name, entity, email, password, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, 
                 CONVERT_TZ(activationDate,'UTC','Europe/Lisbon') AS activationDate, CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, CONVERT_TZ(lastLogin,'UTC','Europe/Lisbon') AS lastLogin
-                FROM users WHERE id=`);
+                FROM users WHERE id='${userId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
