@@ -13,7 +13,8 @@ module.exports = app => {
     /**
      * User details endpoint
      */
-    app.route('/api/v1/users/view/:userId').get(AuthenticateJWT, controller.viewUser);
+    // app.route('/api/v1/users/view/:userId').get(AuthenticateJWT, controller.viewUser);
+    app.route('/api/v1/users/view/:userEmail').get(AuthenticateJWT, controller.viewUser);
 
     /**
      * User creation endpoint
