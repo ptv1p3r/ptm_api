@@ -168,7 +168,7 @@ module.exports = app => {
             return await conn.query(`UPDATE users SET name='${userData.name}', entity='${userData.entity}', password='${userData.password}', groupId=${userData.groupId},
                 dateBirth='${userData.dateBirth}', address='${userData.address}', codPost='${userData.codPost}', genderId=${userData.genderId}, locality='${userData.locality}', 
                 mobile='${userData.mobile}', nif=${userData.nif}, countryId=${userData.countryId}, dateModified=NOW() 
-                WHERE id=${userData.id}`);
+                WHERE id='${userData.id}'`);
 
         } catch (err) {
             console.log("error: " + err);
@@ -188,7 +188,7 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM users WHERE id=${userId}`);
+            return await conn.query(`DELETE FROM users WHERE id='${userId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

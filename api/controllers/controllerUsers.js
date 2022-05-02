@@ -158,7 +158,7 @@ module.exports = app => {
      */
     controller.deleteUser = async (req, res) => {
         try {
-            const userId = req.params.userId;
+            const userId = req.params.userId.trim();
 
             await modelUser.deleteUser(userId)
 
