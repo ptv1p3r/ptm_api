@@ -126,8 +126,8 @@ module.exports = app => {
                 name: req.body.name.trim(),
                 entity: req.body.entity === null ? null : req.body.entity.trim(),
                 password: req.body.password.trim(),
-                groupId: req.body.groupId,
-                dateBirth: new Date(req.body.dateBirth.trim()),
+                groupId: req.body.groupId, // TODO Remove from edit from frontend
+                dateBirth: new Date(req.body.dateBirth.trim()), //TODO Verificar o receber e enviar para a bd
                 address: req.body.address.trim(),
                 codPost: req.body.codPost.trim(),
                 genderId: req.body.genderId,
