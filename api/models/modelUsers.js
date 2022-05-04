@@ -1,6 +1,6 @@
 'use strict';
 
-const dbPool = require('./../helpers/db');
+const { dbPool, buildPatchSqlQuery } = require('./../helpers/db');
 
 module.exports = app => {
     const model = {};
@@ -183,7 +183,7 @@ module.exports = app => {
      * @param {Object} userData - User details
      * @returns {Promise<void>}
      */
-    model.editUser = async (userData) => {
+    model.editPutUser = async (userData) => {
         let conn;
 
         try {
@@ -193,6 +193,23 @@ module.exports = app => {
                 dateBirth='${userData.dateBirth}', address='${userData.address}', codPost='${userData.codPost}', genderId=${userData.genderId}, locality='${userData.locality}', 
                 mobile='${userData.mobile}', nif=${userData.nif}, countryId=${userData.countryId}, dateModified=NOW() 
                 WHERE id='${userData.id}'`);
+
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    model.editPatchUser = async (userData) => {
+        let conn;
+
+        try {
+
+            conn = await dbPool.getConnection();
+
+            return await conn.query(buildPatchSqlQuery('users',userData.id, userData.body));
 
         } catch (err) {
             console.log("error: " + err);
