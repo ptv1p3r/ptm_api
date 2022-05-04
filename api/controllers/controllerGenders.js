@@ -1,14 +1,14 @@
 'use strict';
 
 const responseCode = require('../helpers/httpCodesDefinitions')
-const modelCountries = require('./../models/modelGenders')();
+const modelGenders = require('./../models/modelGenders')();
 
 module.exports = app => {
     const controller = {};
 
     controller.listAll = async (req, res) => {
         try {
-            const result = await modelCountries.getGendersList();
+            const result = await modelGenders.getGendersList();
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {
