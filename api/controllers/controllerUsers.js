@@ -114,12 +114,12 @@ module.exports = app => {
     }
 
     /**
-     * User controller edit user
+     * User controller edit user with PUT
      * @param req
      * @param res
      * @returns {*}
      */
-    controller.editUser = async (req, res) => {
+    controller.editPutUser = async (req, res) => {
         try {
             const userData = {
                 id: req.params.userId.trim(),
@@ -137,7 +137,34 @@ module.exports = app => {
                 countryId: req.body.countryId,
             }
 
-            await modelUser.editUser(userData)
+            await modelUser.editPutUser(userData)
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                updated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * User controller edit user with PATCH
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.editPatchUser = async (req, res) => {
+        try {
+            const userData = {
+                id: req.params.userId.trim(),
+                body: req.body
+            }
+
+            await modelUser.editPatchUser(userData)
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 updated: true
