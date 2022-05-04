@@ -1,6 +1,6 @@
 'use strict';
 
-const dbPool = require('./../helpers/db');
+const { dbPool } = require('./../helpers/db');
 
 module.exports = app => {
     const model = {};

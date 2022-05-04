@@ -23,4 +23,30 @@ const dbPool = mariadb.createPool({
 
 });
 
-module.exports = dbPool;
+/**
+ * Generic build sql expression for patch
+ * @param table
+ * @param id
+ * @param data
+ * @returns {string|null}
+ */
+const buildPatchSqlQuery = (table, id, data) => {
+    if (Object.keys(data).length === 0) return null;
+
+    let sql = `UPDATE ${table} SET`;
+
+    Object.entries(data).forEach(([key, value]) => {
+        const valueToSet = typeof data[key] === 'string' ? `'${value.trim()}'` : value;
+        sql += ` ${key.trim()}=${valueToSet},`;
+    });
+
+    sql = sql.slice(0, -1); // Remove last ","
+    sql += ` WHERE id='${id}';`;
+
+    return sql;
+}
+
+module.exports = {
+    dbPool,
+    buildPatchSqlQuery
+};
