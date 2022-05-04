@@ -25,7 +25,8 @@ module.exports = app => {
     /**
      * User update endpoint
      */
-    app.route('/api/v1/users/edit/:userId').put(AuthenticateJWT, controller.editUser);
+    app.route('/api/v1/users/edit/:userId').put(AuthenticateJWT, controller.editPutUser);
+    app.route('/api/v1/users/edit/:userId').patch(AuthenticateJWT, controller.editPatchUser);
 
     /**
      * User deletion endpoint
