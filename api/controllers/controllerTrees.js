@@ -1,5 +1,8 @@
 'use strict';
 
+const responseCode = require('../helpers/httpCodesDefinitions')
+const modelTrees = require('./../models/modelTrees')();
+
 module.exports = app => {
     const controller = {};
 
