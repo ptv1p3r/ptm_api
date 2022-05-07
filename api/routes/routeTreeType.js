@@ -18,7 +18,7 @@ module.exports = app => {
     /**
      * Tree type create
      */
-    app.route('/api/v1/treetype/create').post(AuthenticateJWT, controller.createTree);
+    app.route('/api/v1/treetype/create').post(AuthenticateJWT, controller.createTreeType);
 
     /**
      * Edit tree type

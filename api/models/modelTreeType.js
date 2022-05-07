@@ -49,18 +49,18 @@ module.exports = app => {
     }
 
     /**
-     * Create a new user group
-     * @param {Object} userGroupData - User group details
+     * Create a new tree type
+     * @param {Object} treeTypeData - Tree type details
      * @returns {Promise<void>}
      */
-    model.createUserGroup = async (userGroupData) => {
+    model.createTreeType = async (treeTypeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO userGroups (name, description, securityId, active) " +
-                "VALUES (?, ?, ?, ?)",
-                [userGroupData.name, userGroupData.description, userGroupData.securityId, userGroupData.active]);
+            return await conn.query("INSERT INTO treeType (name, description, active) " +
+                "VALUES (?, ?, ?)",
+                [treeTypeData.name, treeTypeData.description, treeTypeData.active]);
         } catch (err) {
             console.log("error: " + err);
             throw err;

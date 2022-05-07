@@ -49,7 +49,33 @@ module.exports = app => {
         }
     }
 
-    controller.createTree = (req, res) => res.status(200).json("Create Tree");
+    /**
+     * Creates new tree type
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.createTreeType = async (req, res) => {
+        try {
+            const treeTypeData = {
+                name: req.body.name.trim(),
+                description: req.body.description.trim(),
+                active: req.body.active
+            }
+
+            await modelTreeType.createTreeType(treeTypeData);
+
+            res.status(responseCode.SUCCESS_CODE.CREATED).json({
+                created: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     controller.editTree = (req, res) => res.status(200).json("Edit Tree");
 
