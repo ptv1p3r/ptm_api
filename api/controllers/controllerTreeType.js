@@ -77,9 +77,60 @@ module.exports = app => {
         }
     }
 
-    controller.editTree = (req, res) => res.status(200).json("Edit Tree");
+    /**
+     * Edit tree type
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.editTreeType = async (req, res) => {
+        try {
+            const treeTypeData = {
+                id: req.params.treeTypeId,
+                name: req.body.name.trim(),
+                description: req.body.description.trim(),
+                active: req.body.active
+            }
 
-    controller.deleteTree = (req, res) => res.status(200).json("Delete Tree");
+            await modelTreeType.editTreeType(treeTypeData);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                updated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * Delete tree type by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.deleteTreeType = async (req, res) => {
+        try {
+            const treeTypeData = {
+                id: req.params.treeTypeId,
+            }
+
+            await modelTreeType.deleteTreeType(treeTypeData);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                deleted: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                deleted: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     return controller;
 }

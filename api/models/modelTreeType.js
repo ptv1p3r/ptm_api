@@ -70,18 +70,18 @@ module.exports = app => {
     }
 
     /**
-     * Edit user group
-     * @param {Object} userGroupData - User group details
+     * Edit tree type
+     * @param {Object} treeTypeData - Tree type details
      * @returns {*}
      */
-    model.editUserGroup = async (userGroupData) => {
+    model.editTreeType = async (treeTypeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`UPDATE userGroups SET name='${userGroupData.name}', description='${userGroupData.description}', 
-                securityId=${userGroupData.securityId}, active=${userGroupData.active}, dateModified=NOW() 
-                WHERE id=${userGroupData.id}`);
+            return await conn.query(`UPDATE treeType SET name='${treeTypeData.name}', description='${treeTypeData.description}', 
+                active=${treeTypeData.active}, dateModified=NOW() 
+                WHERE id=${treeTypeData.id}`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -91,16 +91,16 @@ module.exports = app => {
     }
 
     /**
-     * Delete user group
-     * @param {Object} userGroupData - User group details
+     * Delete tree type
+     * @param {Object} treeTypeData - Tree type details
      * @returns {*}
      */
-    model.deleteUserGroup = async (userGroupData) => {
+    model.deleteTreeType = async (treeTypeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM userGroups WHERE id=${userGroupData.id}`);
+            return await conn.query(`DELETE FROM treeType WHERE id=${treeTypeData.id}`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

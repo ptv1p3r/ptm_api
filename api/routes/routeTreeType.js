@@ -23,11 +23,11 @@ module.exports = app => {
     /**
      * Edit tree type
      */
-    app.route('/api/v1/treetype/edit/:treeTypeId').put(AuthenticateJWT, controller.editTree);
+    app.route('/api/v1/treetype/edit/:treeTypeId').put(AuthenticateJWT, controller.editTreeType);
 
     /**
      * Delete tree type by id
      */
-    app.route('/api/v1/treetype/delete/:treeTypeId').delete(AuthenticateJWT, controller.deleteTree);
+    app.route('/api/v1/treetype/delete/:treeTypeId').delete(AuthenticateJWT, controller.deleteTreeType);
 
 }
