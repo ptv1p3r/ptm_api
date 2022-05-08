@@ -52,19 +52,17 @@ module.exports = app => {
 
     /**
      * Create a new tree
-     * @param {Object} userData - User details
+     * @param {Object} treeData - Tree details
      * @returns {Promise<void>}
      */
-    model.createTree = async (userData) => {
+    model.createTree = async (treeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken,
-                    userData.dateBirth, userData.address, userData.codPost, userData.genderId, userData.locality, userData.mobile, userData.nif,
-                    userData.countryId, userData.active, userData.dateActivation, userData.dateCreated, userData.dateModified, userData.lastLogin]);
+            return await conn.query("INSERT INTO trees value (?, ?, ?, ?, ?, ?, ?)",
+                [treeData.id, treeData.typeId, treeData.lat, treeData.lng, treeData.active, treeData.dateCreated, treeData.dateModified]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -115,16 +113,16 @@ module.exports = app => {
     }
 
     /**
-     * Delete user
-     * @param {String} userId - User group details
+     * Delete tree
+     * @param {String} treeId - Tree unique identifier
      * @returns {*}
      */
-    model.deleteUser = async (userId) => {
+    model.deleteTree = async (treeId) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM users WHERE id='${userId}'`);
+            return await conn.query(`DELETE FROM trees WHERE id='${treeId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
