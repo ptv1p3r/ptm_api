@@ -46,6 +46,9 @@ CREATE TABLE `treeType` (
 CREATE TABLE `trees` (
                         `id` char(36) NOT NULL,
                         `name` varchar(255) NOT NULL,
+                        `nameCommon` varchar(255) NOT NULL,
+                        `description` TEXT NULL,
+                        `observations` TEXT NULL,
                         `typeId` int NOT NULL,
                         `lat` double(9,6) NOT NULL,
                         `lng` double(9,6) NOT NULL,
@@ -188,6 +191,9 @@ INSERT INTO `gender` (name, active, dateCreated, dateModified)
 VALUES ('Masculino', true, NOW(), NOW()),
        ('Feminino', true, NOW(), NOW()),
        ('Indefinido', true, NOW(), NOW());
+
+INSERT INTO `treeType` (name, description, active, dateCreated, dateModified)
+VALUES ('Fanerófito','Fanerófito', true, NOW(), NOW());
 
 INSERT INTO `countries` (name, code, active, dateCreated, dateModified)
 VALUES ('Andorra', 'AD', true, NOW(), NOW()),
