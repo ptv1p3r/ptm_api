@@ -153,5 +153,33 @@ module.exports = app => {
         });
     }
 
+    controller.recover = async (req, res) => {
+        try {
+            const userData = {
+                email: req.body.email.toLowerCase().trim()
+            }
+
+            await emailController.sendMail({
+                from: '"www.adoteumaarvore.pt 👻" <' + global.smtpUser + '>', // sender address
+                to: userData.email, // list of receivers
+                subject: "User Password Recovery ✔", // Subject line
+                template: 'userPasswordRecovery', // template to use
+                context:{
+                    domain: "www.adoteumaarvore.pt", // {{domain}}
+                    helpEmail: "info@adoteumaarvore.pt", // {{helpEmail}}
+                },
+            });
+
+            res.status(responseCode.SUCCESS_CODE.OK).end('User password recovery email sent.');
+
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                activated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
     return controller;
 }
