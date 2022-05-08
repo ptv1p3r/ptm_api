@@ -63,6 +63,9 @@ module.exports = app => {
             const treeData = {
                 id: crypto.randomUUID(),
                 name: req.body.name.trim(),
+                nameCommon: req.body.nameCommon.trim(),
+                description: req.body.description.trim(),
+                observations: req.body.observations.trim(),
                 typeId: req.body.typeId,
                 lat: req.body.lat,
                 lng: req.body.lng,
@@ -97,6 +100,9 @@ module.exports = app => {
             const treeData = {
                 id: req.params.treeId.trim(),
                 name: req.body.name.trim(),
+                nameCommon: req.body.nameCommon.trim(),
+                description: req.body.description.trim(),
+                observations: req.body.observations.trim(),
                 typeId: req.body.typeId,
                 lat: req.body.lat,
                 lng: req.body.lng,
