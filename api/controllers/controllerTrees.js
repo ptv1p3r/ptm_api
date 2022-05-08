@@ -6,9 +6,49 @@ const modelTrees = require('./../models/modelTrees')();
 module.exports = app => {
     const controller = {};
 
-    controller.listAll = (req, res) => res.status(200).json("List all Trees");
+    /**
+     * Lists all trees
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listAll = async (req, res) => {
+        try {
+            const result = await modelTrees.treesListAll();
 
-    controller.viewTree = (req, res) => res.status(200).json("View Tree");
+            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * Get tree by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.viewTree = async (req, res) => {
+        try {
+            const userData = {
+                id: req.params.treeId
+            }
+
+            const tree = await modelTrees.getTreeById(userData.treeId);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(tree);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                created: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     controller.createTree = (req, res) => res.status(200).json("Create Tree");
 

@@ -6,21 +6,19 @@ module.exports = app => {
     const model = {};
 
     /**
-     * Lists all users
+     * Lists all trees
      * @returns {Promise<void>}
      */
-    model.usersListAll = async () => {
+    model.treesListAll = async () => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("SELECT id, name, entity, email, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, " +
-                "CONVERT_TZ(activationDate,'UTC','Europe/Lisbon') AS activationDate, " +
+            return await conn.query("SELECT id, typeId, lat, lng, active, " +
                 "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
                 "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, " +
-                "CONVERT_TZ(lastLogin,'UTC','Europe/Lisbon') AS lastLogin " +
-                "FROM users");
+                "FROM trees");
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -30,20 +28,20 @@ module.exports = app => {
     }
 
     /**
-     * Get user by id
-     * @param {String} userId - User id
+     * Get tree by id
+     * @param {String} treeId - Tree id
      * @returns {Promise<void>}
      */
-    model.getUserById = async (userId) => {
+    model.getTreeById = async (treeId) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT id, name, entity, email, password, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, 
-                CONVERT_TZ(activationDate,'UTC','Europe/Lisbon') AS activationDate, CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
-                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, CONVERT_TZ(lastLogin,'UTC','Europe/Lisbon') AS lastLogin
-                FROM users WHERE id='${userId}'`);
+            return await conn.query(`SELECT id, typeId, lat, lng, active, 
+                CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
+                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
+                FROM trees WHERE id='${treeId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -53,114 +51,11 @@ module.exports = app => {
     }
 
     /**
-     * Lists all users
-     * @returns {Promise<void>}
-     */
-    model.userViewById = async () => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-
-            return await conn.query("SELECT id, name, entity, email, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, " +
-                "CONVERT_TZ(activationDate,'UTC','Europe/Lisbon') AS activationDate, " +
-                "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
-                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, " +
-                "CONVERT_TZ(lastLogin,'UTC','Europe/Lisbon') AS lastLogin " +
-                "FROM users");
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
-     * Get user by email
-     * @param {String} userEmail - User email
-     * @returns {Promise<*>}
-     */
-    model.getUserByEmail = async (userEmail) => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-            return await conn.query(`SELECT id, name, entity, email, password, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active,
-                CONVERT_TZ(activationDate,'UTC','Europe/Lisbon') AS activationDate, CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
-                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, CONVERT_TZ(lastLogin,'UTC','Europe/Lisbon') AS lastLogin
-                FROM users WHERE email='${userEmail}'`);
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
-     * Get user by activation token
-     * @param {String} activationToken - Activation Token
-     * @returns {Promise<*>}
-     */
-    model.getUserEmailByActivationToken = async (activationToken) => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-            return await conn.query(`SELECT email FROM users WHERE activationToken='${activationToken}'`);
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
-     * Set user last login timestamp
-     * @param {String} userId - User identifier
-     * @returns {Promise<*>}
-     */
-    model.setUserLoginTime = async (userId) => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-            return await conn.query(`UPDATE users SET lastLogin=NOW() WHERE id='${userId}'`);
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
-     * Activate user with token
-     * @param {String} activationToken - User activation token
-     * @returns {Promise<*>}
-     */
-    model.activateUser = async (activationToken) => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-            return await conn.query(`UPDATE users SET activationDate=NOW(), dateModified=NOW(), active=1, activationToken=null WHERE activationToken='${activationToken}'`);
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
-     * Create a new user
+     * Create a new tree
      * @param {Object} userData - User details
      * @returns {Promise<void>}
      */
-    model.createUser = async (userData) => {
+    model.createTree = async (userData) => {
         let conn;
 
         try {
