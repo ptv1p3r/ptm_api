@@ -15,7 +15,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("SELECT id, typeId, lat, lng, active, " +
+            return await conn.query("SELECT id, name, typeId, lat, lng, active, " +
                 "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
                 "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, " +
                 "FROM trees");
@@ -38,7 +38,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT id, typeId, lat, lng, active, 
+            return await conn.query(`SELECT id, name, typeId, lat, lng, active, 
                 CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
                 FROM trees WHERE id='${treeId}'`);
@@ -61,8 +61,8 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("INSERT INTO trees value (?, ?, ?, ?, ?, ?, ?)",
-                [treeData.id, treeData.typeId, treeData.lat, treeData.lng, treeData.active, treeData.dateCreated, treeData.dateModified]);
+            return await conn.query("INSERT INTO trees value (?, ?, ?, ?, ?, ?, ?, ?)",
+                [treeData.id, treeData.name, treeData.typeId, treeData.lat, treeData.lng, treeData.active, treeData.dateCreated, treeData.dateModified]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -82,7 +82,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`UPDATE trees SET typeId=${treeData.typeId}, lat=${treeData.lat}, lng=${treeData.lng}, 
+            return await conn.query(`UPDATE trees SET name='${treeData.name}', typeId=${treeData.typeId}, lat=${treeData.lat}, lng=${treeData.lng}, 
                  active=${treeData.active}, dateModified=NOW() WHERE id='${treeData.id}'`);
 
         } catch (err) {
