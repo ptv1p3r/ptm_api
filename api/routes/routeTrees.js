@@ -23,7 +23,8 @@ module.exports = app => {
     /**
      * Edit a tree by id
      */
-    app.route('/api/v1/trees/edit/:treeId').put(AuthenticateJWT, controller.editTree);
+    app.route('/api/v1/trees/edit/:treeId').put(AuthenticateJWT, controller.editPutTree);
+    app.route('/api/v1/trees/edit/:treeId').patch(AuthenticateJWT, controller.editPatchTree);
 
     /**
      * Delete a tree by id

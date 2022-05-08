@@ -85,7 +85,62 @@ module.exports = app => {
         }
     }
 
-    controller.editTree = (req, res) => res.status(200).json("Edit Tree");
+    /**
+     * Edit a tree using PUT
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.editPutTree = async (req, res) => {
+        try {
+            const treeData = {
+                id: req.params.treeId.trim(),
+                typeId: req.body.typeId,
+                lat: req.body.lat,
+                lng: req.body.lng,
+                active: req.body.active
+            }
+
+            await modelTrees.editPutTree(treeData)
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                updated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * Edit a tree using PATCH
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.editPatchTree = async (req, res) => {
+        try {
+            const treeData = {
+                id: req.params.treeId.trim(),
+                body: req.body
+            }
+
+            await modelTrees.editPatchTree(treeData)
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                updated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
 
     /**
      * Delete tree by id

@@ -72,20 +72,18 @@ module.exports = app => {
     }
 
     /**
-     * Edit a user
-     * @param {Object} userData - User details
+     * Edit a tree using PUT
+     * @param {Object} treeData - Tree details
      * @returns {Promise<void>}
      */
-    model.editPutUser = async (userData) => {
+    model.editPutTree = async (treeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`UPDATE users SET name='${userData.name}', entity='${userData.entity}', password='${userData.password}', groupId=${userData.groupId},
-                dateBirth='${userData.dateBirth}', address='${userData.address}', codPost='${userData.codPost}', genderId=${userData.genderId}, locality='${userData.locality}', 
-                mobile='${userData.mobile}', nif=${userData.nif}, countryId=${userData.countryId}, dateModified=NOW() 
-                WHERE id='${userData.id}'`);
+            return await conn.query(`UPDATE trees SET typeId=${treeData.typeId}, lat=${treeData.lat}, lng=${treeData.lng}, 
+                 active=${treeData.active}, dateModified=NOW() WHERE id='${treeData.id}'`);
 
         } catch (err) {
             console.log("error: " + err);
@@ -95,14 +93,19 @@ module.exports = app => {
         }
     }
 
-    model.editPatchUser = async (userData) => {
+    /**
+     * Edit a tree using PATCH
+     * @param treeData
+     * @returns {Promise<any>}
+     */
+    model.editPatchTree = async (treeData) => {
         let conn;
 
         try {
 
             conn = await dbPool.getConnection();
 
-            return await conn.query(buildPatchSqlQuery('users',userData.id, userData.body));
+            return await conn.query(buildPatchSqlQuery('trees',treeData.id, treeData.body));
 
         } catch (err) {
             console.log("error: " + err);
