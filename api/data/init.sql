@@ -45,6 +45,7 @@ CREATE TABLE `treeType` (
 
 CREATE TABLE `trees` (
                         `id` char(36) NOT NULL,
+                        `name` varchar(255) NOT NULL,
                         `typeId` int NOT NULL,
                         `lat` double(9,6) NOT NULL,
                         `lng` double(9,6) NOT NULL,
