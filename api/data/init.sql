@@ -189,6 +189,9 @@ VALUES ('Masculino', true, NOW(), NOW()),
        ('Feminino', true, NOW(), NOW()),
        ('Indefinido', true, NOW(), NOW());
 
+INSERT INTO `treeType` (name, description, active, dateCreated, dateModified)
+VALUES ('Fanerófito','Fanerófito', true, NOW(), NOW());
+
 INSERT INTO `countries` (name, code, active, dateCreated, dateModified)
 VALUES ('Andorra', 'AD', true, NOW(), NOW()),
        ('United Arab Emirates', 'AE', true, NOW(), NOW()),
