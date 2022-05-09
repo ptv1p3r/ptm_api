@@ -193,7 +193,7 @@ VALUES ('Masculino', true, NOW(), NOW()),
        ('Indefinido', true, NOW(), NOW());
 
 INSERT INTO `treeType` (name, description, active, dateCreated, dateModified)
-VALUES ('Fanerófito','Fanerófito', true, NOW(), NOW());
+VALUES ('Fanerofito','Fanerofito', true, NOW(), NOW());
 
 INSERT INTO `countries` (name, code, active, dateCreated, dateModified)
 VALUES ('Andorra', 'AD', true, NOW(), NOW()),
