@@ -18,6 +18,7 @@ const dbPool = mariadb.createPool({
     password: "ptmadmin",
     database: "ptm",
     */
+
     timezone: "UTC",
     dateStrings: true
 
