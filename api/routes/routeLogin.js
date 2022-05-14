@@ -16,6 +16,11 @@ module.exports = app => {
     app.route('/api/v1/recover').post(controller.recover);
 
     /**
+     * User recover activation endpoint
+     */
+    app.route('/api/v1/recover/id/:userId').post(controller.activation);
+
+    /**
      * User logout endpoint
      */
     app.route('/api/v1/logout').get(AuthenticateJWT, controller.logout);

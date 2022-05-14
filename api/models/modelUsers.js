@@ -40,7 +40,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT id, name, entity, email, password, groupId, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, 
+            return await conn.query(`SELECT id, name, entity, email, password, groupId, encryptKey, dateBirth, address, codPost, genderId, locality, mobile, nif, countryId, active, 
                 CONVERT_TZ(activationDate,'UTC','Europe/Lisbon') AS activationDate, CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, CONVERT_TZ(lastLogin,'UTC','Europe/Lisbon') AS lastLogin
                 FROM users WHERE id='${userId}'`);
@@ -166,10 +166,32 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            return await conn.query("INSERT INTO users value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [userData.id, userData.name, userData.entity, userData.email, userData.password, userData.groupId, userData.activationToken,
-                    userData.dateBirth, userData.address, userData.codPost, userData.genderId, userData.locality, userData.mobile, userData.nif,
+                    null, userData.dateBirth, userData.address, userData.codPost, userData.genderId, userData.locality, userData.mobile, userData.nif,
                     userData.countryId, userData.active, userData.dateActivation, userData.dateCreated, userData.dateModified, userData.lastLogin]);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
+     * Set user encryption key (iv)
+     * @param userEncryptedData
+     * @returns {Promise<any>}
+     */
+    model.setUserEncryptKey = async (userEncryptedData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query(`UPDATE users SET encryptKey='${userEncryptedData.iv}', dateModified=NOW() 
+                WHERE id='${userEncryptedData.id}'`);
+
         } catch (err) {
             console.log("error: " + err);
             throw err;
