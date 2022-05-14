@@ -21,7 +21,6 @@ module.exports = app => {
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
-                created: false,
                 code: error.code,
                 message: error.text
             });
@@ -40,7 +39,7 @@ module.exports = app => {
                 id: req.params.treeId
             }
 
-            const tree = await modelTrees.getTreeById(userData.treeId);
+            const tree = await modelTrees.getTreeById(userData.id);
 
             res.status(responseCode.SUCCESS_CODE.OK).json(tree);
         } catch (error) {

@@ -17,7 +17,7 @@ module.exports = app => {
 
             return await conn.query("SELECT id, name, nameCommon, description, observations, typeId, lat, lng, active, " +
                 "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
-                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, " +
+                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified " +
                 "FROM trees");
         } catch (err) {
             console.log("error: " + err);
