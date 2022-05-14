@@ -6,6 +6,7 @@ CREATE TABLE `users` (
                          `password` TEXT NOT NULL,
                          `groupId` INT NOT NULL,
                          `activationToken` TEXT NULL,
+                         `encryptKey` TEXT NULL,
                          `dateBirth` DATE NOT NULL,
                          `address` TEXT NOT NULL,
                          `codPost` varchar(10) NOT NULL,
