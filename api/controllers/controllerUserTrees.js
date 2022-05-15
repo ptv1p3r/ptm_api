@@ -27,18 +27,19 @@ module.exports = app => {
     }
 
     /**
-     * View a user group by id
+     * View a user tree by id
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.viewUserGroup = async (req, res) => {
+    controller.viewUserTree = async (req, res) => {
         try {
-            const userGroupData = {
-                id: req.params.groupId,
+            const userTreeData = {
+                userId: req.params.userId,
+                treeId: req.params.treeId
             }
 
-            const result = await modelUserGroups.getUserGroupById(userGroupData.id);
+            const result = await modelUserTrees.getUserTreeById(userTreeData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {

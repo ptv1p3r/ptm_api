@@ -6,6 +6,28 @@ module.exports = app => {
     const model = {};
 
     /**
+     * Get user tree by id
+     * @param {Object} userTreeData - User tree details
+     * @returns {Promise<*>}
+     */
+    model.getUserTreeById = async (userTreeData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`SELECT userId, treeId, active,
+                 CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
+                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified
+                 FROM usersTrees WHERE userId='${userTreeData.userId}' AND treeId='${userTreeData.treeId}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Lists user trees
      * @returns {Promise<void>}
      */

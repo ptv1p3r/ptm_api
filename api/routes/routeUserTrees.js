@@ -13,7 +13,7 @@ module.exports = app => {
     /**
      * User group view by id
      */
-    //app.route('/api/v1/user/trees/view/:groupId').get(AuthenticateJWT, controller.viewUserGroup);
+    app.route('/api/v1/user/trees/view/:userId/:treeId').get(AuthenticateJWT, controller.viewUserGroup);
 
     /**
      * User create new tree
