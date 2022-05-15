@@ -18,7 +18,10 @@ module.exports = app => {
         try {
             const result = await modelTrees.treesPublicList();
 
-            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                trees: result,
+                total: result.length
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 code: error.code,
@@ -87,7 +90,7 @@ module.exports = app => {
                 typeId: req.body.typeId,
                 lat: req.body.lat,
                 lng: req.body.lng,
-                active: false,
+                active: req.body.active,
                 dateCreated: new Date(),
                 dateModified: new Date(),
             }

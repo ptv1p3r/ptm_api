@@ -16,7 +16,7 @@ module.exports = app => {
             conn = await dbPool.getConnection();
 
             return await conn.query("SELECT tree.name AS nameCientific, tree.nameCommon, tree.description, tree.observations, " +
-                "tree.lat, tree.lng, type.name,  type.description AS descriptionType " +
+                "tree.lat, tree.lng, type.name AS nameType,  type.description AS descriptionType " +
                 "FROM trees AS tree, treeType AS type " +
                 "WHERE tree.active=1 AND tree.typeId=type.id");
         } catch (err) {
