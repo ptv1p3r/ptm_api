@@ -17,7 +17,10 @@ module.exports = app => {
 
             const result = await modelTreeType.getTreeTypeList();
 
-            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                types: result,
+                total: result.length
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 code: error.code,

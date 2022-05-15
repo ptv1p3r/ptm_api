@@ -40,7 +40,10 @@ module.exports = app => {
         try {
             const result = await modelTrees.treesListAll();
 
-            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                trees: result,
+                total: result.length
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 code: error.code,
