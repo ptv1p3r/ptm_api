@@ -6,6 +6,28 @@ module.exports = app => {
     const model = {};
 
     /**
+     * Public lists all trees
+     * @returns {Promise<void>}
+     */
+    model.treesPublicList = async () => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query("SELECT tree.name AS nameCientific, tree.nameCommon, tree.description, tree.observations, " +
+                "tree.lat, tree.lng, type.name,  type.description AS descriptionType " +
+                "FROM trees AS tree, treeType AS type " +
+                "WHERE tree.active=1 AND tree.typeId=type.id");
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Lists all trees
      * @returns {Promise<void>}
      */

@@ -6,6 +6,11 @@ module.exports = app => {
     const controller = app.controllers.controllerTrees;
 
     /**
+     * Public list all trees
+     */
+    app.route('/api/v1/trees/public/list').get(controller.publicList);
+
+    /**
      * List all trees
      */
     app.route('/api/v1/trees/list').get(AuthenticateJWT, controller.listAll);
