@@ -9,6 +9,25 @@ module.exports = app => {
     const controller = {};
 
     /**
+     * Public lists all trees
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.publicList = async (req, res) => {
+        try {
+            const result = await modelTrees.treesPublicList();
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * Lists all trees
      * @param req
      * @param res
