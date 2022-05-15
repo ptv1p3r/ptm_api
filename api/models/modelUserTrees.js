@@ -70,18 +70,17 @@ module.exports = app => {
     }
 
     /**
-     * Edit user group
-     * @param {Object} userGroupData - User group details
+     * Edit user tree
+     * @param {Object} userTreeData - User tree details
      * @returns {*}
      */
-    model.editUserGroup = async (userGroupData) => {
+    model.editUserTree = async (userTreeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`UPDATE userGroups SET name='${userGroupData.name}', description='${userGroupData.description}', 
-                securityId=${userGroupData.securityId}, active=${userGroupData.active}, dateModified=NOW() 
-                WHERE id=${userGroupData.id}`);
+            return await conn.query(`UPDATE usersTrees SET active=${userTreeData.active}, dateModified=NOW() 
+                WHERE userId='${userTreeData.userId}' AND treeId='${userTreeData.treeId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

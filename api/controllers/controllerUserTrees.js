@@ -79,21 +79,19 @@ module.exports = app => {
     }
 
     /**
-     * Edit user group
+     * Edit user tree
      * @param req
      * @param res
      */
-    controller.editUserGroup = async (req, res) => {
+    controller.editUserTree = async (req, res) => {
         try {
-            const userGroupData = {
-                id: req.params.groupId,
-                name: req.body.name.trim(),
-                description: req.body.description.trim(),
-                securityId: req.body.securityId,
+            const userTreeData = {
+                userId: req.params.userId.trim(),
+                treeId: req.params.treeId.trim(),
                 active: req.body.active
             }
 
-            await modelUserGroups.editUserGroup(userGroupData);
+            await modelUserTrees.editUserTree(userTreeData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 updated: true
