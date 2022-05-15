@@ -61,7 +61,10 @@ CREATE TABLE `trees` (
 
 CREATE TABLE `usersTrees` (
                         `userId` char(36) NOT NULL,
-                        `treeId` char(36) NOT NULL
+                        `treeId` char(36) NOT NULL,
+                        `active` BOOLEAN NOT NULL,
+                        `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `security` (
