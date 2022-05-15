@@ -18,7 +18,10 @@ module.exports = app => {
         try {
             const result = await modelUser.usersListAll();
 
-            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                users: result,
+                total: result.length
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 created: false,

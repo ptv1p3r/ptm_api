@@ -10,7 +10,10 @@ module.exports = app => {
         try {
             const result = await modelGenders.getGendersList();
 
-            res.status(responseCode.SUCCESS_CODE.OK).json(result);
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                genders: result,
+                total: result.length
+            });
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                 code: error.code,
