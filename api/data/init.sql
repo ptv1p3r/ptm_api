@@ -79,6 +79,10 @@ CREATE TABLE `security` (
                         `userGroupsRead` BOOLEAN NOT NULL,
                         `userGroupsUpdate` BOOLEAN NOT NULL,
                         `userGroupsDelete` BOOLEAN NOT NULL,
+                        `usersTreesCreate` BOOLEAN NOT NULL,
+                        `usersTreesRead` BOOLEAN NOT NULL,
+                        `usersTreesUpdate` BOOLEAN NOT NULL,
+                        `usersTreesDelete` BOOLEAN NOT NULL,
                         `treesCreate` BOOLEAN NOT NULL,
                         `treesRead` BOOLEAN NOT NULL,
                         `treesUpdate` BOOLEAN NOT NULL,
@@ -181,11 +185,22 @@ ALTER TABLE `treeImages` ADD CONSTRAINT `treeImages_fk0` FOREIGN KEY (`treeId`) 
 
 INSERT INTO `security` (homeLogin, admLogin, usersCreate, usersRead, usersUpdate, usersDelete,
                         userGroupsCreate, userGroupsRead, userGroupsUpdate, userGroupsDelete,
+                        usersTreesCreate, usersTreesRead, usersTreesUpdate, usersTreesDelete,
                         treesCreate, treesRead, treesUpdate, treesDelete,
                         treeTypeCreate, treeTypeRead, treeTypeUpdate, treeTypeDelete,
                         treeImagesCreate, treeImagesRead, treeImagesUpdate, treeImagesDelete)
-VALUES (true, false, false, true, true, false, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false),
-       (false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+VALUES (true, false, false, true, true, false,
+        false, true, false, false,
+        false, true, false, false,
+        false, true, false, false,
+        false, true, false, false,
+        true, false, false, false),
+       (false, true, true, true, true, true,
+        true, true, true, true,
+        true, true, true, true,
+        true, true, true, true,
+        true, true, true, true,
+        true, true, true, true);
 
 INSERT INTO `userGroups` (name, description, securityId, active, dateCreated, dateModified)
 VALUES ('Public Frontend','Generic Frontend Access', 1, true, NOW(), NOW()),
