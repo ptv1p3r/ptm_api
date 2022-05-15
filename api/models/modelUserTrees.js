@@ -57,18 +57,18 @@ module.exports = app => {
     }
 
     /**
-     * Create a new user group
-     * @param {Object} userGroupData - User group details
+     * Create a new user tree
+     * @param {Object} userTreeData - User tree details
      * @returns {Promise<void>}
      */
-    model.createUserGroup = async (userGroupData) => {
+    model.createUserTree = async (userTreeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO userGroups (name, description, securityId, active) " +
-                "VALUES (?, ?, ?, ?)",
-                [userGroupData.name, userGroupData.description, userGroupData.securityId, userGroupData.active]);
+            return await conn.query("INSERT INTO usersTrees (userId, treeId, active) " +
+                "VALUES (?, ?, ?)",
+                [userTreeData.userId, userTreeData.treeId, userTreeData.active]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -99,16 +99,16 @@ module.exports = app => {
     }
 
     /**
-     * Delete user group
-     * @param {Object} userGroupData - User group details
+     * Delete user tree
+     * @param {Object} userTreeData - User tree details
      * @returns {*}
      */
-    model.deleteUserGroup = async (userGroupData) => {
+    model.deleteUserTree = async (userTreeData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM userGroups WHERE id=${userGroupData.id}`);
+            return await conn.query(`DELETE FROM usersTrees WHERE userId='${userTreeData.userId}' AND treeId='${userTreeData.treeId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

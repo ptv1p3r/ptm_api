@@ -13,21 +13,21 @@ module.exports = app => {
     /**
      * User group view by id
      */
-    app.route('/api/v1/user/trees/view/:groupId').get(AuthenticateJWT, controller.viewUserGroup);
+    //app.route('/api/v1/user/trees/view/:groupId').get(AuthenticateJWT, controller.viewUserGroup);
 
     /**
-     * User create new group
+     * User create new tree
      */
-    app.route('/api/v1/user/trees/create').post(AuthenticateJWT, controller.createUserGroup);
+    app.route('/api/v1/user/trees/create').post(AuthenticateJWT, controller.createUserTree);
 
     /**
      * Edit user group
      */
-    app.route('/api/v1/user/trees/edit/:groupId').put(AuthenticateJWT, controller.editUserGroup);
+    //app.route('/api/v1/user/trees/edit/:groupId').put(AuthenticateJWT, controller.editUserGroup);
 
     /**
      * Delete user group by id
      */
-    app.route('/api/v1/user/trees/delete/:groupId').delete(AuthenticateJWT, controller.deleteUserGroup);
+    app.route('/api/v1/user/trees/delete/:userId/:treeId').delete(AuthenticateJWT, controller.deleteUserTrees);
 
 }

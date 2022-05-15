@@ -50,21 +50,20 @@ module.exports = app => {
     }
 
     /**
-     * Creates new user group
+     * Creates new user tree
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.createUserGroup = async (req, res) => {
+    controller.createUserTree = async (req, res) => {
         try {
-            const userGroupData = {
-                name: req.body.name.trim(),
-                description: req.body.description.trim(),
-                securityId: req.body.securityId,
+            const userTreeData = {
+                userId: req.body.userId.trim(),
+                treeId: req.body.treeId.trim(),
                 active: req.body.active
             }
 
-            await modelUserGroups.createUserGroup(userGroupData);
+            await modelUserTrees.createUserTree(userTreeData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 created: true
@@ -108,18 +107,19 @@ module.exports = app => {
     }
 
     /**
-     * Delete user group by id
+     * Delete user tree by id
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.deleteUserGroup = async (req, res) => {
+    controller.deleteUserTrees = async (req, res) => {
         try {
-            const userGroupData = {
-                id: req.params.groupId,
+            const userTreeData = {
+                userId: req.params.userId,
+                treeId: req.params.treeId
             }
 
-            await modelUserGroups.deleteUserGroup(userGroupData);
+            await modelUserTrees.deleteUserTree(userTreeData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 deleted: true
