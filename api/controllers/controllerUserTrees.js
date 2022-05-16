@@ -75,9 +75,6 @@ module.exports = app => {
             // validate tree
             await validateTree(userTreeData);
 
-            // validate user/tree relationship
-            await validateUserTree(userTreeData);
-
             await modelUserTrees.createUserTree(userTreeData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
@@ -184,7 +181,8 @@ function validateUser(userTreeData) {
 /**
  * Validate tree
  * - 404 if no tree found
- * - 403 if tree not active
+ * - 400 if tree not active
+ * - 403 if tree is already assigned
  *
  * @param {Object} userTreeData
  * @returns {Promise<unknown>}
@@ -203,36 +201,23 @@ function validateTree(userTreeData) {
 
                 if (tree[0].active === 0) {
                     return reject({
-                        errorResponse: responseCode.ERROR_CODE.FORBIDDEN,
+                        errorResponse: responseCode.ERROR_CODE.BAD_REQUEST,
                         errorMessage: 'Tree not active!'
                     });
                 }
-
-                return resolve();
             })
-    });
-}
 
-/**
- * Validate user and tree existing relationship
- * - 403 if relationship exists
- *
- * @param {Object} userTreeData
- * @returns {Promise<unknown>}
- */
-function validateUserTree(userTreeData) {
-    return new Promise(async (resolve, reject) => {
-        // validate user and tree relation
-        await modelUserTrees.getUserTreeById(userTreeData)
-            .then( userTree => {
-                if (userTree.length > 0) {
+        // validate tree usage
+        await modelUserTrees.getTreeUsageCount(userTreeData.treeId)
+            .then( tree =>{
+                if (tree[0].total > 0) {
                     return reject({
                         errorResponse: responseCode.ERROR_CODE.FORBIDDEN,
-                        errorMessage: 'User and Tree relationship already exists!'
+                        errorMessage: 'Tree already assigned!'
                     });
                 }
-
-                return resolve();
             })
+
+        return resolve();
     });
 }
