@@ -2,6 +2,8 @@
 
 const responseCode = require('../helpers/httpCodesDefinitions')
 const modelUserTrees = require('./../models/modelUserTrees')();
+const modelTrees = require('./../models/modelTrees')();
+const modelUser = require('./../models/modelUsers')();
 
 module.exports = app => {
     const controller = {};
@@ -67,16 +69,22 @@ module.exports = app => {
                 active: req.body.active
             }
 
+            // validate user
+            await validateUser(userTreeData);
+
+            // validate tree
+            await validateTree(userTreeData);
+
             await modelUserTrees.createUserTree(userTreeData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 created: true
             });
         } catch (error) {
-            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+            res.status(error.errorResponse).json({
                 created: false,
-                code: error.code,
-                message: error.text
+                code: error.errorResponse,
+                message: error.errorMessage
             });
         }
     }
@@ -136,4 +144,80 @@ module.exports = app => {
     }
 
     return controller;
+}
+
+/**
+ * Validate user settings
+ * - 404 if no user found
+ * - 403 if user not active
+ *
+ * @param {Object} userTreeData
+ * @returns {Promise<unknown>}
+ */
+function validateUser(userTreeData) {
+    return new Promise(async (resolve, reject) => {
+        // validate user
+        await modelUser.getUserById(userTreeData.userId)
+            .then( user => {
+                if (!user) {
+                    return reject({
+                        errorResponse: responseCode.ERROR_CODE.NOT_FOUND,
+                        errorMessage: 'User not found!'
+                    });
+                }
+
+                if (user[0].active === 0) {
+                    return reject({
+                        errorResponse: responseCode.ERROR_CODE.FORBIDDEN,
+                        errorMessage: 'User not active!'
+                    });
+                }
+
+                return resolve();
+            })
+    });
+}
+
+/**
+ * Validate tree
+ * - 404 if no tree found
+ * - 400 if tree not active
+ * - 403 if tree is already assigned
+ *
+ * @param {Object} userTreeData
+ * @returns {Promise<unknown>}
+ */
+function validateTree(userTreeData) {
+    return new Promise(async (resolve, reject) => {
+        // validate tree
+        await modelTrees.getTreeById(userTreeData.treeId)
+            .then( tree => {
+                if (!tree) {
+                    return reject({
+                        errorResponse: responseCode.ERROR_CODE.NOT_FOUND,
+                        errorMessage: 'Tree not found!'
+                    });
+                }
+
+                if (tree[0].active === 0) {
+                    return reject({
+                        errorResponse: responseCode.ERROR_CODE.BAD_REQUEST,
+                        errorMessage: 'Tree not active!'
+                    });
+                }
+            })
+
+        // validate tree usage
+        await modelUserTrees.getTreeUsageCount(userTreeData.treeId)
+            .then( tree =>{
+                if (tree[0].total > 0) {
+                    return reject({
+                        errorResponse: responseCode.ERROR_CODE.FORBIDDEN,
+                        errorMessage: 'Tree already assigned!'
+                    });
+                }
+            })
+
+        return resolve();
+    });
 }
