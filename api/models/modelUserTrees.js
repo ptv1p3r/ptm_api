@@ -6,6 +6,26 @@ module.exports = app => {
     const model = {};
 
     /**
+     * Get tree usage on users
+     * @param {String} treeId
+     * @returns {Promise<any>}
+     */
+    model.getTreeUsageCount = async (treeId) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`SELECT COUNT(*) AS total
+                                     FROM usersTrees WHERE treeId='${treeId}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Get user tree by id
      * @param {Object} userTreeData - User tree details
      * @returns {Promise<*>}
