@@ -23,7 +23,8 @@ module.exports = app => {
     /**
      * Edit intervention
      */
-    app.route('/api/v1/interventions/edit/:interventionId').put(AuthenticateJWT, controller.editIntervention);
+    app.route('/api/v1/interventions/edit/:interventionId').put(AuthenticateJWT, controller.editPutIntervention);
+    app.route('/api/v1/interventions/edit/:interventionId').patch(AuthenticateJWT, controller.editPatchIntervention);
 
     /**
      * Delete intervention by id

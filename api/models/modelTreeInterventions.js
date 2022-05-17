@@ -1,24 +1,26 @@
 'use strict';
 
 const { dbPool } = require('./../helpers/db');
+const {buildPatchSqlQuery} = require("../helpers/db");
 
 module.exports = app => {
     const model = {};
 
     /**
-     * Get user tree by id
-     * @param {Object} userTreeData - User tree details
+     * Get intervention by id
+     * @param {Object} interventionData - Intervention details
      * @returns {Promise<*>}
      */
-    model.getUserTreeById = async (userTreeData) => {
+    model.getInterventionById = async (interventionData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`SELECT userId, treeId, active,
+            return await conn.query(`SELECT id, treeId, subject, description, observations, public, active,
+                 CONVERT_TZ(interventionDate,'UTC','Europe/Lisbon') AS interventionDate,
                  CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                  CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified
-                 FROM usersTrees WHERE userId='${userTreeData.userId}' AND treeId='${userTreeData.treeId}'`);
+                 FROM treeInterventions WHERE id='${interventionData.id}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -61,7 +63,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
             return await conn.query("INSERT INTO treeInterventions (id, treeId, interventionDate, subject, description, observations, public, active) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 [interventionData.id, interventionData.treeId, interventionData.interventionDate, interventionData.subject, interventionData.description,
                     interventionData.observations, interventionData.public, interventionData.active]);
         } catch (err) {
@@ -73,17 +75,38 @@ module.exports = app => {
     }
 
     /**
-     * Edit user tree
-     * @param {Object} userTreeData - User tree details
+     * Edit intervention using PUT
+     * @param {Object} interventionData - Intervention details
      * @returns {*}
      */
-    model.editUserTree = async (userTreeData) => {
+    model.editPutIntervention = async (interventionData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`UPDATE usersTrees SET active=${userTreeData.active}, dateModified=NOW() 
-                WHERE userId='${userTreeData.userId}' AND treeId='${userTreeData.treeId}'`);
+            return await conn.query(`UPDATE treeInterventions SET treeId='${interventionData.treeId}', interventionDate='${interventionData.date}', subject='${interventionData.subject}',  
+                         description='${interventionData.description}' , observations='${interventionData.observations}', public=${interventionData.public}, active=${interventionData.active}, dateModified=NOW() 
+                WHERE id='${interventionData.id}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
+     * Edit intervention using PATCH
+     * @param {Object} interventionData - Intervention details
+     * @returns {*}
+     */
+    model.editPatchIntervention = async (interventionData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query(buildPatchSqlQuery('treeInterventions',interventionData.id, interventionData.body));
         } catch (err) {
             console.log("error: " + err);
             throw err;

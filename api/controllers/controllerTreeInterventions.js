@@ -1,6 +1,7 @@
 'use strict';
 
 const responseCode = require('../helpers/httpCodesDefinitions')
+const crypto = require("crypto");
 const modelTreeInterventions = require('./../models/modelTreeInterventions')();
 const modelTrees = require('./../models/modelTrees')();
 
@@ -38,12 +39,11 @@ module.exports = app => {
      */
     controller.viewIntervention = async (req, res) => {
         try {
-            const userTreeData = {
-                userId: req.params.userId,
-                treeId: req.params.treeId
+            const interventionData = {
+                id: req.params.interventionId.trim(),
             }
 
-            const result = await modelTreeInterventions.getUserTreeById(userTreeData);
+            const result = await modelTreeInterventions.getInterventionById(interventionData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {
@@ -63,7 +63,7 @@ module.exports = app => {
     controller.createIntervention = async (req, res) => {
         try {
             const interventionData = {
-                id: req.body.userId.trim(),
+                id: crypto.randomUUID(),
                 treeId: req.body.treeId.trim(),
                 interventionDate: req.body.date.trim(),
                 subject: req.body.subject.trim(),
@@ -74,7 +74,7 @@ module.exports = app => {
             }
 
             // validate tree
-            // await validateTree(interventionData);
+            await validateTree(interventionData);
 
             await modelTreeInterventions.createIntervention(interventionData);
 
@@ -91,19 +91,50 @@ module.exports = app => {
     }
 
     /**
-     * Edit intervention
+     * Edit intervention using PUT
      * @param req
      * @param res
      */
-    controller.editIntervention= async (req, res) => {
+    controller.editPutIntervention= async (req, res) => {
         try {
-            const userTreeData = {
-                userId: req.params.userId.trim(),
-                treeId: req.params.treeId.trim(),
+            const interventionData = {
+                id: req.params.interventionId.trim(),
+                treeId: req.body.treeId.trim(),
+                date: req.body.date.trim(),
+                subject: req.body.subject.trim(),
+                description: req.body.description.trim(),
+                observations: req.body.observations.trim(),
+                public: req.body.public,
                 active: req.body.active
             }
 
-            await modelTreeInterventions.editUserTree(userTreeData);
+            await modelTreeInterventions.editPutIntervention(interventionData);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                updated: true
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                updated: false,
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * Edit intervention using PATCH
+     * @param req
+     * @param res
+     */
+    controller.editPatchIntervention= async (req, res) => {
+        try {
+            const interventionData = {
+                id: req.params.interventionId.trim(),
+                body: req.body
+            }
+
+            await modelTreeInterventions.editPatchIntervention(interventionData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 updated: true
@@ -126,7 +157,7 @@ module.exports = app => {
     controller.deleteIntervention = async (req, res) => {
         try {
             const interventionData = {
-                id: req.params.interventionId,
+                id: req.params.interventionId.trim(),
             }
 
             await modelTreeInterventions.deleteIntervention(interventionData);
@@ -152,13 +183,13 @@ module.exports = app => {
  * - 400 if tree not active
  * - 403 if tree is already assigned
  *
- * @param {Object} userTreeData
+ * @param {Object} treeData
  * @returns {Promise<unknown>}
  */
-function validateTree(userTreeData) {
+function validateTree(treeData) {
     return new Promise(async (resolve, reject) => {
         // validate tree
-        await modelTrees.getTreeById(userTreeData.treeId)
+        await modelTrees.getTreeById(treeData.treeId)
             .then( tree => {
                 if (!tree) {
                     return reject({
@@ -171,17 +202,6 @@ function validateTree(userTreeData) {
                     return reject({
                         errorResponse: responseCode.ERROR_CODE.BAD_REQUEST,
                         errorMessage: 'Tree not active!'
-                    });
-                }
-            })
-
-        // validate tree usage
-        await modelUserTrees.getTreeUsageCount(userTreeData.treeId)
-            .then( tree =>{
-                if (tree[0].total > 0) {
-                    return reject({
-                        errorResponse: responseCode.ERROR_CODE.FORBIDDEN,
-                        errorMessage: 'Tree already assigned!'
                     });
                 }
             })
