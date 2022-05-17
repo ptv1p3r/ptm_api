@@ -67,6 +67,20 @@ CREATE TABLE `usersTrees` (
                         `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE `treeInterventions` (
+                                     `id` char(36) NOT NULL,
+                                     `treeId` char(36) NOT NULL,
+                                     `interventionDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                     `subject` varchar(255) NOT NULL,
+                                     `description` TEXT NULL,
+                                     `observations` TEXT NULL,
+                                     `public` BOOLEAN NOT NULL,
+                                     `active` BOOLEAN NOT NULL,
+                                     `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                     `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                     PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `security` (
                         `id` int NOT NULL AUTO_INCREMENT,
                         `homeLogin` BOOLEAN NOT NULL,
@@ -172,6 +186,8 @@ ALTER TABLE `users` ADD CONSTRAINT `users_fk2` FOREIGN KEY (`genderId`) REFERENC
 ALTER TABLE `userGroups` ADD CONSTRAINT `userGroups_fk0` FOREIGN KEY (`securityId`) REFERENCES `security`(`id`);
 
 ALTER TABLE `trees` ADD CONSTRAINT `trees_fk0` FOREIGN KEY (`typeId`) REFERENCES `treeType`(`id`);
+
+ALTER TABLE `treeInterventions` ADD CONSTRAINT `treeInterventions_fk0` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
 
 ALTER TABLE `usersTrees` ADD CONSTRAINT `usersTrees_fk0` FOREIGN KEY (`userId`) REFERENCES `users`(`id`);
 
