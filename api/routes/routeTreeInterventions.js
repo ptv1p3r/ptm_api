@@ -11,9 +11,9 @@ module.exports = app => {
     app.route('/api/v1/interventions/list').get(AuthenticateJWT, controller.listAll);
 
     /**
-     * User group view by id
+     * Intervention view by id
      */
-    app.route('/api/v1/interventions/view/:interventionId').get(AuthenticateJWT, controller.viewUserTree);
+    app.route('/api/v1/interventions/view/:interventionId').get(AuthenticateJWT, controller.viewIntervention);
 
     /**
      * Intervention create
@@ -21,9 +21,9 @@ module.exports = app => {
     app.route('/api/v1/interventions/create').post(AuthenticateJWT, controller.createIntervention);
 
     /**
-     * Edit user tree
+     * Edit intervention
      */
-    app.route('/api/v1/interventions/edit/:interventionId').put(AuthenticateJWT, controller.editUserTree);
+    app.route('/api/v1/interventions/edit/:interventionId').put(AuthenticateJWT, controller.editIntervention);
 
     /**
      * Delete intervention by id

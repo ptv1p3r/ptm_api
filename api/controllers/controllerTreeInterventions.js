@@ -31,12 +31,12 @@ module.exports = app => {
     }
 
     /**
-     * View a user tree by id
+     * View intervention by id
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.viewUserTree = async (req, res) => {
+    controller.viewIntervention = async (req, res) => {
         try {
             const userTreeData = {
                 userId: req.params.userId,
@@ -91,11 +91,11 @@ module.exports = app => {
     }
 
     /**
-     * Edit user tree
+     * Edit intervention
      * @param req
      * @param res
      */
-    controller.editUserTree = async (req, res) => {
+    controller.editIntervention= async (req, res) => {
         try {
             const userTreeData = {
                 userId: req.params.userId.trim(),
