@@ -16,9 +16,9 @@ module.exports = app => {
     app.route('/api/v1/interventions/view/:interventionId').get(AuthenticateJWT, controller.viewUserTree);
 
     /**
-     * User create new tree
+     * Intervention create
      */
-    app.route('/api/v1/interventions/create').post(AuthenticateJWT, controller.createUserTree);
+    app.route('/api/v1/interventions/create').post(AuthenticateJWT, controller.createIntervention);
 
     /**
      * Edit user tree
@@ -26,8 +26,8 @@ module.exports = app => {
     app.route('/api/v1/interventions/edit/:interventionId').put(AuthenticateJWT, controller.editUserTree);
 
     /**
-     * Delete user group by id
+     * Delete intervention by id
      */
-    app.route('/api/v1/interventions/delete/:interventionId').delete(AuthenticateJWT, controller.deleteUserTrees);
+    app.route('/api/v1/interventions/delete/:interventionId').delete(AuthenticateJWT, controller.deleteIntervention);
 
 }

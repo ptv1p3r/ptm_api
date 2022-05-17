@@ -6,26 +6,6 @@ module.exports = app => {
     const model = {};
 
     /**
-     * Get tree usage on users
-     * @param {String} treeId
-     * @returns {Promise<any>}
-     */
-    model.getTreeUsageCount = async (treeId) => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-            return await conn.query(`SELECT COUNT(*) AS total
-                                     FROM usersTrees WHERE treeId='${treeId}'`);
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
      * Get user tree by id
      * @param {Object} userTreeData - User tree details
      * @returns {Promise<*>}
@@ -51,7 +31,7 @@ module.exports = app => {
      * Lists tree interventions
      * @returns {Promise<void>}
      */
-    model.getTreeInterventionList = async () => {
+    model.getInterventionList = async () => {
         let conn;
 
         try {
@@ -71,18 +51,19 @@ module.exports = app => {
     }
 
     /**
-     * Create a new user tree
-     * @param {Object} userTreeData - User tree details
+     * Create a new intervention
+     * @param {Object} interventionData - Intervention details
      * @returns {Promise<void>}
      */
-    model.createUserTree = async (userTreeData) => {
+    model.createIntervention = async (interventionData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO usersTrees (userId, treeId, active) " +
-                "VALUES (?, ?, ?)",
-                [userTreeData.userId, userTreeData.treeId, userTreeData.active]);
+            return await conn.query("INSERT INTO treeInterventions (id, treeId, interventionDate, subject, description, observations, public, active) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [interventionData.id, interventionData.treeId, interventionData.interventionDate, interventionData.subject, interventionData.description,
+                    interventionData.observations, interventionData.public, interventionData.active]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -112,16 +93,16 @@ module.exports = app => {
     }
 
     /**
-     * Delete user tree
-     * @param {Object} userTreeData - User tree details
+     * Delete intervention
+     * @param {Object} interventionData - Intervention details
      * @returns {*}
      */
-    model.deleteUserTree = async (userTreeData) => {
+    model.deleteIntervention = async (interventionData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM usersTrees WHERE userId='${userTreeData.userId}' AND treeId='${userTreeData.treeId}'`);
+            return await conn.query(`DELETE FROM treeInterventions WHERE id='${interventionData.id}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

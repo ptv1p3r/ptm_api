@@ -3,7 +3,6 @@
 const responseCode = require('../helpers/httpCodesDefinitions')
 const modelTreeInterventions = require('./../models/modelTreeInterventions')();
 const modelTrees = require('./../models/modelTrees')();
-const modelUser = require('./../models/modelUsers')();
 
 module.exports = app => {
     const controller = {};
@@ -17,7 +16,7 @@ module.exports = app => {
     controller.listAll = async (req, res) => {
         try {
 
-            const result = await modelTreeInterventions.getTreeInterventionList();
+            const result = await modelTreeInterventions.getInterventionList();
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 interventions: result,
@@ -56,26 +55,28 @@ module.exports = app => {
     }
 
     /**
-     * Creates new user tree
+     * Creates new intervention
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.createUserTree = async (req, res) => {
+    controller.createIntervention = async (req, res) => {
         try {
-            const userTreeData = {
-                userId: req.body.userId.trim(),
+            const interventionData = {
+                id: req.body.userId.trim(),
                 treeId: req.body.treeId.trim(),
+                interventionDate: req.body.date.trim(),
+                subject: req.body.subject.trim(),
+                description: req.body.description.trim(),
+                observations: req.body.observations.trim(),
+                public: req.body.public,
                 active: req.body.active
             }
 
-            // validate user
-            await validateUser(userTreeData);
-
             // validate tree
-            await validateTree(userTreeData);
+            // await validateTree(interventionData);
 
-            await modelTreeInterventions.createUserTree(userTreeData);
+            await modelTreeInterventions.createIntervention(interventionData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 created: true
@@ -117,19 +118,18 @@ module.exports = app => {
     }
 
     /**
-     * Delete user tree by id
+     * Delete intervention by id
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.deleteUserTrees = async (req, res) => {
+    controller.deleteIntervention = async (req, res) => {
         try {
-            const userTreeData = {
-                userId: req.params.userId,
-                treeId: req.params.treeId
+            const interventionData = {
+                id: req.params.interventionId,
             }
 
-            await modelTreeInterventions.deleteUserTree(userTreeData);
+            await modelTreeInterventions.deleteIntervention(interventionData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 deleted: true
@@ -144,38 +144,6 @@ module.exports = app => {
     }
 
     return controller;
-}
-
-/**
- * Validate user settings
- * - 404 if no user found
- * - 403 if user not active
- *
- * @param {Object} userTreeData
- * @returns {Promise<unknown>}
- */
-function validateUser(userTreeData) {
-    return new Promise(async (resolve, reject) => {
-        // validate user
-        await modelUser.getUserById(userTreeData.userId)
-            .then( user => {
-                if (!user) {
-                    return reject({
-                        errorResponse: responseCode.ERROR_CODE.NOT_FOUND,
-                        errorMessage: 'User not found!'
-                    });
-                }
-
-                if (user[0].active === 0) {
-                    return reject({
-                        errorResponse: responseCode.ERROR_CODE.FORBIDDEN,
-                        errorMessage: 'User not active!'
-                    });
-                }
-
-                return resolve();
-            })
-    });
 }
 
 /**
