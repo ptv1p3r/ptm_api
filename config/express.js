@@ -65,6 +65,8 @@ module.exports = () => {
     app.use(bodyParser.urlencoded({ extended: true }));
     // set cors
     app.use(cors(corsOptions));
+    // set public folder for getting images
+    app.use('/api/v1/trees/image', express.static('./api/public/files'));
 
     // APP Load files
     consign({cwd: 'api'})
