@@ -1,11 +1,12 @@
 'use strict';
 
 const responseCode = require('../helpers/httpCodesDefinitions')
-const crypto = require("crypto");
 const emailController = require("../helpers/email");
 const modelTreeImages = require('./../models/modelTreeImages')();
 const fs = require('fs');
 const multer = require("multer");
+
+const maxSize = 8000000; // 8Mb
 
 /**
  * Configuration for Multer
@@ -13,7 +14,6 @@ const multer = require("multer");
  */
 let multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // cb(null, "api/uploads/files/");
         cb(null, "uploads/");
     },
     filename: (req, file, cb) => {
@@ -29,10 +29,10 @@ let multerStorage = multer.diskStorage({
  * @param cb
  */
 let multerFilter = (req, file, cb) => {
-    if (file.mimetype.split("/")[1] === "jpeg") {
+    if (file.mimetype.split("/")[1] === "jpeg" || file.mimetype.split("/")[1] === "jpg" || file.mimetype.split("/")[1] === "png") {
         cb(null, true);
     } else {
-        cb(new Error("Not a JPG File!!"), false);
+        cb(new Error("Not a valid file extension -> only JPG/JPEG/PNG File!!"), false);
     }
 };
 
@@ -43,6 +43,7 @@ let multerFilter = (req, file, cb) => {
 const multerSettings = multer({
     storage: multerStorage,
     fileFilter: multerFilter,
+    limits: { fileSize: maxSize }
 });
 
 module.exports = app => {
@@ -107,12 +108,16 @@ module.exports = app => {
             console.log("filename: " + req.file.filename);
             console.log("filepath: " + req.file.path);
             console.log("size: " + req.file.size);
+            console.log("root: " + app.get('images.rootFolder'));
+            console.log("upload: " + app.get('images.uploadFolder'));
+            console.log("maxsize: " + app.get('images.maxUploadFileSize'));
 
             let dir = './api/public/files/' + req.params.treeId.trim();
+
             if (!fs.existsSync(dir)){
                 fs.mkdirSync(dir, { recursive: true });
             }
-            // 'uploads/' + req.params.treeId.trim() + '.png',
+
             // await modelTrees.createTree(treeData);
             fs.rename(req.file.path, './api/public/files/' + req.params.treeId.trim() + '/' + req.params.treeId.trim() + '.png', function(err) {
                 if ( err ) console.log('ERROR: ' + err);

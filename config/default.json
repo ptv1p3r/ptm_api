@@ -13,5 +13,10 @@
   "token": {
     "accessValidity": "15m",
     "refreshValidity": "7d"
+  },
+  "images": {
+    "rootFolder": "./api/public/files/",
+    "uploadFolder": "uploads/",
+    "maxUploadFileSize": 8000000
   }
 }
