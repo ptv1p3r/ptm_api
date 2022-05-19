@@ -148,8 +148,9 @@ CREATE TABLE `transactionMethod` (
 
 CREATE TABLE `treeImages` (
                         `id` char(36) NOT NULL,
-                        `treeId` varchar(255) NOT NULL,
+                        `treeId` char(36) NOT NULL,
                         `path` varchar(255) NOT NULL,
+                        `description` TEXT NULL,
                         `size` int NOT NULL,
                         `position` int NOT NULL,
                         `active` BOOLEAN NOT NULL,
