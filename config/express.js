@@ -57,6 +57,9 @@ module.exports = () => {
     app.set('token.accessValidity', config.get('token.accessValidity'));
     app.set('token.refreshSecret', config.get('token.refreshSecret'));
     app.set('token.refreshValidity', config.get('token.refreshValidity'));
+    app.set('images.rootFolder', config.get('images.rootFolder'));
+    app.set('images.uploadFolder', config.get('images.uploadFolder'));
+    app.set('images.maxUploadFileSize', config.get('images.maxUploadFileSize'));
 
     // MIDDLEWARES
     // parse requests of content-type - application/json
@@ -65,6 +68,8 @@ module.exports = () => {
     app.use(bodyParser.urlencoded({ extended: true }));
     // set cors
     app.use(cors(corsOptions));
+    // set public folder for getting images
+    app.use('/api/v1/trees/image', express.static(config.get('images.rootFolder')));
 
     // APP Load files
     consign({cwd: 'api'})
