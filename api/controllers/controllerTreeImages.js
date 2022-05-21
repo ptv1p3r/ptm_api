@@ -136,14 +136,15 @@ module.exports = app => {
 
             await modelTreeImages.createTreeImage(treeImageData);
 
+            // check if folder exists
             if (!fs.existsSync(dir)){
                 fs.mkdirSync(dir, { recursive: true });
             }
 
+            // rename file and move
             fs.rename(req.file.path, newFilePath, (err) => {
                 if ( err ) console.log('ERROR: ' + err);
             });
-
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 uploaded: true
