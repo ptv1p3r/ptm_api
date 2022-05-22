@@ -41,7 +41,7 @@ module.exports = app => {
             return await conn.query(`SELECT id, treeId, name, path, description, size, position, active, 
                 CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
-                FROM treeImages WHERE id='${treeId}'`);
+                FROM treeImages WHERE treeId='${treeId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
