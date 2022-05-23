@@ -6,6 +6,11 @@ module.exports = app => {
     const controller = app.controllers.controllerTreeImages;
 
     /**
+     * list all tree images
+     */
+    app.route('/api/v1/trees/image/list').get( controller.listAll);
+
+    /**
      * list tree images by id
      */
     app.route('/api/v1/trees/image/list/:treeId').get( controller.listByTreeId);
