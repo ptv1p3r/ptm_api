@@ -56,7 +56,7 @@ module.exports = app => {
      */
     controller.listAll = async (req, res) => {
         try {
-            const result = await modelTreeImages.treesListAll();
+            const result = await modelTreeImages.imagesListAll();
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 trees: result,
