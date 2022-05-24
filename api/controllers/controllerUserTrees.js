@@ -32,6 +32,30 @@ module.exports = app => {
     }
 
     /**
+     * Lists user trees by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listAllById = async (req, res) => {
+        try {
+            const userId = req.params.userId.trim();
+
+            const result = await modelUserTrees.getUserTreesListById(userId);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                trees: result,
+                total: result.length
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * View a user tree by id
      * @param req
      * @param res
