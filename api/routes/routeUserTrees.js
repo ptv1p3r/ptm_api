@@ -11,6 +11,11 @@ module.exports = app => {
     app.route('/api/v1/user/trees/list').get(AuthenticateJWT, controller.listAll);
 
     /**
+     * User trees list by id
+     */
+    app.route('/api/v1/user/trees/list/:userId').get(AuthenticateJWT, controller.listAllById);
+
+    /**
      * User group view by id
      */
     app.route('/api/v1/user/trees/view/:userId/:treeId').get(AuthenticateJWT, controller.viewUserTree);
