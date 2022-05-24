@@ -8,7 +8,7 @@ module.exports = app => {
     /**
      * Public list all trees
      */
-    app.route('/api/v1/trees/uploads/list').get(controller.publicList);
+    app.route('/api/v1/trees/public/list').get(controller.publicList);
 
     /**
      * List all trees

@@ -69,6 +69,33 @@ module.exports = app => {
     }
 
     /**
+     * Lists active user trees by id
+     * @param {String} userId - User unique identifier
+     * @returns {Promise<void>}
+     */
+    model.getUserTreesListById = async (userId) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`SELECT ut.userId, ut.treeId, ut.active,
+                t.name as treeName, t.nameCommon as treeNameCommon, t.description as treeDescription, 
+                t.observations as treeObservations, tp.name as typeName, tp.description as typeDescription,
+                t.lat, t.lng,
+                CONVERT_TZ(ut.dateCreated,'UTC','Europe/Lisbon') AS dateCreated, 
+                CONVERT_TZ(ut.dateModified,'UTC','Europe/Lisbon') AS dateModified 
+                FROM usersTrees AS ut, trees as t, treeType as tp  
+                WHERE ut.userId='${userId}' AND ut.active=1 
+                AND ut.treeId=t.id AND t.typeId=tp.id`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Create a new user tree
      * @param {Object} userTreeData - User tree details
      * @returns {Promise<void>}

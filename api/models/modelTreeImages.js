@@ -6,41 +6,19 @@ module.exports = app => {
     const model = {};
 
     /**
-     * Public lists all trees
-     * @returns {Promise<void>}
-     */
-    model.treesPublicList = async () => {
-        let conn;
-
-        try {
-            conn = await dbPool.getConnection();
-
-            return await conn.query("SELECT tree.name AS nameCientific, tree.nameCommon, tree.description, tree.observations, " +
-                "tree.lat, tree.lng, type.name AS nameType,  type.description AS descriptionType " +
-                "FROM trees AS tree, treeType AS type " +
-                "WHERE tree.active=1 AND tree.typeId=type.id");
-        } catch (err) {
-            console.log("error: " + err);
-            throw err;
-        } finally {
-            if (conn) await conn.end();
-        }
-    }
-
-    /**
      * Lists all trees
      * @returns {Promise<void>}
      */
-    model.treesListAll = async () => {
+    model.imagesListAll = async () => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("SELECT id, name, nameCommon, description, observations, typeId, lat, lng, active, " +
+            return await conn.query("SELECT id, treeId, name, path, description, size, position, active, " +
                 "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
                 "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified " +
-                "FROM trees");
+                "FROM treeImages");
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -50,20 +28,20 @@ module.exports = app => {
     }
 
     /**
-     * Get tree by id
+     * Get tree image by id
      * @param {String} treeId - Tree id
      * @returns {Promise<void>}
      */
-    model.getTreeById = async (treeId) => {
+    model.getTreeImageById = async (treeId) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT id, name, nameCommon, description, observations, typeId, lat, lng, active, 
+            return await conn.query(`SELECT id, treeId, name, path, description, size, position, active, 
                 CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
-                FROM trees WHERE id='${treeId}'`);
+                FROM treeImages WHERE treeId='${treeId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -73,19 +51,19 @@ module.exports = app => {
     }
 
     /**
-     * Create a new tree
-     * @param {Object} treeData - Tree details
+     * Create a new tree image
+     * @param {Object} treeImageData - Tree Image details
      * @returns {Promise<void>}
      */
-    model.createTree = async (treeData) => {
+    model.createTreeImage = async (treeImageData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("INSERT INTO trees value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [treeData.id, treeData.name, treeData.nameCommon, treeData.description, treeData.observations,
-                    treeData.typeId, treeData.lat, treeData.lng, treeData.active, treeData.dateCreated, treeData.dateModified]);
+            return await conn.query("INSERT INTO treeImages value (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [treeImageData.id, treeImageData.treeId, treeImageData.name, treeImageData.path, treeImageData.description, treeImageData.size,
+                    treeImageData.position, treeImageData.active, treeImageData.dateCreated, treeImageData.dateModified]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -140,16 +118,16 @@ module.exports = app => {
     }
 
     /**
-     * Delete tree
-     * @param {String} treeId - Tree unique identifier
+     * Delete tree image
+     * @param {String} imageId - Image unique identifier
      * @returns {*}
      */
-    model.deleteTree = async (treeId) => {
+    model.deleteTreeImage = async (imageId) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM trees WHERE id='${treeId}'`);
+            return await conn.query(`DELETE FROM treeImages WHERE id='${imageId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;

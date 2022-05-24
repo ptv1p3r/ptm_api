@@ -69,7 +69,7 @@ module.exports = () => {
     // set cors
     app.use(cors(corsOptions));
     // set public folder for getting images
-    app.use('/api/v1/trees/image', express.static(config.get('images.rootFolder')));
+    app.use('/api/v1/trees/image', express.static(config.get('images.rootFolder'))); // TODO Validate if endpoint can be in route a use static folder only here
 
     // APP Load files
     consign({cwd: 'api'})
