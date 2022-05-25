@@ -4,6 +4,7 @@ const responseCode = require('../helpers/httpCodesDefinitions');
 const crypto = require("crypto");
 const modelTreeImages = require('./../models/modelTreeImages')();
 const fs = require('fs');
+const moment = require("moment");
 const multer = require("multer");
 
 
@@ -118,8 +119,8 @@ module.exports = app => {
                 size: req.file.size,
                 position: Number(req.body.order),
                 active: req.body.active.toLowerCase().trim() === 'true'? 1:0,
-                dateCreated: new Date(),
-                dateModified: new Date()
+                dateCreated: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+                dateModified: moment().utc().format("YYYY-MM-DD HH:mm:ss")
             }
 
             // console.log("treeId: " + req.params.treeId.trim());
@@ -134,14 +135,38 @@ module.exports = app => {
             // console.log("upload: " + app.get('images.uploadFolder'));
             // console.log("maxsize: " + app.get('images.maxUploadFileSize'));
 
-            await modelTreeImages.createTreeImage(treeImageData);
+            const imageExists = await modelTreeImages.getTreeImageByIdAndPosition(treeImageData.treeId, treeImageData.position);
+            if (imageExists.length > 0) {
+                const imagePayload = {
+                    id: imageExists[0].id,
+                    body: {
+                        name: treeImageData.name,
+                        path: treeImageData.path,
+                        description: treeImageData.description,
+                        size: treeImageData.size,
+                        position: treeImageData.position,
+                        active: treeImageData.active,
+                        dateModified: treeImageData.dateModified,
+                    }
+                }
+
+                const imageFile = app.get('images.rootFolder') + imageExists[0].path;
+                if (fs.existsSync(imageFile)){
+                    fs.unlinkSync(imageFile);
+                }
+
+                await modelTreeImages.editPatchTreeImage(imagePayload);
+            } else {
+                await modelTreeImages.createTreeImage(treeImageData);
+            }
+
 
             // check if folder exists
             if (!fs.existsSync(dir)){
                 fs.mkdirSync(dir, { recursive: true });
             }
 
-            // rename file and move
+            // rename file and mover
             fs.rename(req.file.path, newFilePath, (err) => {
                 if ( err ) console.log('ERROR: ' + err);
             });
