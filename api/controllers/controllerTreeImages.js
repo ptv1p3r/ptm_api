@@ -196,8 +196,10 @@ module.exports = app => {
 
             // get image details
             const image = await modelTreeImages.getTreeImageById(imageId)
-
-            // TODO no image found
+            if (image.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                deleted: false,
+                error: "Enter existing image id!"
+            });
 
             const imageFile = app.get('images.rootFolder') + image[0].path;
             if (fs.existsSync(imageFile)){
