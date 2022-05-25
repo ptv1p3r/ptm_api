@@ -39,7 +39,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
             return await conn.query("SELECT id, treeId, subject, description, observations, " +
-                "uploads, active, " +
+                "public, active, " +
                 "CONVERT_TZ(interventionDate,'UTC','Europe/Lisbon') AS interventionDate, " +
                 "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
                 "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified " +
@@ -62,7 +62,7 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO treeInterventions (id, treeId, interventionDate, subject, description, observations, uploads, active) " +
+            return await conn.query("INSERT INTO treeInterventions (id, treeId, interventionDate, subject, description, observations, public, active) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 [interventionData.id, interventionData.treeId, interventionData.interventionDate, interventionData.subject, interventionData.description,
                     interventionData.observations, interventionData.public, interventionData.active]);
