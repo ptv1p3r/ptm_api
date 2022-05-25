@@ -29,10 +29,10 @@ module.exports = app => {
 
     /**
      * Get tree image by id
-     * @param {String} treeId - Tree id
+     * @param {String} imageId - Image unique identifier
      * @returns {Promise<void>}
      */
-    model.getTreeImageById = async (treeId) => {
+    model.getTreeImageById = async (imageId) => {
         let conn;
 
         try {
@@ -41,7 +41,7 @@ module.exports = app => {
             return await conn.query(`SELECT id, treeId, name, path, description, size, position, active, 
                 CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
-                FROM treeImages WHERE treeId='${treeId}'`);
+                FROM treeImages WHERE id='${imageId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
