@@ -16,9 +16,9 @@ module.exports = app => {
     app.route('/api/v1/transaction/methods/view/:groupId').get(AuthenticateJWT, controller.viewUserGroup);
 
     /**
-     * User create new group
+     * Create new transaction method
      */
-    app.route('/api/v1/transaction/methods/create').post(AuthenticateJWT, controller.createUserGroup);
+    app.route('/api/v1/transaction/methods/create').post(AuthenticateJWT, controller.createTransactionMethod);
 
     /**
      * Edit user group

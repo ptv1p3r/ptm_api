@@ -18,7 +18,7 @@ module.exports = app => {
             const result = await modelTransactionMethods.getTransactionMethodsList();
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
-                groups: result,
+                methods: result,
                 total: result.length
             });
         } catch (error) {
@@ -53,21 +53,20 @@ module.exports = app => {
     }
 
     /**
-     * Creates new user group
+     * Creates new transaction method
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.createUserGroup = async (req, res) => {
+    controller.createTransactionMethod = async (req, res) => {
         try {
-            const userGroupData = {
+            const transactionMethodData = {
                 name: req.body.name.trim(),
                 description: req.body.description.trim(),
-                securityId: req.body.securityId,
-                active: req.body.active
+                active: req.body.active === true ? 1:0
             }
 
-            await modelTransactionMethods.createUserGroup(userGroupData);
+            await modelTransactionMethods.createTransactionMethod(transactionMethodData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 created: true

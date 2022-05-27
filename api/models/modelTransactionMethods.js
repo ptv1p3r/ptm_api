@@ -54,18 +54,18 @@ module.exports = app => {
     }
 
     /**
-     * Create a new user group
-     * @param {Object} userGroupData - User group details
+     * Create a new transaction method
+     * @param {Object} transactionMethodData - Transaction method details
      * @returns {Promise<void>}
      */
-    model.createUserGroup = async (userGroupData) => {
+    model.createTransactionMethod = async (transactionMethodData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO userGroups (name, description, securityId, active) " +
-                "VALUES (?, ?, ?, ?)",
-                [userGroupData.name, userGroupData.description, userGroupData.securityId, userGroupData.active]);
+            return await conn.query("INSERT INTO transactionMethod (name, description, active) " +
+                "VALUES (?, ?, ?)",
+                [transactionMethodData.name, transactionMethodData.description, transactionMethodData.active]);
         } catch (err) {
             console.log("error: " + err);
             throw err;
