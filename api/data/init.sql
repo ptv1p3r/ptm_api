@@ -118,8 +118,22 @@ CREATE TABLE `transactions` (
                         `id` char(36) NOT NULL,
                         `transactionTypeId` int NOT NULL,
                         `transactionMethodId` int NOT NULL,
+                        `userId` char(36) NOT NULL,
+                        `userName` varchar(255) NOT NULL,
+                        `userNif` int(10) NOT NULL,
+                        `treeId` char(36) NOT NULL,
+                        `treeName` varchar(255) NOT NULL,
+                        `reference` varchar(255) NULL,
+                        `referenceId` varchar(255) NULL,
+                        `requestId` varchar(255) NULL,
+                        `terminal` varchar(255) NULL,
+                        `serviceTariff` DECIMAL NULL,
                         `value` DECIMAL NOT NULL,
+                        `valueNet` DECIMAL NULL,
                         `valid` BOOLEAN NOT NULL,
+                        `state` varchar(255) NULL,
+                        `message` varchar(255) NULL,
+                        `code` varchar(255) NULL,
                         `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         `dateModified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         `dateValidated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -198,6 +212,10 @@ ALTER TABLE `usersTrees` ADD CONSTRAINT `usersTrees_fk1` FOREIGN KEY (`treeId`) 
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk0` FOREIGN KEY (`transactionTypeId`) REFERENCES `transactionType`(`id`);
 
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk1` FOREIGN KEY (`transactionMethodId`) REFERENCES `transactionMethod`(`id`);
+
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk2` FOREIGN KEY (`userId`) REFERENCES `users`(`id`);
+
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk3` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
 
 ALTER TABLE `treeImages` ADD CONSTRAINT `treeImages_fk0` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
 
@@ -462,3 +480,14 @@ VALUES ('Andorra', 'AD', true, NOW(), NOW()),
        ('South Africa', 'ZA', true, NOW(), NOW()),
        ('Zambia', 'ZM', true, NOW(), NOW()),
        ('Zimbabwe', 'ZW', true, NOW(), NOW());
+
+INSERT INTO `transactionType` (name, description, active, dateCreated, dateModified)
+VALUES ('Credit', 'Credit movement', true, NOW(), NOW()),
+       ('Debit', 'Debit movement', true, NOW(), NOW());
+
+INSERT INTO `transactionMethod` (name, description, active, dateCreated, dateModified)
+VALUES ('MBWay', 'MBWay', true, NOW(), NOW()),
+       ('MB', 'MB ATM', true, NOW(), NOW()),
+       ('Payshop', 'Payshop', true, NOW(), NOW()),
+       ('Bank Transfer', 'SEPA Bank Transfer', true, NOW(), NOW()),
+       ('VISA/Mastercard', 'Visa credit card', true, NOW(), NOW());
