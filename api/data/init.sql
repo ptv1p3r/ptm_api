@@ -124,7 +124,7 @@ CREATE TABLE `transactions` (
                         `terminal` varchar(255) NULL,
                         `serviceTariff` DECIMAL NULL,
                         `value` DECIMAL NOT NULL,
-                        `valueNet` DECIMAL NOT NULL,
+                        `valueNet` DECIMAL NULL,
                         `valid` BOOLEAN NOT NULL,
                         `state` varchar(255) NULL,
                         `message` varchar(255) NULL,
