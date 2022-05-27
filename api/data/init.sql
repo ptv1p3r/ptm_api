@@ -118,6 +118,8 @@ CREATE TABLE `transactions` (
                         `id` char(36) NOT NULL,
                         `transactionTypeId` int NOT NULL,
                         `transactionMethodId` int NOT NULL,
+                        `userId` char(36) NOT NULL,
+                        `treeId` char(36) NOT NULL,
                         `reference` varchar(255) NULL,
                         `referenceId` varchar(255) NULL,
                         `requestId` varchar(255) NULL,
@@ -207,6 +209,10 @@ ALTER TABLE `usersTrees` ADD CONSTRAINT `usersTrees_fk1` FOREIGN KEY (`treeId`) 
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk0` FOREIGN KEY (`transactionTypeId`) REFERENCES `transactionType`(`id`);
 
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk1` FOREIGN KEY (`transactionMethodId`) REFERENCES `transactionMethod`(`id`);
+
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk2` FOREIGN KEY (`userId`) REFERENCES `users`(`id`);
+
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk3` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
 
 ALTER TABLE `treeImages` ADD CONSTRAINT `treeImages_fk0` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
 
