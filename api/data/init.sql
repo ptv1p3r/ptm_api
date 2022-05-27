@@ -462,3 +462,14 @@ VALUES ('Andorra', 'AD', true, NOW(), NOW()),
        ('South Africa', 'ZA', true, NOW(), NOW()),
        ('Zambia', 'ZM', true, NOW(), NOW()),
        ('Zimbabwe', 'ZW', true, NOW(), NOW());
+
+INSERT INTO `transactionType` (name, description, active, dateCreated, dateModified)
+VALUES ('Credit', 'Credit movement', true, NOW(), NOW()),
+       ('Debit', 'Debit movement', true, NOW(), NOW());
+
+INSERT INTO `transactionMethod` (name, description, active, dateCreated, dateModified)
+VALUES ('MBWay', 'MBWay', true, NOW(), NOW()),
+       ('MB', 'MB ATM', true, NOW(), NOW()),
+       ('Payshop', 'Payshop', true, NOW(), NOW()),
+       ('Bank Transfer', 'SEPA Bank Transfer', true, NOW(), NOW()),
+       ('VISA/Mastercard', 'Visa credit card', true, NOW(), NOW());
