@@ -35,13 +35,13 @@ module.exports = app => {
      * @param res
      * @returns {Promise<void>}
      */
-    controller.viewUserGroup = async (req, res) => {
+    controller.viewTransactionMethod= async (req, res) => {
         try {
-            const userGroupData = {
-                id: req.params.groupId,
+            const transactionMethodData = {
+                id: req.params.transactionMethodId,
             }
 
-            const result = await modelTransactionMethods.getUserGroupById(userGroupData.id);
+            const result = await modelTransactionMethods.getTransactionMethodById(transactionMethodData.id);
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {
@@ -81,21 +81,20 @@ module.exports = app => {
     }
 
     /**
-     * Edit user group
+     * Edit transaction method
      * @param req
      * @param res
      */
-    controller.editUserGroup = async (req, res) => {
+    controller.editTransactionMethod = async (req, res) => {
         try {
-            const userGroupData = {
-                id: req.params.groupId,
+            const editTransactionMethod = {
+                id: req.params.transactionMethodId,
                 name: req.body.name.trim(),
                 description: req.body.description.trim(),
-                securityId: req.body.securityId,
-                active: req.body.active
+                active: req.body.active === true ? 1:0
             }
 
-            await modelTransactionMethods.editUserGroup(userGroupData);
+            await modelTransactionMethods.editTransactionMethod(editTransactionMethod);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 updated: true
@@ -110,18 +109,18 @@ module.exports = app => {
     }
 
     /**
-     * Delete user group by id
+     * Delete transaction method by id
      * @param req
      * @param res
      * @returns {Promise<void>}
      */
-    controller.deleteUserGroup = async (req, res) => {
+    controller.deleteTransactionMethod = async (req, res) => {
         try {
-            const userGroupData = {
-                id: req.params.groupId,
+            const transactionMethodData = {
+                id: req.params.transactionMethodId,
             }
 
-            await modelTransactionMethods.deleteUserGroup(userGroupData);
+            await modelTransactionMethods.deleteTransactionMethod(transactionMethodData);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 deleted: true

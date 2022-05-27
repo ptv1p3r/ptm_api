@@ -11,9 +11,9 @@ module.exports = app => {
     app.route('/api/v1/transaction/methods/list').get(AuthenticateJWT, controller.listAll);
 
     /**
-     * User group view by id
+     * Transaction method view by id
      */
-    app.route('/api/v1/transaction/methods/view/:groupId').get(AuthenticateJWT, controller.viewUserGroup);
+    app.route('/api/v1/transaction/methods/view/:transactionMethodId').get(AuthenticateJWT, controller.viewTransactionMethod);
 
     /**
      * Create new transaction method
@@ -21,13 +21,13 @@ module.exports = app => {
     app.route('/api/v1/transaction/methods/create').post(AuthenticateJWT, controller.createTransactionMethod);
 
     /**
-     * Edit user group
+     * Edit Transaction method
      */
-    app.route('/api/v1/transaction/methods/edit/:groupId').put(AuthenticateJWT, controller.editUserGroup);
+    app.route('/api/v1/transaction/methods/edit/:transactionMethodId').put(AuthenticateJWT, controller.editTransactionMethod);
 
     /**
-     * Delete user group by id
+     * Delete Transaction method by id
      */
-    app.route('/api/v1/transaction/methods/delete/:groupId').delete(AuthenticateJWT, controller.deleteUserGroup);
+    app.route('/api/v1/transaction/methods/delete/:transactionMethodId').delete(AuthenticateJWT, controller.deleteTransactionMethod);
 
 }

@@ -6,24 +6,20 @@ module.exports = app => {
     const model = {};
 
     /**
-     * Get user by email
-     * @param {Integer} groupId - Group Id
+     * Get transaction method by id
+     * @param {Integer} transactionMethodId - Transaction method Id
      * @returns {Promise<*>}
      */
-    model.getUserGroupById = async (groupId) => {
+    model.getTransactionMethodById = async (transactionMethodId) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT userGroups.id, userGroups.name, userGroups.description, userGroups.securityId, userGroups.active,
-                CONVERT_TZ(userGroups.dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
-                CONVERT_TZ(userGroups.dateModified,'UTC','Europe/Lisbon') AS dateModified,
-                security.homeLogin, security.admLogin, security.usersCreate, security.usersRead, security.usersUpdate, security.usersDelete,
-                security.userGroupsCreate, security.userGroupsRead, security.userGroupsUpdate, security.userGroupsDelete, security.treesCreate,
-                security.treesRead, security.treesUpdate, security.treesDelete, security.treeTypeCreate, security.treeTypeRead, security.treeTypeUpdate,
-                security.treeTypeDelete, security.treeImagesCreate, security.treeImagesRead, security.treeImagesUpdate, security.treeImagesDelete
-                FROM userGroups, security WHERE userGroups.id=${groupId} AND securityId=security.id`);
+            return await conn.query(`SELECT id, name, description, active,
+                CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
+                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
+                FROM transactionMethod WHERE id=${transactionMethodId}`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -75,18 +71,18 @@ module.exports = app => {
     }
 
     /**
-     * Edit user group
-     * @param {Object} userGroupData - User group details
+     * Edit transaction method
+     * @param {Object} transactionMethodData - Transaction method details
      * @returns {*}
      */
-    model.editUserGroup = async (userGroupData) => {
+    model.editTransactionMethod = async (transactionMethodData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`UPDATE userGroups SET name='${userGroupData.name}', description='${userGroupData.description}', 
-                securityId=${userGroupData.securityId}, active=${userGroupData.active}, dateModified=NOW() 
-                WHERE id=${userGroupData.id}`);
+            return await conn.query(`UPDATE transactionMethod SET name='${transactionMethodData.name}', description='${transactionMethodData.description}', 
+                active=${transactionMethodData.active}, dateModified=NOW() 
+                WHERE id=${transactionMethodData.id}`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -96,16 +92,16 @@ module.exports = app => {
     }
 
     /**
-     * Delete user group
-     * @param {Object} userGroupData - User group details
+     * Delete transaction method
+     * @param {Object} transactionMethodData - Transaction method details
      * @returns {*}
      */
-    model.deleteUserGroup = async (userGroupData) => {
+    model.deleteTransactionMethod = async (transactionMethodData) => {
         let conn;
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM userGroups WHERE id=${userGroupData.id}`);
+            return await conn.query(`DELETE FROM transactionMethod WHERE id=${transactionMethodData.id}`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
