@@ -1,6 +1,7 @@
 'use strict';
 
 const responseCode = require('../helpers/httpCodesDefinitions')
+const crypto = require("crypto");
 const modelTransaction = require('./../models/modelTransaction')();
 
 module.exports = app => {
@@ -61,9 +62,12 @@ module.exports = app => {
     controller.createTransaction = async (req, res) => {
         try {
             const transactionData = {
-                name: req.body.name.trim(),
-                description: req.body.description.trim(),
-                active: req.body.active === true ? 1:0
+                id: crypto.randomUUID(),
+                transactionTypeId: req.body.typeId,
+                transactionMethodId: req.body.methodId,
+                userId: req.body.userId.trim(),
+                treeId: req.body.treeId.trim(),
+                value: req.body.value
             }
 
             await modelTransaction.createTransactionType(transactionData);
