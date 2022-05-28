@@ -62,7 +62,7 @@ module.exports = app => {
             return await conn.query("SELECT id " +
                 "FROM trees " +
                 "WHERE active=1 AND id NOT IN " +
-                "(SELECT treeId FROM userTrees WHERE active=1)");
+                "(SELECT treeId FROM usersTrees WHERE active=1)");
         } catch (err) {
             console.log("error: " + err);
             throw err;
