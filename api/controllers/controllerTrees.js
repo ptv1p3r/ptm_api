@@ -31,6 +31,28 @@ module.exports = app => {
     }
 
     /**
+     * Lists all trees available for transaction
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listTransactionAvailable = async (req, res) => {
+        try {
+            const result = await modelTrees.treesListTransactionAvailable();
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                trees: result,
+                total: result.length
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * Lists all trees
      * @param req
      * @param res
