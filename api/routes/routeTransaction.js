@@ -21,7 +21,7 @@ module.exports = app => {
     app.route('/api/v1/transaction/create').post(AuthenticateJWT, controller.createTransaction);
 
     /**
-     * Edit Transaction
+     * Edit Transaction by id
      */
     app.route('/api/v1/transaction/edit/:transactionId').put(AuthenticateJWT, controller.editTransaction);
 
