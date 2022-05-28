@@ -50,6 +50,28 @@ module.exports = app => {
     }
 
     /**
+     * Lists all trees available for transactions
+     * @returns {Promise<void>}
+     */
+    model.treesListTransactionAvailable = async () => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query("SELECT id " +
+                "FROM trees " +
+                "WHERE active=1 AND id NOT IN " +
+                "(SELECT treeId FROM userTrees WHERE active=1)");
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Get tree by id
      * @param {String} treeId - Tree id
      * @returns {Promise<void>}
