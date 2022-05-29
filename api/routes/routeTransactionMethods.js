@@ -9,6 +9,7 @@ module.exports = app => {
      * Transaction methods list
      */
     app.route('/api/v1/transaction/methods/list').get(AuthenticateJWT, controller.listAll);
+    app.route('/api/v1/transaction/methods/public/list').get(AuthenticateJWT, controller.listAllActive);
 
     /**
      * Transaction method view by id
