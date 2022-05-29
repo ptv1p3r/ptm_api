@@ -1,6 +1,7 @@
 'use strict';
 
 const { AuthenticateJWT } = require("../helpers/security")
+const { loginValidation } = require("../helpers/validator")
 
 module.exports = app => {
     const controller = app.controllers.controllerLogin;
@@ -8,7 +9,7 @@ module.exports = app => {
     /**
      * User login endpoint
      */
-    app.route('/api/v1/login').post(controller.login);
+    app.route('/api/v1/login').post(loginValidation, controller.login);
 
     /**
      * User recover password endpoint
