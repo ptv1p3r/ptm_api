@@ -7,6 +7,29 @@ module.exports = app => {
     const controller = {};
 
     /**
+     * Lists all active transaction methods
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listAllActive = async (req, res) => {
+        try {
+
+            const result = await modelTransactionMethods.getActiveTransactionMethodsList();
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                methods: result,
+                total: result.length
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * Lists all transaction methods
      * @param req
      * @param res

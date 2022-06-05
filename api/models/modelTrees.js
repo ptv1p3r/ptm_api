@@ -59,7 +59,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("SELECT id " +
+            return await conn.query("SELECT id, name AS nameScientific, nameCommon, description, observations " +
                 "FROM trees " +
                 "WHERE active=1 AND id NOT IN " +
                 "(SELECT treeId FROM usersTrees WHERE active=1)");

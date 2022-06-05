@@ -23,6 +23,24 @@ CREATE TABLE `users` (
                          PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `messages` (
+                         `id` char(36) NOT NULL,
+                         `subject` varchar(255) NOT NULL,
+                         `message` TEXT NOT NULL,
+                         `fromUser` char(36) NOT NULL,
+                         `fromName` varchar(255) NOT NULL,
+                         `fromEmail` varchar(255) NOT NULL,
+                         `toUser` char(36) NOT NULL,
+                         `toName` varchar(255) NOT NULL,
+                         `toEmail` varchar(255) NOT NULL,
+                         `active` BOOLEAN NOT NULL,
+                         `notificationDate` TIMESTAMP NULL,
+                         `receptionDate` TIMESTAMP NULL,
+                         `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+                         PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `userGroups` (
                          `id` int NOT NULL AUTO_INCREMENT,
                          `name` varchar(255) NOT NULL,
@@ -218,6 +236,10 @@ ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk2` FOREIGN KEY (`userI
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk3` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
 
 ALTER TABLE `treeImages` ADD CONSTRAINT `treeImages_fk0` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
+
+ALTER TABLE `messages` ADD CONSTRAINT `messages_fk0` FOREIGN KEY (`fromUser`) REFERENCES `users`(`id`);
+
+ALTER TABLE `messages` ADD CONSTRAINT `messages_fk1` FOREIGN KEY (`toUser`) REFERENCES `users`(`id`);
 
 INSERT INTO `security` (homeLogin, admLogin, usersCreate, usersRead, usersUpdate, usersDelete,
                         userGroupsCreate, userGroupsRead, userGroupsUpdate, userGroupsDelete,

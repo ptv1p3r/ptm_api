@@ -50,6 +50,28 @@ module.exports = app => {
     }
 
     /**
+     * Lists all active transaction methods
+     * @returns {Promise<void>}
+     */
+    model.getActiveTransactionMethodsList = async () => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query("SELECT id, name, description, " +
+                "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
+                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified " +
+                "FROM transactionMethod " +
+                "WHERE active=1");
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Create a new transaction method
      * @param {Object} transactionMethodData - Transaction method details
      * @returns {Promise<void>}

@@ -8,21 +8,21 @@ module.exports = app => {
     /**
      * list all tree images
      */
-    app.route('/api/v1/trees/image/list').get( controller.listAll);
+    app.route('/api/v1/trees/image/list').get(AuthenticateJWT, controller.listAll);
 
     /**
      * list tree images by id
      */
-    app.route('/api/v1/trees/image/list/:treeId').get( controller.listByTreeId);
+    app.route('/api/v1/trees/image/list/:treeId').get(AuthenticateJWT, controller.listByTreeId);
 
     /**
      * Upload tree image
      */
-    app.route('/api/v1/trees/image/upload/:treeId').post( controller.uploadImage.single("file"), controller.uploadFile);
+    app.route('/api/v1/trees/image/upload/:treeId').post(AuthenticateJWT, controller.uploadImage.single("file"), controller.uploadFile);
 
     /**
      * Delete a tree image by id
      */
-    app.route('/api/v1/trees/image/delete/:imageId').delete( controller.deleteTreeImage);
+    app.route('/api/v1/trees/image/delete/:imageId').delete(AuthenticateJWT, controller.deleteTreeImage);
 
 }

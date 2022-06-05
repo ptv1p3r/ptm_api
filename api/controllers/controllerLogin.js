@@ -4,6 +4,7 @@ const emailController = require('./../helpers/email');
 const jwt = require('jsonwebtoken');
 const responseCode = require('../helpers/httpCodesDefinitions')
 const { verifyRefreshJWT, encryptText, decryptText } = require("../helpers/security")
+const { validationResult } = require("../helpers/validator")
 const modelUser = require('./../models/modelUsers')();
 
 module.exports = app => {
@@ -16,8 +17,15 @@ module.exports = app => {
      * @returns {*}
      */
     controller.login = async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                    auth: false,
+                    errors: errors.array()
+                });
+            }
 
-        try{
             const userData = {
                 email: req.body.email.trim().toLowerCase(),
                 password: req.body.password.trim()
