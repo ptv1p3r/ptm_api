@@ -8,26 +8,26 @@ module.exports = app => {
     /**
      * list all messages
      */
-    app.route('/api/v1/messages/list').get( controller.listAll);
+    app.route('/api/v1/messages/list').get(AuthenticateJWT, controller.listAll);
 
     /**
      * Message list by userId
      */
-    app.route('/api/v1/messages/list/:userId').get( controller.listAllById);
+    app.route('/api/v1/messages/list/:userId').get(AuthenticateJWT, controller.listAllById);
 
     /**
      * View message by id
      */
-    app.route('/api/v1/messages/view/:messageId').get( controller.viewMessage);
+    app.route('/api/v1/messages/view/:messageId').get(AuthenticateJWT, controller.viewMessage);
 
     /**
      * Create a new message
      */
-    app.route('/api/v1/messages/create').post( controller.createMessage);
+    app.route('/api/v1/messages/create').post(AuthenticateJWT, controller.createMessage);
 
     /**
      * Delete a message by id
      */
-    app.route('/api/v1/messages/delete/:messageId').delete( controller.deleteMessage);
+    app.route('/api/v1/messages/delete/:messageId').delete(AuthenticateJWT, controller.deleteMessage);
 
 }
