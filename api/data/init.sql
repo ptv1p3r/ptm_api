@@ -34,6 +34,7 @@ CREATE TABLE `messages` (
                          'toName' varchar(255) NOT NULL,
                          'toEmail' varchar(255) NOT NULL,
                          `active` BOOLEAN NOT NULL,
+                         `notificationDate` TIMESTAMP NULL,
                          `receptionDate` TIMESTAMP NULL,
                          `dateCreated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          `dateModified` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
