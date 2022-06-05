@@ -79,17 +79,17 @@ module.exports = app => {
 
     /**
      * Edit a message using PATCH
-     * @param imageData - Image details
+     * @param messageData - Message details
      * @returns {Promise<any>}
      */
-    model.editPatchMessage = async (imageData) => {
+    model.editPatchMessage = async (messageData) => {
         let conn;
 
         try {
 
             conn = await dbPool.getConnection();
 
-            return await conn.query(buildPatchSqlQuery('treeImages',imageData.id, imageData.body));
+            return await conn.query(buildPatchSqlQuery('messages',messageData.id, messageData.body));
 
         } catch (err) {
             console.log("error: " + err);

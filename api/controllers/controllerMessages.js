@@ -106,6 +106,16 @@ module.exports = app => {
                             domain: "www.adoteumaarvore.pt", // {{domain}}
                             name: messageData.toName, // {{name}}
                         },
+                    }).then( async () => {
+                        const messageUpdate = {
+                            id: messageData.id,
+                            body: {
+                                notificationDate : moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+                                dateModified: moment().utc().format("YYYY-MM-DD HH:mm:ss")
+                            }
+                        }
+
+                        await modelMessages.editPatchMessage(messageUpdate);
                     })
                 });
 
