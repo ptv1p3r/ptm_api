@@ -11,6 +11,11 @@ module.exports = app => {
     app.route('/api/v1/messages/list').get( controller.listAll);
 
     /**
+     * Message list by userId
+     */
+    app.route('/api/v1/messages/list/:userId').get( controller.listAllById);
+
+    /**
      * View message by id
      */
     app.route('/api/v1/messages/view/:messageId').get( controller.viewMessage);
