@@ -85,7 +85,7 @@ module.exports = app => {
             const result = await modelTreeImages.getTreeImageById(treeId);
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
-                trees: result,
+                images: result,
                 total: result.length
             });
         } catch (error) {
