@@ -45,8 +45,11 @@ module.exports = app => {
 
             const result = await modelMessages.getUserMessagesListById(userId);
 
+            const countNotViewed = await modelMessages.getUserMessagesNotViewedById(userId);
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 messages: result,
+                totalNotViewed: Number(countNotViewed[0].total),
                 total: result.length
             });
         } catch (error) {

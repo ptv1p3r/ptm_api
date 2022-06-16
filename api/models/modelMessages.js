@@ -58,6 +58,28 @@ module.exports = app => {
     }
 
     /**
+     * Get count for not viewed messages by user id
+     *
+     * @param {String} userId - User unique identifier
+     * @returns {Promise<void>}
+     */
+    model.getUserMessagesNotViewedById = async (userId) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query(`SELECT SUM(CASE WHEN receptionDate is null THEN 1 ELSE 0 END) AS total
+                FROM messages WHERE toUser='${userId}'`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Get message by id
      * @param {String} messageId - Message unique identifier
      * @returns {Promise<void>}
