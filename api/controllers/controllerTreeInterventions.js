@@ -32,6 +32,33 @@ module.exports = app => {
     }
 
     /**
+     * Lists all tree interventions
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listAllByTreeId = async (req, res) => {
+        try {
+
+            const interventionData = {
+                treeId: req.params.treeId.trim(),
+            }
+
+            const result = await modelTreeInterventions.getInterventionListByTreeId(interventionData);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                interventions: result,
+                total: result.length
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * View intervention by id
      * @param req
      * @param res
