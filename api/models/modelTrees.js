@@ -59,10 +59,12 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query("SELECT id, name AS nameScientific, nameCommon, description, observations, lat, lng " +
-                "FROM trees " +
-                "WHERE active=1 AND id NOT IN " +
-                "(SELECT treeId FROM usersTrees WHERE active=1)");
+            return await conn.query("SELECT t.id, t.name AS nameScientific, t.nameCommon, t.description, t.observations, t.lat, t.lng, " +
+                "ti.name as mainImageName, ti.description as mainImageDescription, ti.path as mainImagePath " +
+                "FROM trees as t " +
+                "LEFT JOIN treeImages as ti ON t.id=ti.treeId AND ti.active=1 AND ti.position=1 " +
+                "WHERE t.active=1 " +
+                "AND t.id NOT IN (SELECT treeId FROM usersTrees WHERE active=1)");
         } catch (err) {
             console.log("error: " + err);
             throw err;
