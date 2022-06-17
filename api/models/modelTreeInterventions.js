@@ -53,6 +53,30 @@ module.exports = app => {
     }
 
     /**
+     * Lists tree interventions
+     * @param {Object} interventionData - Intervention details
+     * @returns {Promise<void>}
+     */
+    model.getInterventionListByTreeId = async (interventionData) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+            return await conn.query(`SELECT id, treeId, subject, description, observations,
+                CONVERT_TZ(interventionDate,'UTC','Europe/Lisbon') AS interventionDate,
+                CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
+                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified
+                FROM treeInterventions
+                WHERE treeId='${interventionData.treeId}' AND active=1 AND public=1`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Create a new intervention
      * @param {Object} interventionData - Intervention details
      * @returns {Promise<void>}
