@@ -32,9 +32,21 @@ const SERVER_CODE = {
     NETWORK_AUTHENTICATION_REQUIRED: 511
 }
 
+const MESSAGE = {
+    ERROR: {
+        NO_DATA: 'No data',
+        NO_DATA_FOUND: 'No data found',
+        NO_IMAGE_FOUND: 'Enter existing image id!',
+    },
+    GENERIC: {
+        INPUT_EXISTING_IMAGE: 'Enter existing image id!'
+    }
+}
+
 
 module.exports = {
     SUCCESS_CODE,
     ERROR_CODE,
     SERVER_CODE,
+    MESSAGE,
 };
