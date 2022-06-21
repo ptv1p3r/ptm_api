@@ -37,6 +37,14 @@ const MESSAGE = {
         NO_DATA: 'No data',
         NO_DATA_FOUND: 'No data found',
         NO_IMAGE_FOUND: 'Enter existing image id!',
+        NO_USER_FOUND: 'No user found!',
+        NO_USER_GROUP_FOUND: 'No user group found!',
+        NO_TREE_TYPE_FOUND: 'No tree type found!',
+        NO_TREE_FOUND: 'No tree(s) found!',
+        NO_TRANSACTION_TYPE_FOUND: 'No transaction type found!',
+        NO_TRANSACTION_METHOD_FOUND: 'No transaction method found!',
+        NO_TRANSACTION_FOUND: 'No transaction(s) found!',
+        NO_SECURITY_GROUP_FOUND: 'No security group found!',
     },
     GENERIC: {
         INPUT_EXISTING_IMAGE: 'Enter existing image id!'

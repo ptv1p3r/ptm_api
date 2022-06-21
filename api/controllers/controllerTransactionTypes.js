@@ -7,7 +7,7 @@ module.exports = app => {
     const controller = {};
 
     /**
-     * Lists all transaction methods
+     * Lists all transaction types
      * @param req
      * @param res
      * @returns {Promise<void>}
@@ -16,6 +16,10 @@ module.exports = app => {
         try {
 
             const result = await modelTransactionTypes.getTransactionTypesList();
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_TYPE_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 methods: result,
@@ -44,7 +48,7 @@ module.exports = app => {
             const result = await modelTransactionTypes.getTransactionTypeById(transactionTypeData.id);
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_TYPE_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);

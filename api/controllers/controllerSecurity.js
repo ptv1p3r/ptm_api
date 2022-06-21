@@ -18,7 +18,7 @@ module.exports = app => {
             const result = await modelSecurity.getSecurityGroupList();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_SECURITY_GROUP_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -46,8 +46,9 @@ module.exports = app => {
             }
 
             const result = await modelSecurity.getSecurityGroupById(securityGroupData.id);
+
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: "Security group not found!"
+                error: responseCode.MESSAGE.ERROR.NO_SECURITY_GROUP_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);

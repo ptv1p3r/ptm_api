@@ -18,7 +18,7 @@ module.exports = app => {
             const result = await modelTransactionMethods.getActiveTransactionMethodsList();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_METHOD_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -45,7 +45,7 @@ module.exports = app => {
             const result = await modelTransactionMethods.getTransactionMethodsList();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_METHOD_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -73,6 +73,10 @@ module.exports = app => {
             }
 
             const result = await modelTransactionMethods.getTransactionMethodById(transactionMethodData.id);
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_METHOD_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {

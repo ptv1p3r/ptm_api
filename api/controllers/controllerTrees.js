@@ -19,7 +19,7 @@ module.exports = app => {
             const result = await modelTrees.treesPublicList();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TREE_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -45,7 +45,7 @@ module.exports = app => {
             const result = await modelTrees.treesListTransactionAvailable();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TREE_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -71,7 +71,7 @@ module.exports = app => {
             const result = await modelTrees.treesListAll();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TREE_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -99,6 +99,10 @@ module.exports = app => {
             }
 
             const tree = await modelTrees.getTreeById(userData.id);
+
+            if (tree.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_TREE_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(tree);
         } catch (error) {

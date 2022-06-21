@@ -19,7 +19,7 @@ module.exports = app => {
             const result = await modelTransaction.getTransactionList();
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
@@ -49,7 +49,7 @@ module.exports = app => {
             const result = await modelTransaction.getTransactionById(transactionData.id);
 
             if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
-                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_FOUND
             });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);

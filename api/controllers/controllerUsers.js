@@ -49,6 +49,10 @@ module.exports = app => {
 
             const user = await modelUser.getUserByEmail(userData.email);
 
+            if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_USER_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json(user);
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
