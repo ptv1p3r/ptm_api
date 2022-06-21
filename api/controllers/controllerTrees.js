@@ -18,6 +18,10 @@ module.exports = app => {
         try {
             const result = await modelTrees.treesPublicList();
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 trees: result,
                 total: result.length
@@ -40,6 +44,10 @@ module.exports = app => {
         try {
             const result = await modelTrees.treesListTransactionAvailable();
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 trees: result,
                 total: result.length
@@ -61,6 +69,10 @@ module.exports = app => {
     controller.listAll = async (req, res) => {
         try {
             const result = await modelTrees.treesListAll();
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 trees: result,

@@ -59,6 +59,10 @@ module.exports = app => {
         try {
             const result = await modelTreeImages.imagesListAll();
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 images: result,
                 total: result.length

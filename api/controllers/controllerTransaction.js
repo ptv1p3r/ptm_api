@@ -18,6 +18,10 @@ module.exports = app => {
 
             const result = await modelTransaction.getTransactionList();
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 methods: result,
                 total: result.length
@@ -43,6 +47,10 @@ module.exports = app => {
             }
 
             const result = await modelTransaction.getTransactionById(transactionData.id);
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {

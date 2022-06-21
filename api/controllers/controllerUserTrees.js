@@ -43,6 +43,10 @@ module.exports = app => {
 
             const result = await modelUserTrees.getUserTreesListById(userId);
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 trees: result,
                 total: result.length
@@ -69,6 +73,10 @@ module.exports = app => {
             }
 
             const result = await modelUserTrees.getUserTreeById(userTreeData);
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {
