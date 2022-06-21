@@ -35,7 +35,7 @@ module.exports = app => {
             if (!userData.email || !userData.password) {
                 return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                     auth: false,
-                    error: "Enter valid authorization credentials!"
+                    error: responseCode.MESSAGE.ERROR.INVALID_AUTH_CREDENTIALS
                 });
             }
 
@@ -43,17 +43,17 @@ module.exports = app => {
 
             if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                 auth: false,
-                error: "Enter valid authorization credentials!"
+                error: responseCode.MESSAGE.ERROR.NO_USER_FOUND
             });
 
             if(user[0].password !== userData.password) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                 auth: false,
-                error: "Enter valid authorization credentials!"
+                error: responseCode.MESSAGE.ERROR.INVALID_USER_PASSWORD
             });
 
             if(user[0].active !== 1) return res.status(responseCode.ERROR_CODE.FORBIDDEN).json({
                 auth: false,
-                error: "User not active!"
+                error: responseCode.MESSAGE.ERROR.USER_NOT_ACTIVE
             });
 
             const accessToken = jwt.sign({email: userData.email}, app.get('token.accessSecret'), {
@@ -90,7 +90,7 @@ module.exports = app => {
         auth: false,
         accessToken: null,
         refreshToken: null,
-        message: "User logged out!"
+        message: responseCode.MESSAGE.GENERIC.USER_LOGOUT
     });
 
     /**
@@ -122,7 +122,7 @@ module.exports = app => {
                     });
             });
 
-            res.status(responseCode.SUCCESS_CODE.OK).end('User account activated.');
+            res.status(responseCode.SUCCESS_CODE.OK).end(responseCode.MESSAGE.GENERIC.USER_ACCOUNT_ACTIVATED);
 
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
@@ -147,7 +147,7 @@ module.exports = app => {
         if (!isValid) {
             return res.status(responseCode.ERROR_CODE.UNAUTHORIZED).json({
                 auth: false,
-                message: "Invalid token,login again!"
+                message: responseCode.MESSAGE.ERROR.TOKEN_INVALID
             });
         }
 
@@ -178,7 +178,7 @@ module.exports = app => {
             if (!user) {
                 return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                     recover: false,
-                    message: "User not found!"
+                    message: responseCode.MESSAGE.ERROR.NO_USER_FOUND
                 });
             }
 
@@ -205,7 +205,7 @@ module.exports = app => {
                 },
             });
 
-            res.status(responseCode.SUCCESS_CODE.OK).end('User password recovery email sent.');
+            res.status(responseCode.SUCCESS_CODE.OK).end(responseCode.MESSAGE.GENERIC.USER_PASSWORD_RECOVERY_EMAIL);
 
         } catch (error) {
             res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
@@ -235,7 +235,7 @@ module.exports = app => {
             if (!user) {
                 return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                     recover: false,
-                    message: "User not found!"
+                    message: responseCode.MESSAGE.ERROR.NO_USER_FOUND
                 });
             }
 
@@ -251,7 +251,7 @@ module.exports = app => {
             if (user[0].id !== decryptedData) {
                 return res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
                     recover: false,
-                    message: "Encryption validation mismatch!"
+                    message: responseCode.MESSAGE.ERROR.ENCRYPTION_INVALID
                 });
             }
 
@@ -274,7 +274,7 @@ module.exports = app => {
 
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 recover: true,
-                message: "User password recovery completed successfully!"
+                message: responseCode.MESSAGE.GENERIC.USER_PASSWORD_RECOVERY_EMAIL_OK
             });
 
         } catch (error) {
