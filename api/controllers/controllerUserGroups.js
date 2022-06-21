@@ -17,6 +17,10 @@ module.exports = app => {
 
             const result = await modelUserGroups.getUserGroupList();
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_USER_GROUP_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 groups: result,
                 total: result.length
@@ -42,6 +46,10 @@ module.exports = app => {
             }
 
             const result = await modelUserGroups.getUserGroupById(userGroupData.id);
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_USER_GROUP_FOUND
+            });
 
             res.status(responseCode.SUCCESS_CODE.OK).json(result);
         } catch (error) {
