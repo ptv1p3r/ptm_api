@@ -251,7 +251,65 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM users WHERE id='${userId}'`);
+
+            /* Begin transaction */
+            await conn.beginTransaction();
+
+            await conn.query(`SET FOREIGN_KEY_CHECKS=0`);
+            await conn.query(`DELETE FROM usersTrees WHERE userId = '${userId}'`, (err, result) => {
+                if (err) {
+                    conn.rollback();
+                }
+            });
+            await conn.query(`DELETE FROM users WHERE id = '${userId}'`, (err, result) => {
+                if (err) {
+                    conn.rollback();
+                }
+            });
+            await conn.query(`SET FOREIGN_KEY_CHECKS=1`);
+
+            await conn.commit();
+            /* End transaction */
+
+
+            /* Begin transaction */
+            // await conn.beginTransaction( err => {
+            //     if (err) {
+            //         throw err;
+            //     }
+            //
+            //     conn.query(`SET FOREIGN_KEY_CHECKS=0`);
+            //
+            //     conn.query(`DELETE FROM users WHERE id = '${userId}'`, (err, result) => {
+            //         if (err) {
+            //             conn.rollback(() => {
+            //                 throw err;
+            //             });
+            //         }
+            //
+            //         conn.query(`DELETE FROM usersTrees WHERE userId = '${userId}'`, (err, result) => {
+            //             if (err) {
+            //                 conn.rollback(() => {
+            //                     throw err;
+            //                 });
+            //             }
+            //
+            //             conn.commit(err => {
+            //                 if (err) {
+            //                     conn.rollback(() => {
+            //                         throw err;
+            //                     });
+            //                 }
+            //                 console.log('Transaction Complete.');
+            //             });
+            //         })
+            //
+            //     })
+            //     conn.query(`SET FOREIGN_KEY_CHECKS=1`);
+            // })
+
+
+            // return await conn.query(`DELETE FROM users WHERE id='${userId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
