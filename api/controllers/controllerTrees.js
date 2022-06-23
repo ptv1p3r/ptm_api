@@ -35,6 +35,41 @@ module.exports = app => {
     }
 
     /**
+     * Public tree info
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.publicTreeInfo = async (req, res) => {
+        try {
+            const result = await modelTrees.treesCount();
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_TREE_FOUND
+            });
+
+            // dados recolhidos com uma media por arvore ao longo dos primeiros 20 anos
+            const countCo2 = parseFloat( ((Number(result[0].total) * 7.14) * 20).toFixed(2) );
+            //500lt dia
+            const countH2o = parseFloat( ( ((Number(result[0].total) * 500.00) * 365) * 20).toFixed(2) );
+            // 117kg ano --> 0.320548 dia
+            const countO2 = parseFloat( ( ((Number(result[0].total) * 0.320548) * 365) * 20).toFixed(2) );
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                treesTotal: Number(result[0].total),
+                co2Kg: countCo2,
+                H2oLt: countH2o,
+                O2Kg: countO2,
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * Lists all trees available for transaction
      * @param req
      * @param res

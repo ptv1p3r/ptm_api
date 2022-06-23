@@ -11,6 +11,11 @@ module.exports = app => {
     app.route('/api/v1/trees/public/list').get(controller.publicList);
 
     /**
+     * Public tree info
+     */
+    app.route('/api/v1/trees/public/info').get(controller.publicTreeInfo);
+
+    /**
      * List all trees
      */
     app.route('/api/v1/trees/list').get(AuthenticateJWT, controller.listAll);
