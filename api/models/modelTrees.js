@@ -28,6 +28,27 @@ module.exports = app => {
     }
 
     /**
+     * Public trees count
+     * @returns {Promise<void>}
+     */
+    model.treesCount = async () => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query("SELECT COUNT(id) as total " +
+                "FROM trees " +
+                "WHERE active=1");
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Lists all trees
      * @returns {Promise<void>}
      */
