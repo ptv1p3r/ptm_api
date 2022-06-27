@@ -21,6 +21,10 @@ module.exports = app => {
         try {
             const result = await modelMessages.messagesListAll();
 
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
             res.status(responseCode.SUCCESS_CODE.OK).json({
                 messages: result,
                 total: result.length
@@ -82,6 +86,84 @@ module.exports = app => {
                     id: messageData.id,
                     body: {
                         receptionDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+                        dateModified: moment().utc().format("YYYY-MM-DD HH:mm:ss")
+                    }
+                }
+
+                await modelMessages.editPatchMessage(messageUpdate);
+            }
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(message);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * Set message state to read by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.changeMessageStateRead = async (req, res) => {
+        try {
+            const messageData = {
+                id: req.params.messageId
+            }
+
+            const message = await modelMessages.getMessageById(messageData.id);
+
+            if (message.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_MESSAGE_FOUND
+            });
+
+            if (message[0].receptionDate === null) {
+                const messageUpdate = {
+                    id: messageData.id,
+                    body: {
+                        receptionDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+                        dateModified: moment().utc().format("YYYY-MM-DD HH:mm:ss")
+                    }
+                }
+
+                await modelMessages.editPatchMessage(messageUpdate);
+            }
+
+            res.status(responseCode.SUCCESS_CODE.OK).json(message);
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
+     * Set message state to unread by id
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.changeMessageStateUnRead = async (req, res) => {
+        try {
+            const messageData = {
+                id: req.params.messageId
+            }
+
+            const message = await modelMessages.getMessageById(messageData.id);
+
+            if (message.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_MESSAGE_FOUND
+            });
+
+            if (message[0].receptionDate !== null) {
+                const messageUpdate = {
+                    id: messageData.id,
+                    body: {
+                        receptionDate: null,
                         dateModified: moment().utc().format("YYYY-MM-DD HH:mm:ss")
                     }
                 }
@@ -175,7 +257,7 @@ module.exports = app => {
     }
 
     /**
-     * Delete tree by id
+     * Delete message by id
      * @param req
      * @param res
      * @returns {Promise<void>}
