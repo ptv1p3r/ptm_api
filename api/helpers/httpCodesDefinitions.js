@@ -49,6 +49,7 @@ const MESSAGE = {
         NO_TRANSACTION_METHOD_FOUND: 'No transaction method found!',
         NO_TRANSACTION_FOUND: 'No transaction(s) found!',
         NO_SECURITY_GROUP_FOUND: 'No security group found!',
+        NO_MESSAGE_FOUND: 'No message(s) found!',
         USER_NOT_ACTIVE: 'User not active!',
         INVALID_AUTH_CREDENTIALS: 'Invalid authorization credentials!',
         INVALID_USER_PASSWORD: 'Invalid user password!',
