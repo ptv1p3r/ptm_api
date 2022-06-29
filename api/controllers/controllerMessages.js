@@ -69,6 +69,37 @@ module.exports = app => {
     }
 
     /**
+     * Lists messages sent by userId
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listAllSentById = async (req, res) => {
+        try {
+            const userId = req.params.userId.trim();
+
+            const result = await modelMessages.getUserMessagesSentListById(userId);
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_DATA_FOUND
+            });
+
+            const countNotViewed = await modelMessages.getUserMessagesNotViewedById(userId);
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                messages: result,
+                totalNotViewed: Number(countNotViewed[0].total),
+                total: result.length
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * Get message by id
      * @param req
      * @param res

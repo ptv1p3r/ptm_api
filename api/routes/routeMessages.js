@@ -16,6 +16,11 @@ module.exports = app => {
     app.route('/api/v1/messages/list/:userId').get(AuthenticateJWT, controller.listAllById);
 
     /**
+     * Message sent list by userId
+     */
+    app.route('/api/v1/messages/list/send/:userId').get(AuthenticateJWT, controller.listAllSentById);
+
+    /**
      * Message set state read by id
      */
     app.route('/api/v1/messages/state/read/:messageId').post(AuthenticateJWT, controller.changeMessageStateRead);
