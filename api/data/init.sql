@@ -145,9 +145,9 @@ CREATE TABLE `transactions` (
                         `referenceId` varchar(255) NULL,
                         `requestId` varchar(255) NULL,
                         `terminal` varchar(255) NULL,
-                        `serviceTariff` DECIMAL NULL,
-                        `value` DECIMAL NOT NULL,
-                        `valueNet` DECIMAL NULL,
+                        `serviceTariff` DECIMAL(5, 2) NULL,
+                        `value` DECIMAL(5, 2) NOT NULL,
+                        `valueNet` DECIMAL(5, 2) NULL,
                         `valid` BOOLEAN NOT NULL,
                         `state` varchar(255) NULL,
                         `message` varchar(255) NULL,
@@ -226,6 +226,8 @@ ALTER TABLE `treeInterventions` ADD CONSTRAINT `treeInterventions_fk0` FOREIGN K
 ALTER TABLE `usersTrees` ADD CONSTRAINT `usersTrees_fk0` FOREIGN KEY (`userId`) REFERENCES `users`(`id`);
 
 ALTER TABLE `usersTrees` ADD CONSTRAINT `usersTrees_fk1` FOREIGN KEY (`treeId`) REFERENCES `trees`(`id`);
+
+ALTER TABLE `usersTrees` ADD CONSTRAINT `usersTrees_pk`  UNIQUE (`userId`, `treeId`);
 
 ALTER TABLE `transactions` ADD CONSTRAINT `transactions_fk0` FOREIGN KEY (`transactionTypeId`) REFERENCES `transactionType`(`id`);
 
