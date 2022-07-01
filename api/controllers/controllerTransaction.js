@@ -3,6 +3,8 @@
 const responseCode = require('../helpers/httpCodesDefinitions')
 const crypto = require("crypto");
 const modelTransaction = require('./../models/modelTransaction')();
+const modelUser = require('./../models/modelUsers')();
+const modelTrees = require('./../models/modelTrees')();
 
 module.exports = app => {
     const controller = {};
@@ -69,16 +71,54 @@ module.exports = app => {
      */
     controller.createTransaction = async (req, res) => {
         try {
-            const transactionData = {
+            let transactionData = {
                 id: crypto.randomUUID(),
                 transactionTypeId: req.body.typeId,
                 transactionMethodId: req.body.methodId,
                 userId: req.body.userId.trim(),
                 treeId: req.body.treeId.trim(),
-                value: req.body.value
+                value: parseFloat(req.body.value).toFixed(2)
             }
 
-            await modelTransaction.createTransactionType(transactionData);
+            const user = await modelUser.getUserById(transactionData.userId);
+            if (user.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                created: false,
+                error: responseCode.MESSAGE.ERROR.NO_USER_FOUND
+            });
+
+            const tree = await modelTrees.getTreeById(transactionData.treeId);
+            if (tree.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                created: false,
+                error: responseCode.MESSAGE.ERROR.NO_TREE_FOUND
+            });
+
+            // add user info
+            transactionData.userName = user[0].name;
+            transactionData.userNif = user[0].nif;
+            // add tree info
+            transactionData.treeName = tree[0].name;
+            // set transaction state
+            transactionData.state = "PAYED";
+            // set transaction valid
+            transactionData.valid = 1;
+            // set reference
+            transactionData.reference = "";
+            // set reference id
+            transactionData.referenceId = "";
+            // set request id
+            transactionData.requestId = "";
+            // set terminal
+            transactionData.terminal = "";
+            // set service tariff
+            transactionData.serviceTariff = 0.0;
+            // set value net
+            transactionData.valueNet = 0.0;
+            // set message
+            transactionData.message = "";
+            // set code
+            transactionData.code = "";
+
+            await modelTransaction.createTransaction(transactionData);
 
             res.status(responseCode.SUCCESS_CODE.CREATED).json({
                 created: true
