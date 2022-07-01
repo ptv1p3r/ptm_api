@@ -59,10 +59,38 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query("INSERT INTO transactionType (name, description, active) " +
-                "VALUES (?, ?, ?)",
-                [transactionData.name, transactionData.description, transactionData.active]);
+
+            /* Begin transaction */
+            await conn.beginTransaction();
+
+            // insert user tree relation as active
+            await conn.query(`INSERT INTO usersTrees (userId, treeId, active) 
+                VALUES ('${transactionData.userId}', '${transactionData.treeId}', 1)`, (err, result) => {
+                if (err) {
+                    conn.rollback();
+                }
+            });
+
+            // insert transaction
+            await conn.query(`INSERT INTO transactions (id, transactionTypeId, transactionMethodId, userId, userName, userNif, treeId, 
+                          treeName, reference, referenceId, requestId, terminal, serviceTariff, value, valueNet, valid, state, message,
+                          code) 
+                VALUES ('${transactionData.id}', ${transactionData.transactionTypeId}, ${transactionData.transactionMethodId},
+                        '${transactionData.userId}', '${transactionData.userName}', ${transactionData.userNif}, '${transactionData.treeId}',
+                        '${transactionData.treeName}', '${transactionData.reference}', '${transactionData.referenceId}', '${transactionData.requestId}',
+                        '${transactionData.terminal}', ${transactionData.serviceTariff}, ${transactionData.value}, ${transactionData.valueNet},
+                        ${transactionData.valid}, '${transactionData.state}', '${transactionData.message}', '${transactionData.code}')`, (err, result) => {
+                if (err) {
+                    conn.rollback();
+                }
+            });
+
+            await conn.commit();
+            /* End transaction */
+
+
         } catch (err) {
+            await conn.rollback();
             console.log("error: " + err);
             throw err;
         } finally {
