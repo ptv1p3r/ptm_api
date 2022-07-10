@@ -6,6 +6,12 @@ const modelTransaction = require('./../models/modelTransaction')();
 const modelUser = require('./../models/modelUsers')();
 const modelTrees = require('./../models/modelTrees')();
 
+const PAYMENT_CODE = {
+    WAITING: "WAITING PAYMENT",
+    NOT_VALID: "PAYMENT NOT VALID",
+    PAYMENT_OK: "PAYMENT VALID",
+}
+
 module.exports = app => {
     const controller = {};
 
@@ -98,7 +104,7 @@ module.exports = app => {
             // add tree info
             transactionData.treeName = tree[0].name;
             // set transaction state
-            transactionData.state = "PAYED";
+            transactionData.state = PAYMENT_CODE.PAYMENT_OK;
             // set transaction valid
             transactionData.valid = 1;
             // set reference
