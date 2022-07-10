@@ -40,7 +40,7 @@ module.exports = app => {
             return await conn.query("SELECT id, transactionTypeId, transactionMethodId, userId, userName, userNif, treeId, " +
                 "treeName, reference, referenceId, requestId, terminal, serviceTariff, value, valueNet, valid, state, message, code, " +
                 "CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated, " +
-                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified " +
+                "CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified, " +
                 "CONVERT_TZ(dateValidated,'UTC','Europe/Lisbon') AS dateValidated " +
                 "FROM transactions");
         } catch (err) {
