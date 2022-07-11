@@ -13,7 +13,7 @@ module.exports = app => {
     /**
      * Transaction view by id
      */
-    app.route('/api/v1/transaction/view/:transactionTypeId').get(AuthenticateJWT, controller.viewTransaction);
+    app.route('/api/v1/transaction/view/:transactionId').get(AuthenticateJWT, controller.viewTransaction);
 
     /**
      * Create new transaction
@@ -28,6 +28,6 @@ module.exports = app => {
     /**
      * Delete Transaction by id
      */
-    app.route('/api/v1/transaction/types/delete/:transactionId').delete(AuthenticateJWT, controller.deleteTransaction);
+    app.route('/api/v1/transaction/delete/:transactionId').delete(AuthenticateJWT, controller.deleteTransaction);
 
 }
