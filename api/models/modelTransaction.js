@@ -16,10 +16,12 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT id, name, description, active,
+            return await conn.query(`SELECT id, transactionTypeId, transactionMethodId, userId, userName, userNif,
+                treeId, treeName, reference, referenceId, terminal, serviceTariff, value, valueNet, valid, state, message, code, 
                 CONVERT_TZ(dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
-                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified 
-                FROM transactionType WHERE id=${transactionId}`);
+                CONVERT_TZ(dateModified,'UTC','Europe/Lisbon') AS dateModified,
+                CONVERT_TZ(dateValidated,'UTC','Europe/Lisbon') AS dateValidated 
+                FROM transactions WHERE id='${transactionId}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
@@ -131,7 +133,7 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM transactionType WHERE id=${transactionData.id}`);
+            return await conn.query(`DELETE FROM transactions WHERE id='${transactionData.id}'`);
         } catch (err) {
             console.log("error: " + err);
             throw err;
