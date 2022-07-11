@@ -133,8 +133,29 @@ module.exports = app => {
 
         try {
             conn = await dbPool.getConnection();
-            return await conn.query(`DELETE FROM transactions WHERE id='${transactionData.id}'`);
+
+            /* Begin transaction */
+            await conn.beginTransaction();
+
+            // delete user tree relation
+            await conn.query(`DELETE FROM usersTrees WHERE userId ='${transactionData.userId}' AND treeId ='${transactionData.treeId}')`, (err, result) => {
+                if (err) {
+                    conn.rollback();
+                }
+            });
+
+            // delete transaction
+            await conn.query(`DELETE FROM transactions WHERE id='${transactionData.id}'`, (err, result) => {
+                if (err) {
+                    conn.rollback();
+                }
+            });
+
+            await conn.commit();
+            /* End transaction */
+
         } catch (err) {
+            await conn.rollback();
             console.log("error: " + err);
             throw err;
         } finally {
