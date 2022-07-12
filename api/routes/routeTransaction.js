@@ -6,9 +6,14 @@ module.exports = app => {
     const controller = app.controllers.controllerTransaction;
 
     /**
-     * Transaction methods list
+     * Transaction list
      */
     app.route('/api/v1/transaction/list').get(AuthenticateJWT, controller.listAll);
+
+    /**
+     * Transaction list by userid
+     */
+    app.route('/api/v1/transaction/list/:userId').get(AuthenticateJWT, controller.listAllUserTransactions);
 
     /**
      * Transaction view by id

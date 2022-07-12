@@ -43,6 +43,37 @@ module.exports = app => {
     }
 
     /**
+     * Lists all transactions by user
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    controller.listAllUserTransactions = async (req, res) => {
+        try {
+
+            const transactionData = {
+                userId: req.params.userId.trim(),
+            }
+
+            const result = await modelTransaction.getTransactionsByUserId(transactionData.userId);
+
+            if (result.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
+                error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_FOUND
+            });
+
+            res.status(responseCode.SUCCESS_CODE.OK).json({
+                transactions: result,
+                total: result.length
+            });
+        } catch (error) {
+            res.status(responseCode.ERROR_CODE.BAD_REQUEST).json({
+                code: error.code,
+                message: error.text
+            });
+        }
+    }
+
+    /**
      * View a transaction by id
      * @param req
      * @param res

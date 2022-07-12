@@ -31,6 +31,32 @@ module.exports = app => {
     }
 
     /**
+     * Get transaction list by userid
+     * @param {String} userId - User Id
+     * @returns {Promise<*>}
+     */
+    model.getTransactionsByUserId = async (userId) => {
+        let conn;
+
+        try {
+            conn = await dbPool.getConnection();
+
+            return await conn.query(`SELECT t.id, tt.name, tm.name, t.userNif,
+                t.treeId, t.value, t.state, 
+                CONVERT_TZ(t.dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
+                CONVERT_TZ(t.dateModified,'UTC','Europe/Lisbon') AS dateModified,
+                CONVERT_TZ(t.dateValidated,'UTC','Europe/Lisbon') AS dateValidated 
+                FROM transactions as t, transactionMethod as tm, transactionType tt 
+                WHERE userId='${userId}' AND t.transactionTypeId=tt.id AND t.transactionMethodId=tm.id`);
+        } catch (err) {
+            console.log("error: " + err);
+            throw err;
+        } finally {
+            if (conn) await conn.end();
+        }
+    }
+
+    /**
      * Lists all transactions
      * @returns {Promise<void>}
      */
