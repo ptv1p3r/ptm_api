@@ -41,7 +41,7 @@ module.exports = app => {
         try {
             conn = await dbPool.getConnection();
 
-            return await conn.query(`SELECT t.id, tt.name, tm.name, t.userNif,
+            return await conn.query(`SELECT t.id, tt.name as typeName, tm.name as methodName, t.userNif,
                 t.treeId, t.value, t.state, 
                 CONVERT_TZ(t.dateCreated,'UTC','Europe/Lisbon') AS dateCreated,
                 CONVERT_TZ(t.dateModified,'UTC','Europe/Lisbon') AS dateModified,
