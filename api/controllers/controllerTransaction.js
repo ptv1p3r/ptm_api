@@ -209,7 +209,7 @@ module.exports = app => {
                 id: req.params.transactionId,
             }
 
-            const transaction = modelTransaction.getTransactionById(transactionData.id);
+            const transaction = await modelTransaction.getTransactionById(transactionData.id);
             if (transaction.length === 0) return res.status(responseCode.ERROR_CODE.NOT_FOUND).json({
                 error: responseCode.MESSAGE.ERROR.NO_TRANSACTION_FOUND
             });
