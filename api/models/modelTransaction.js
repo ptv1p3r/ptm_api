@@ -7,7 +7,7 @@ module.exports = app => {
 
     /**
      * Get transaction by id
-     * @param {Integer} transactionId - Transaction Id
+     * @param {String} transactionId - Transaction Id
      * @returns {Promise<*>}
      */
     model.getTransactionById = async (transactionId) => {
@@ -167,7 +167,7 @@ module.exports = app => {
             await conn.query(`SET FOREIGN_KEY_CHECKS=0`);
 
             // delete user tree relation
-            await conn.query(`DELETE FROM usersTrees WHERE userId ='${transactionData.userId}' AND treeId ='${transactionData.treeId}')`, (err, result) => {
+            await conn.query(`DELETE FROM usersTrees WHERE userId='${transactionData.userId}' AND treeId='${transactionData.treeId}'`, (err, result) => {
                 if (err) {
                     conn.rollback();
                 }
