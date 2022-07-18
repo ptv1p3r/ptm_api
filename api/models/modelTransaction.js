@@ -163,6 +163,9 @@ module.exports = app => {
             /* Begin transaction */
             await conn.beginTransaction();
 
+            // set foreign_key checks off
+            await conn.query(`SET FOREIGN_KEY_CHECKS=0`);
+
             // delete user tree relation
             await conn.query(`DELETE FROM usersTrees WHERE userId ='${transactionData.userId}' AND treeId ='${transactionData.treeId}')`, (err, result) => {
                 if (err) {
@@ -176,6 +179,9 @@ module.exports = app => {
                     conn.rollback();
                 }
             });
+
+            // set foreign_key checks on
+            await conn.query(`SET FOREIGN_KEY_CHECKS=1`);
 
             await conn.commit();
             /* End transaction */
